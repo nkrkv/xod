@@ -1,0 +1,57 @@
+{
+  "nodes": [
+    {
+      "id": "H17P5VsPZ",
+      "label": "B0",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HJEUcEswW",
+      "label": "ADDR",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HkKvqEswZ",
+      "label": "B1",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJ7UCVsPW",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SkDMTNjwW",
+      "label": "DONE",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "r1ypaEoDW",
+      "label": "UPD",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

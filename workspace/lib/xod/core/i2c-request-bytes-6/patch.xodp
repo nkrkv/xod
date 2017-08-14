@@ -1,0 +1,93 @@
+{
+  "nodes": [
+    {
+      "id": "HJM8TViP-",
+      "label": "B5",
+      "position": {
+        "x": 650,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "Hkg8T4sPZ",
+      "label": "B4",
+      "position": {
+        "x": 522,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SJiBp4ivb",
+      "label": "B2",
+      "position": {
+        "x": 266,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SJx2a4swb",
+      "label": "DONE",
+      "position": {
+        "x": 778,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "Sy6ST4jPZ",
+      "label": "B3",
+      "position": {
+        "x": 394,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SyaaaEsw-",
+      "label": "UPD",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "SydBa4ov-",
+      "label": "B1",
+      "position": {
+        "x": 138,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "r1zDA4oPW",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rJIHaEoPZ",
+      "label": "B0",
+      "position": {
+        "x": 10,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "ryy0h4owW",
+      "label": "ADDR",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

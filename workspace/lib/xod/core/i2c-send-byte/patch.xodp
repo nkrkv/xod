@@ -1,0 +1,48 @@
+{
+  "nodes": [
+    {
+      "id": "B19V0Eiw-",
+      "label": "UPD",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HJ18CVjD-",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "Hy_Q04sPZ",
+      "label": "ADDR",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "r1Vr04iPW",
+      "label": "DONE",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "ry7NREoP-",
+      "label": "B",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
