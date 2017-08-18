@@ -1,4 +1,42 @@
 {
+  "comments": [
+    {
+      "content": "↑ This decodes X Y Z acceleration data",
+      "id": "BkgWdYE_-",
+      "position": {
+        "x": 266,
+        "y": 952
+      },
+      "size": {
+        "height": 72,
+        "width": 364
+      }
+    },
+    {
+      "content": "↑ This sends commands to adjust sensitivity",
+      "id": "HJI6DtEu-",
+      "position": {
+        "x": 10,
+        "y": 848
+      },
+      "size": {
+        "height": 72,
+        "width": 236
+      }
+    },
+    {
+      "content": "↑ This is one-time initialization to go out of sleep mode and start measuring acceleration along all 3 axes",
+      "id": "HJQVOKE_W",
+      "position": {
+        "x": 778,
+        "y": 328
+      },
+      "size": {
+        "height": 72,
+        "width": 236
+      }
+    }
+  ],
   "links": [
     {
       "id": "B1KMeSsP-",
@@ -12,14 +50,25 @@
       }
     },
     {
-      "id": "By07gSsDb",
+      "id": "BJivfcE_-",
       "input": {
-        "nodeId": "HyTe3Ejv-",
+        "nodeId": "HyB8M9V_-",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "H1C7ycV_b"
+      }
+    },
+    {
+      "id": "BkzWQqVdW",
+      "input": {
+        "nodeId": "Sk-e2ViDb",
         "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "rkPGeSjPb",
-        "pinKey": "BkqLCOSw1W"
+        "nodeId": "HyB8M9V_-",
+        "pinKey": "BkQzLCurwJZ"
       }
     },
     {
@@ -67,25 +116,14 @@
       }
     },
     {
-      "id": "HJameSjDZ",
+      "id": "H1Tvf54_b",
       "input": {
-        "nodeId": "S1_e24ov-",
-        "pinKey": "__in__"
+        "nodeId": "rkTIfcEuW",
+        "pinKey": "B1GfLR_SPk-"
       },
       "output": {
-        "nodeId": "SkEfxBsP-",
-        "pinKey": "BkqLCOSw1W"
-      }
-    },
-    {
-      "id": "HJfZ-Hsw-",
-      "input": {
-        "nodeId": "rJ-Pgrsv-",
-        "pinKey": "HkKvqEswZ"
-      },
-      "output": {
-        "nodeId": "HJaCs4jDW",
-        "pinKey": "__out__"
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "H1C7ycV_b"
       }
     },
     {
@@ -122,6 +160,17 @@
       }
     },
     {
+      "id": "HyEbm5Eu-",
+      "input": {
+        "nodeId": "S1_e24ov-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkTIfcEuW",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
       "id": "HyUCkrowb",
       "input": {
         "nodeId": "S1kR1SjvW",
@@ -133,6 +182,17 @@
       }
     },
     {
+      "id": "HyUvM54_Z",
+      "input": {
+        "nodeId": "HyB8M9V_-",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "HJYWlSjDb",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
       "id": "S19GxrowW",
       "input": {
         "nodeId": "rkPGeSjPb",
@@ -141,6 +201,17 @@
       "output": {
         "nodeId": "SJO01roDW",
         "pinKey": "rySsCNowW"
+      }
+    },
+    {
+      "id": "SJgOf5Ed-",
+      "input": {
+        "nodeId": "SJgPf9V_Z",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "H1C7ycV_b"
       }
     },
     {
@@ -177,6 +248,17 @@
       }
     },
     {
+      "id": "Skr1fc4ub",
+      "input": {
+        "nodeId": "ByTveBjDb",
+        "pinKey": "BkjI-COLb"
+      },
+      "output": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "r1lUy5N_b"
+      }
+    },
+    {
       "id": "SyablHovW",
       "input": {
         "nodeId": "HJYWlSjDb",
@@ -210,6 +292,17 @@
       }
     },
     {
+      "id": "SyykM9V_Z",
+      "input": {
+        "nodeId": "rJ-Pgrsv-",
+        "pinKey": "HkKvqEswZ"
+      },
+      "output": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "r1lUy5N_b"
+      }
+    },
+    {
       "id": "r1IaeSiPb",
       "input": {
         "nodeId": "rJ-Pgrsv-",
@@ -232,14 +325,36 @@
       }
     },
     {
-      "id": "rJgZZSjvZ",
+      "id": "rJBwzcVuZ",
       "input": {
-        "nodeId": "ByTveBjDb",
-        "pinKey": "BkjI-COLb"
+        "nodeId": "SJgPf9V_Z",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "rkPGeSjPb",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "rkG1M5V_W",
+      "input": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "B1pDRtEdb"
       },
       "output": {
         "nodeId": "HJaCs4jDW",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkmDzcVO-",
+      "input": {
+        "nodeId": "rkTIfcEuW",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "SkEfxBsP-",
+        "pinKey": "BkqLCOSw1W"
       }
     },
     {
@@ -254,14 +369,14 @@
       }
     },
     {
-      "id": "ryimeHiP-",
+      "id": "ryrb79N_b",
       "input": {
-        "nodeId": "Sk-e2ViDb",
+        "nodeId": "HyTe3Ejv-",
         "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "HJYWlSjDb",
-        "pinKey": "BkqLCOSw1W"
+        "nodeId": "SJgPf9V_Z",
+        "pinKey": "BkQzLCurwJZ"
       }
     }
   ],
@@ -301,13 +416,13 @@
       "id": "ByTveBjDb",
       "position": {
         "x": 138,
-        "y": 432
+        "y": 640
       },
       "type": "xod/core/pulse-on-change"
     },
     {
       "boundValues": {
-        "BytUCdHD1-": 16384
+        "BytUCdHD1-": 32767
       },
       "id": "HJYWlSjDb",
       "position": {
@@ -326,13 +441,21 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "id": "HyB8M9V_-",
+      "position": {
+        "x": 266,
+        "y": 744
+      },
+      "type": "xod/core/multiply"
+    },
+    {
       "boundValues": {
         "ry7NREoP-": 168
       },
       "id": "HyHP1HiDb",
       "position": {
-        "x": 394,
-        "y": 224
+        "x": 522,
+        "y": 328
       },
       "type": "xod/core/i2c-send-byte"
     },
@@ -350,19 +473,19 @@
     },
     {
       "id": "HyTe3Ejv-",
-      "label": "Gz",
+      "label": "Zg",
       "position": {
         "x": 522,
-        "y": 744
+        "y": 848
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "S1_e24ov-",
-      "label": "Gy",
+      "label": "Yg",
       "position": {
         "x": 394,
-        "y": 744
+        "y": 848
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -395,17 +518,25 @@
       "type": "xod/core/word-to-number"
     },
     {
+      "id": "SJgPf9V_Z",
+      "position": {
+        "x": 522,
+        "y": 744
+      },
+      "type": "xod/core/multiply"
+    },
+    {
       "id": "Sk-e2ViDb",
-      "label": "Gx",
+      "label": "Xg",
       "position": {
         "x": 266,
-        "y": 744
+        "y": 848
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "boundValues": {
-        "BytUCdHD1-": 16384
+        "BytUCdHD1-": 32767
       },
       "id": "SkEfxBsP-",
       "position": {
@@ -422,7 +553,7 @@
       "label": "Control reg #4",
       "position": {
         "x": 10,
-        "y": 432
+        "y": 640
       },
       "type": "xod/core/constant-number"
     },
@@ -441,9 +572,22 @@
       "id": "rJ-Pgrsv-",
       "position": {
         "x": 10,
-        "y": 536
+        "y": 744
       },
       "type": "xod/core/i2c-send-bytes-2"
+    },
+    {
+      "boundValues": {
+        "r1NqAYVdb": 4,
+        "rk850K4u-": 8,
+        "rynt0KE_W": 2
+      },
+      "id": "rJCtZ5NdW",
+      "position": {
+        "x": 10,
+        "y": 536
+      },
+      "type": "@/lis3xx-round-sensitivity"
     },
     {
       "boundValues": {
@@ -459,7 +603,7 @@
     },
     {
       "boundValues": {
-        "BytUCdHD1-": 16384
+        "BytUCdHD1-": 32767
       },
       "id": "rkPGeSjPb",
       "position": {
@@ -467,6 +611,14 @@
         "y": 640
       },
       "type": "xod/core/divide"
+    },
+    {
+      "id": "rkTIfcEuW",
+      "position": {
+        "x": 394,
+        "y": 744
+      },
+      "type": "xod/core/multiply"
     }
   ]
 }

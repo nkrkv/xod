@@ -1,0 +1,299 @@
+{
+  "comments": [
+    {
+      "content": "Compare desired `SEN` with threshold values `S1` and `S2` no understand what’s the nearest sensitivity level when we round `SEN` up.",
+      "id": "SJeCecVdW",
+      "position": {
+        "x": 522,
+        "y": 120
+      },
+      "size": {
+        "height": 72,
+        "width": 236
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1Lbe5NdW",
+      "input": {
+        "nodeId": "S1Iklq4_W",
+        "pinKey": "SJqZ8COrDkW"
+      },
+      "output": {
+        "nodeId": "rynt0KE_W",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "B1Lpy9E_Z",
+      "input": {
+        "nodeId": "H1C7ycV_b",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H12YJ5Vub",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "B1MqJc4d-",
+      "input": {
+        "nodeId": "H1OY15NuZ",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "H1r_Jc4_Z",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "Bk3-gqNOb",
+      "input": {
+        "nodeId": "B1YAJ9Vub",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "S1Iklq4_W",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "BypAkq4_Z",
+      "input": {
+        "nodeId": "H1OY15NuZ",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "B1YAJ9Vub",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "BypGl9NOZ",
+      "input": {
+        "nodeId": "SyPAJcN_b",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "r1NqAYVdb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H16Jl5VdZ",
+      "input": {
+        "nodeId": "S1Iklq4_W",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "B1pDRtEdb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1WYJc4_-",
+      "input": {
+        "nodeId": "H1r_Jc4_Z",
+        "pinKey": "SJqZ8COrDkW"
+      },
+      "output": {
+        "nodeId": "r1NqAYVdb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJJF15N_W",
+      "input": {
+        "nodeId": "H1r_Jc4_Z",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "B1pDRtEdb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyJkl9VuW",
+      "input": {
+        "nodeId": "H12YJ5Vub",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "SyPAJcN_b",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "Hyx5ycNdW",
+      "input": {
+        "nodeId": "H12YJ5Vub",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "H1r_Jc4_Z",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "S1mTkq4db",
+      "input": {
+        "nodeId": "r1lUy5N_b",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1OY15NuZ",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "SJKoycNdb",
+      "input": {
+        "nodeId": "H12YJ5Vub",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "rk850K4u-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkWMl54db",
+      "input": {
+        "nodeId": "SyPAJcN_b",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "rynt0KE_W",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJKbxqNdZ",
+      "input": {
+        "nodeId": "SyPAJcN_b",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "S1Iklq4_W",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "r1AgIROHDJW": 16
+      },
+      "id": "B1YAJ9Vub",
+      "position": {
+        "x": 394,
+        "y": 536
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "description": "Sensitivity value as requested by user.",
+      "id": "B1pDRtEdb",
+      "label": "SEN",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "H12YJ5Vub",
+      "position": {
+        "x": 138,
+        "y": 536
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "description": "Sensitivity selected, e.g. 2, 4, or 8",
+      "id": "H1C7ycV_b",
+      "label": "S",
+      "position": {
+        "x": 138,
+        "y": 744
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "r1AgIROHDJW": 48
+      },
+      "id": "H1OY15NuZ",
+      "position": {
+        "x": 394,
+        "y": 640
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "id": "H1r_Jc4_Z",
+      "position": {
+        "x": 266,
+        "y": 224
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "id": "S1Iklq4_W",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "id": "SyPAJcN_b",
+      "position": {
+        "x": 10,
+        "y": 432
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "description": "Level 1 sensitivity provided by the sensor, e.g. ±4g",
+      "id": "r1NqAYVdb",
+      "label": "S2",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Value for control register #4 to set the sensitivity selected",
+      "id": "r1lUy5N_b",
+      "label": "REG",
+      "position": {
+        "x": 394,
+        "y": 744
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Level 1 sensitivity provided by the sensor, e.g. ±8g",
+      "id": "rk850K4u-",
+      "label": "S3",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Level 1 sensitivity provided by the sensor, e.g. ±2g",
+      "id": "rynt0KE_W",
+      "label": "S1",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
