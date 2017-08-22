@@ -1,0 +1,107 @@
+[
+  {
+    "path": "xod/core/absolute",
+    "keywords": ["absolute"],
+    "lib": "xod/core",
+    "description": "Outputs absolute value of an input number",
+    "fullDescription": "#Absolute \n\nIt's a simple math node, that outputs absolute value an input number."
+  },
+  {
+    "path": "xod/core/add",
+    "keywords": ["add"],
+    "lib": "xod/core",
+    "description": "Adds two numbers",
+    "fullDescription": "#Add \n\nOutputs a sum of two input numbers"
+  },
+  {
+    "path": "xod/core/ceil",
+    "keywords": ["ceil"],
+    "lib": "xod/core",
+    "description": "Rounds a number to a minimal integer that is greater than the number",
+    "fullDescription": "#Ceil \n\nIt's a simple math node, that round a number to a minimal integer. E.G. `2.36` will become `3`"
+  },
+  {
+    "path": "xod/core/console-log",
+    "keywords": ["console", "log"],
+    "lib": "xod/core",
+    "description": "Outputs a line of text to the board standard debug interface",
+    "fullDescription": "#Console-log \n\nIt prints an input string into standard debug interface (serial)"
+  },
+  {
+    "path": "xod/core/constant-boolean",
+    "keywords": ["constant", "boolean"],
+    "lib": "xod/core",
+    "description": "Constant value",
+    "fullDescription": "#Constant-boolean \n\nIt provides to set constant boolean value: true or false"
+  },
+  {
+    "path": "xod/core/constant-number",
+    "keywords": ["constant", "number"],
+    "lib": "xod/core",
+    "description": "Constant value",
+    "fullDescription": "#Constant-number \n\nIt provides to set constant number value, it could be negative, positive or equal zero."
+  },
+  {
+    "path": "xod/common-hardware/servo",
+    "keywords": ["servo"],
+    "lib": "xod/common-hardware",
+    "description": "Drives a standard hobby servo",
+    "fullDescription": "#Servo \n\nHas two inputs: \n\n*PORT (number)*\nBoard port number the servo is connected to.\n\n*VAL (number)*\nDesired servo angle or value in unit range [0.0, 1.0]. For standard servo 0.0 would be mapped to 0° and 1.0 would be 180°."
+  },
+  {
+    "path": "xod/common-hardware/h-bridge-dc-motor",
+    "keywords": ["h", "bridge", "dc", "motor"],
+    "lib": "xod/common-hardware",
+    "description": "Drives a DC motor through H-Bridge IC such as L293 or L298.",
+    "fullDescription": "#Servo \n\nHas three inputs: \n\n*DIR (number)*\nBoard port to which the direction pin of the H-Bridge is connected.\n\n*PWM (number)*\nBoard port to which the PWM (aka Enable) pin of the H-Bridge is connected. The port should be capable of producting PWM signal.\n\n*SPD (number)*\nDesired speed of the motor in [-1.0, 1.0] range. Negative values denote clockwise rotation, zero denotes full stop, positive values denote counterclockwise direction."
+  },
+  {
+    "path": "xod/common-hardware/gp2y0a41-range-meter",
+    "keywords": ["gp2y0a41", "range", "meter"],
+    "lib": "xod/common-hardware",
+    "description": "Reads Sharp infrared range meter GP2Y0A41SK0F (the one with 4…30 cm range).",
+    "fullDescription": "#gp2y0a41-range-meter \n\nMeasured distance in meters. Trustworhy only for distances in [0.04, 0.30] meters range."
+  },
+  {
+    "path": "xod/common-hardware/dht11-thermometer",
+    "keywords": ["dht11", "thermometer"],
+    "lib": "xod/common-hardware",
+    "description": "Reads temperature and humidity from a DHT11 sensor.",
+    "fullDescription": "#dht11-thermometer \n\nReturns last read temperature in °C and relative humidity in ragne [0.0, 1.0]."
+  },
+  {
+    "path": "xod/common-hardware/thermometer-tmp36",
+    "keywords": ["thermometer", "tmp36"],
+    "lib": "xod/common-hardware",
+    "description": "Drives a digital thermometer based on TMP36 IC",
+    "fullDescription": "#thermometer-tmp36 \n\nReturns last read temperature in °C."
+  },
+  {
+    "path": "xod/utils/deg-to-rad",
+    "keywords": ["deg", "to", "rad"],
+    "lib": "xod/utils",
+    "description": "Converts ° (degrees) to radians",
+    "fullDescription": ""
+  },
+  {
+    "path": "xod/utils/rad-to-deg",
+    "keywords": ["rad", "deg"],
+    "lib": "xod/utils",
+    "description": "Converts radians to ° (degrees)",
+    "fullDescription": ""
+  },
+  {
+    "path": "xod/utils/c-to-f",
+    "keywords": ["c", "f"],
+    "lib": "xod/utils",
+    "description": "Maps temperature from °C to °F",
+    "fullDescription": ""
+  },
+  {
+    "path": "xod/utils/m-to-cm",
+    "keywords": ["m", "cm"],
+    "lib": "xod/utils",
+    "description": "Maps meters to centimeters",
+    "fullDescription": ""
+  }
+]
