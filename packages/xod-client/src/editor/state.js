@@ -7,7 +7,10 @@ export default {
   selection: [],
   linkingPin: null,
   selectedNodeType: null,
-  suggesterIsVisible: false,
+  suggester: {
+    visible: false,
+    placePosition: null,
+  },
   tabs: {
     '@/1': {
       id: '@/1',

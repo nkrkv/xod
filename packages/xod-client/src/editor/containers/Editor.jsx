@@ -42,14 +42,14 @@ class Editor extends React.Component {
     this.patchSize = this.props.size;
   }
 
-  // TODO: Add possibility to place node at the slot when double click was produced
-  //       (listen to double click in Patch and store in local state)
   onAddNode(patchPath) {
     // TODO: rewrite this when implementing "zombie" nodes
+    const position = this.props.suggesterPlacePosition || { x: 50, y: 50 };
+
     this.hideSuggester();
     this.props.actions.addNode(
       patchPath,
-      { x: 50, y: 50 },
+      position,
       this.props.currentPatchPath
     );
   }
@@ -67,8 +67,8 @@ class Editor extends React.Component {
     };
   }
 
-  showSuggester() {
-    this.props.actions.showSuggester();
+  showSuggester(pos) {
+    this.props.actions.showSuggester(pos);
   }
 
   hideSuggester() {
@@ -88,6 +88,7 @@ class Editor extends React.Component {
         <Patch
           patchPath={currentPatchPath}
           size={this.patchSize}
+          onDoubleClick={this.showSuggester}
         />
       ) : (
         <NoPatch />
@@ -129,6 +130,7 @@ Editor.propTypes = {
   currentPatch: sanctuaryPropType($Maybe(PatchType)),
   patchesIndex: PropTypes.object,
   suggesterIsVisible: PropTypes.bool,
+  suggesterPlacePosition: PropTypes.object,
   actions: PropTypes.shape({
     updateNodeProperty: PropTypes.func.isRequired,
     updatePatchDescription: PropTypes.func.isRequired,
@@ -147,6 +149,7 @@ const mapStateToProps = R.applySpec({
   currentPatchPath: EditorSelectors.getCurrentPatchPath,
   patchesIndex: ProjectSelectors.getPatchSearchIndex,
   suggesterIsVisible: EditorSelectors.getSuggesterVisibility,
+  suggesterPlacePosition: EditorSelectors.getSuggesterPlacePosition,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -203,8 +203,9 @@ export const sortTabs = newOrderObject => ({
   payload: newOrderObject,
 });
 
-export const showSuggester = () => ({
+export const showSuggester = (pos = null) => ({
   type: ActionType.SHOW_SUGGESTER,
+  payload: pos,
 });
 
 export const hideSuggester = () => ({

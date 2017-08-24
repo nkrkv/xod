@@ -78,7 +78,17 @@ export const getCurrentPatchOffset = createSelector(
   (currentPatchPath, tabs) => R.path([currentPatchPath, 'offset'], tabs)
 );
 
-export const getSuggesterVisibility = R.pipe(
+const getSuggester = R.pipe(
   getEditor,
-  R.prop('suggesterIsVisible')
+  R.prop('suggester')
+);
+
+export const getSuggesterVisibility = R.pipe(
+  getSuggester,
+  R.prop('visible')
+);
+
+export const getSuggesterPlacePosition = R.pipe(
+  getSuggester,
+  R.prop('placePosition')
 );

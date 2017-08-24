@@ -48,6 +48,7 @@ class Patch extends React.Component {
 
     this.state = initialState;
 
+    this.onDoubleClick = this.onDoubleClick.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
@@ -127,6 +128,14 @@ class Patch extends React.Component {
 
     this.setState({ isMouseDown: true });
     this.props.actions.setMode(EDITOR_MODE.RESIZING_SELECTION);
+  }
+
+  onDoubleClick(event) {
+    this.updateMousePosition(event,
+      () => this.props.onDoubleClick(
+        snapNodePositionToSlots(this.state.mousePosition)
+      )
+    );
   }
 
   onPinMouseDown(event, nodeId, pinKey) {
@@ -395,6 +404,7 @@ class Patch extends React.Component {
             width={this.props.size.width}
             height={this.props.size.height}
             onClick={this.props.actions.deselectAll}
+            onDoubleClick={this.onDoubleClick}
             offset={this.getOffset()}
           />
           <g transform={getOffsetMatrix(this.getOffset())}>
@@ -474,6 +484,7 @@ Patch.propTypes = {
   mode: PropTypes.oneOf(R.values(EDITOR_MODE)),
   ghostLink: PropTypes.any,
   offset: PropTypes.object,
+  onDoubleClick: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = R.applySpec({

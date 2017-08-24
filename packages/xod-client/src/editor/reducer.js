@@ -212,10 +212,17 @@ const editorReducer = (state = {}, action) => {
         action.payload,
         state
       );
-    case SHOW_SUGGESTER:
-      return R.assoc('suggesterIsVisible', true, state);
+    case SHOW_SUGGESTER: {
+      return R.compose(
+        R.assocPath(['suggester', 'visible'], true),
+        R.assocPath(['suggester', 'placePosition'], action.payload)
+      )(state);
+    }
     case HIDE_SUGGESTER:
-      return R.assoc('suggesterIsVisible', false, state);
+      return R.compose(
+        R.assocPath(['suggester', 'visible'], false),
+        R.assocPath(['suggester', 'placePosition'], null)
+      )(state);
     default:
       return state;
   }
