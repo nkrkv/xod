@@ -166,4 +166,5 @@ App.actions = {
   hideProjectPreferences: actions.hideProjectPreferences,
   updateProjectMeta: actions.updateProjectMeta,
   hideAllPopups: actions.hideAllPopups,
+  showSuggester: actions.showSuggester,
 };

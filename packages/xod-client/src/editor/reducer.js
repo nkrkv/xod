@@ -11,6 +11,8 @@ import {
   TAB_CLOSE,
   TAB_SORT,
   SET_CURRENT_PATCH_OFFSET,
+  SHOW_SUGGESTER,
+  HIDE_SUGGESTER,
 } from './actionTypes';
 import {
   PROJECT_CREATE,
@@ -210,6 +212,10 @@ const editorReducer = (state = {}, action) => {
         action.payload,
         state
       );
+    case SHOW_SUGGESTER:
+      return R.assoc('suggesterIsVisible', true, state);
+    case HIDE_SUGGESTER:
+      return R.assoc('suggesterIsVisible', false, state);
     default:
       return state;
   }

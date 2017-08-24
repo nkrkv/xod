@@ -174,6 +174,7 @@ class App extends client.App {
           onClick(items.redo, this.props.actions.redoCurrentPatch),
           items.separator,
           onClick(items.insertComment, this.props.actions.addComment),
+          onClick(items.insertNode, this.props.actions.showSuggester),
           items.separator,
           onClick(items.projectPreferences, this.props.actions.showProjectPreferences),
         ]

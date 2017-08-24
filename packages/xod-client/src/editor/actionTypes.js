@@ -9,3 +9,6 @@ export const SET_CURRENT_PATCH_OFFSET = 'SET_CURRENT_PATCH_OFFSET';
 
 export const TAB_CLOSE = 'TAB_CLOSE';
 export const TAB_SORT = 'TAB_SORT';
+
+export const SHOW_SUGGESTER = 'SHOW_SUGGESTER';
+export const HIDE_SUGGESTER = 'HIDE_SUGGESTER';

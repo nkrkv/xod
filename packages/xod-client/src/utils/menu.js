@@ -88,6 +88,10 @@ const rawItems = {
     key: 'insertComment',
     label: 'Insert Comment',
   },
+  insertNode: {
+    key: 'insertNode',
+    label: 'Insert Node',
+  },
 
   deploy: {
     key: 'deploy',
