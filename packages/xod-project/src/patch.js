@@ -739,31 +739,6 @@ export const upsertComments = def(
 // =============================================================================
 
 /**
- * Returns a copy of the patch with changed nodeIds and resolved links.
- *
- * @function renumberNodes
- * @param {Patch} patch
- * @returns {Patch}
- */
-export const renumberNodes = def(
-  'renumberNodes :: Patch -> Patch',
-  (patch) => {
-    const nodes = listNodes(patch);
-    const links = listLinks(patch);
-
-    const nodeIdsMap = Utils.guidToIdx(nodes);
-    const newNodes = R.indexBy(Node.getNodeId, Utils.resolveNodeIds(nodeIdsMap, nodes));
-    const newLinks = R.indexBy(Link.getLinkId, Utils.resolveLinkNodeIds(nodeIdsMap, links));
-
-    return R.compose(
-      R.assoc('links', newLinks),
-      R.assoc('nodes', newNodes),
-      duplicatePatch
-    )(patch);
-  }
-);
-
-/**
  * Returns a topology of nodes in the patch.
  *
  * @function getTopology
@@ -786,3 +761,35 @@ export const getTopology = def(
     ]
   )
 );
+
+/**
+ * Change IDs of nodes in a patch provided to '0', '1', '2',... etc
+ * so that they are sorted topologically.
+ *
+ * Links’ pin references are ajusted as well
+ */
+export const toposortNodes = def(
+  'toposortNodes :: Patch -> Either Error Patch',
+  (patch) => {
+    const nodes = listNodes(patch);
+    const links = listLinks(patch);
+    return R.compose(
+      // TODO: extract out
+      R.map((topology) => {
+        // TODO: DRY
+        const mapIndexed = R.addIndex(R.map);
+        const nodeIdsMap = R.fromPairs(mapIndexed((x, idx) => [x, idx.toString()])(topology));
+        const newNodes = R.indexBy(Node.getNodeId, Utils.resolveNodeIds(nodeIdsMap, nodes));
+        const newLinks = R.indexBy(Link.getLinkId, Utils.resolveLinkNodeIds(nodeIdsMap, links));
+
+        return R.compose(
+          R.assoc('links', newLinks),
+          R.assoc('nodes', newNodes),
+          duplicatePatch
+        )(patch);
+      }),
+      getTopology
+    )(patch);
+  }
+);
+
