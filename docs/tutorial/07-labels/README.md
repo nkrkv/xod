@@ -1,3 +1,6 @@
+---
+title: Node Labels
+---
 
 # #07. Node Labels
 

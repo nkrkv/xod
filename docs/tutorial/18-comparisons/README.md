@@ -1,3 +1,6 @@
+---
+title: Comparing Numbers
+---
 
 # #18. Comparing Numbers
 

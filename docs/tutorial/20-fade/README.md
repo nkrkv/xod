@@ -1,3 +1,6 @@
+---
+title: Smoother Changes
+---
 
 # #20. Smoother Changes
 

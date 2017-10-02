@@ -1,3 +1,6 @@
+---
+title: Accessing Help
+---
 
 # #12. Accessing Help
 

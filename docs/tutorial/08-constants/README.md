@@ -1,3 +1,6 @@
+---
+title: Constant Nodes
+---
 
 # #08. Constant Nodes
 

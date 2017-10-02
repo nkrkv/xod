@@ -1,3 +1,6 @@
+---
+title: Controlling Servos
+---
 
 # #11. Controlling Servos
 

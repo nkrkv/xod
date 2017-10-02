@@ -1,3 +1,6 @@
+---
+title: Adjusting Map Range
+---
 
 # #14. Adjusting Map Range
 

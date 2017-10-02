@@ -1,3 +1,6 @@
+---
+title: Wiring Configuration
+---
 
 # #05. Wiring Configuration
 

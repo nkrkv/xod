@@ -1,3 +1,6 @@
+---
+title: Logic Nodes
+---
 
 # #16. Logic Nodes
 

@@ -1,3 +1,6 @@
+---
+title: Pins, data, and the Inspector
+---
 
 # #03. Pins, data, and the Inspector
 

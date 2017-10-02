@@ -1,3 +1,6 @@
+---
+title: Adding Nodes
+---
 
 # #06. Adding Nodes
 

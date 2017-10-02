@@ -1,3 +1,6 @@
+---
+title: Input from a Potentiometer
+---
 
 # #09. Input from a Potentiometer
 

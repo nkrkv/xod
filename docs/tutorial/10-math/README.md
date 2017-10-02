@@ -1,3 +1,6 @@
+---
+title: Doing Math
+---
 
 # #10. Doing Math
 

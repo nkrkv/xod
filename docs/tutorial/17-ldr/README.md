@@ -1,3 +1,6 @@
+---
+title: Reading lightness
+---
 
 # #05. Reading lightness
 
