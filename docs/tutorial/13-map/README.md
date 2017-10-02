@@ -42,7 +42,7 @@ The circuit is the same as for the previous lesson.
 2. Link the `Tc` pin to the `X` pin on the `map-range` node.
 3. Define the input range. In our case, it will be numbers from 20 to 50. Open the
    Inspector for the `map-range`, and then set `Smin` to 20 and `Smax` to 50.
-4. Define the output range: set the `Tmin` to 0 and `Tmax` to 90.
+4. Define the output range: set the `Tmin` to 0 and `Tmax` to 0.5.
 5. Link the `Xm` output to the `VAL` servo input.
 6. Upload to the Arduino.
 
