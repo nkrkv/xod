@@ -28,9 +28,10 @@ clever human. You can drag it to move too.
 
 ## Act
 
-1. On the left side you will find a list with available projects. First of them
-   is called `welcome-to-xod`. This is a special tutorial project you’re
-   working with right now. Expand the project by clicking on it.
+1. On the left side you will find a list with available projects. The list is
+   called a *Project Browser*. The first item in it is `welcome-to-xod`. This
+   is a special tutorial project you’re working with right now. Expand the
+   project by clicking on it.
 
 2. As you can see, the `welcome-to-xod` project consists of many patches. Here
    we are at the patch `01-hello`. Next part of the Tutorial is in the patch

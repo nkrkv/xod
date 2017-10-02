@@ -11,13 +11,11 @@ same tutorial there.
 
 If you have finished the previous experiment, you will have noticed that the
 thermometer node returns an output temperature value to the `Tc` pin in degrees
-Celsius. The `servo` node can work only with the values of range 0–1 (0 is 0°,
-1 is 180°).
+Celsius. The `servo` node can work only with values ranging from 0 to 1 (0 is
+0°, 1 is 180°).
 
-The practical task is to make the servo rotate smoothly from 0–90 degrees,
-reflecting a temperature change from 20°C to 30°C.
-
-(TODO: no tragedy in the project)
+The practical task is to make the servo rotate smoothly from 0 to 90°,
+reflecting a temperature change from 20°C to 50°C.
 
 You can actually do this using few math nodes, but we have a special node for
 such cases. This node is called the `map-range` node.
@@ -37,19 +35,19 @@ The circuit is the same as for the previous lesson.
 
 ## Instructions
 
-1. Link the `Tc` pin to the `X` pin on the `map-range` node.
-2. Define the input range. In our case, it will be numbers from 20–30. Open the
-   Inspector for the `map-range`, and then set `Smin` to 20 and `Smax` to 30.
-3. Define the output range. You know the range for the servo node. 90° is 0.5
-   on the `VAL` pin, so set `Tmin` and `Tmax` accordingly (you know how).
-4. Done! Link the `Xm` output to the `VAL` servo input.
-5. Upload to the Arduino.
+1. Connect a TMP36 thermometer to the Arduino as shown above.
+2. Link the `Tc` pin to the `X` pin on the `map-range` node.
+3. Define the input range. In our case, it will be numbers from 20 to 50. Open the
+   Inspector for the `map-range`, and then set `Smin` to 20 and `Smax` to 50.
+4. Define the output range: set the `Tmin` to 0 and `Tmax` to 90.
+5. Link the `Xm` output to the `VAL` servo input.
+6. Upload to the Arduino.
 
 ![Screencast](./screencast.gif)
 
-Try to heat the thermometer with your finger. At a temperature of 25°C (half
-the input range), the servo should rotate to 45°, which is half the output
-range.
+Try to heat the thermometer with a cup of coffee or lightfire. At a temperature
+of 35°C (half the input range), the servo should rotate to 45°, which is half
+the output range.
 
 We’ll do more practice with the `map-range` in the [next
 lesson](../14-map-adjust/).

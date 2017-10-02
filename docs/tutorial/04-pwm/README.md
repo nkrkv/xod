@@ -36,5 +36,5 @@ The circuit is the same as for the previous lesson.
 
 ![Inspector](./inspector.gif)
 
-Now LED is lightning not so bright. You can play with values, and then proceed
-to the [next lesson](../05-wiring).
+Now LED is lightning not so bright. Feel free to try other values between 0 and
+1 before moving on to the [next lesson](../05-wiring).

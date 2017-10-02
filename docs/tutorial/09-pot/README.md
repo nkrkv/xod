@@ -13,8 +13,8 @@ same tutorial there.
 
 Let’s try some more practice. Now, we will control the LEDs’ brightness with a
 potentiometer. All you need to do is to replace the `constant-number` node from the
-previous lesson with a node for a potentiometer and link its output value, just
-like we did in the previous patch.
+previous lesson with a `pot` node and transfer the brightness value to LED1 and LED2
+from this pot node instead of the `constant-number`.
 
 ![Patch](./patch.png)
 
@@ -31,25 +31,23 @@ The circuit is the same as for the previous lesson.
 
 ## Instructions
 
-(TODO: DEL or Backspace in the project)
-
 1. Delete the links between the pins. To do this, click on a link, then press
    either Delete or Backspace key.
 2. Delete the `constant-number` node. Click on it and press Delete or
    Backspace.
-3. Find the `pot` node in the Project Browser. It is located in
-   `xod/common-hardware`.
-4. Connect the potentiometer to the Arduino according to scheme above.
-5. Define the value of `PORT` according to the potentiometer pin (A0).
-   To refer A0 just use value of 0.
-6. Link the `VAL` pins to the `LUM` pins on the LED1 and LED2 nodes.
+3. Find the `pot` node in the Project Browser inside the `xod/common-hardware`
+   library.
+4. Connect a potentiometer to the Arduino according to the scheme above.
+5. Set the `PORT` pin value on the `pot` node to 0, bacause it’s connected to
+   analog Arduino port A0.
+6. Link the `pot` node `VAL` pin to the `LUM` pins on the LED1 and LED2 nodes.
 7. Upload the patch to the Arduino.
 
 ![Screencast](./screencast.gif)
 
 If you turn the potentiometer knob, it will affect the brightness of the LEDs.
-Depending on the angle of the knob, the `pot` node returns a value
-from 0–1 to the `VAL` pin, and that value is transferred to the `LUM` pins of
-both LED nodes.
+Depending on the angle of the knob, the `pot` node returns a value from 0.0 to
+1.0 to the `VAL` pin, and that value is transferred to the `LUM` pins of both
+LED nodes.
 
 When done continue to the [next lesson](../10-math/).

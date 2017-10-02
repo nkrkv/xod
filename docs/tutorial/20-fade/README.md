@@ -19,17 +19,15 @@ values. There’s a node for that, and it's called `fade`.
 ![Patch](./patch.png)
 
 The `fade` node is in `xod/core`. This node returns a smooth series of
-transitional values, so it will smooth our servo motion.
+transitional values, so it will smoothen our servo motion.
 
 The `TARG` pin waits for a target value.
-
-(TODO: reflect in proj)
 
 The `RATE` pin is a number that defines amount of change for the transitional
 values per each second.
 
 The output pin returns 0 at the start of the program. Then, it starts to move
-toward the `TARG` value by the `RATE` step. The value of the output pin is
+toward the `TARG` value by the `RATE` steps. The value of the output pin is
 saved, so if the `TARG` value changes, the output will start to move to this
 value from the last one returned.
 

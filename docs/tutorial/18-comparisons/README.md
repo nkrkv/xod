@@ -30,23 +30,23 @@ The circuit is the same as for the previous lesson.
 
 1. Link the `VAL` pin of the `analog-input` node to the `LHS` pin on the
    `greater` node.
-2. Set a value of 0.6 on the `RHS` pin. You can still do this in the Inspector.
-   This is the value we will compare the LDR value with.
+2. Set a value of 0.4 on the `RHS` pin. You can still do this in the Inspector.
+   This is the value we will compare the photoresistor value with.
 3. Link the `GT` pin on the `greater` node to the `LUM` pin of the `led` node.
 4. Upload the program.
 
 ![Screencast](./screencast.gif)
 
-Now, if the `analog-input` node (our LDR) returns a value greater than 0.6, the
-`greater` node returns `true`, and the LED will turn on.
+Now, if the `analog-input` node (our photoresistor) returns a value greater
+than 0.4, the `greater` node will set the `GT` pin to `true`, and the LED will
+turn on.
 
-Try to set the comparison value manually using the potentiometer. Tips:
+Try to set the comparison value manually using a potentiometer. Tips:
 
 1. Connect the potentiometer and add another `analog-input` node from
    `xod/core`. Define the `PORT` value for the Arduino port that the
    potentiometer is connected to.
-2. Link the output of this node to the `RHS` pin of the `greater` node. Now the
-   threshold value is not fixed but is defined by the potentiometer.
+2. Link the output of this node to the `RHS` pin of the `greater` node.
 
 Now the threshold value is not fixed but is defined by the potentiometer.
 

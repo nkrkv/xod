@@ -37,10 +37,9 @@ The circuit is the same as for the previous lesson.
 
 Done! Turn the potentiometer knob, and watch the servo turn, too!
 
-The `servo` node is designed to control servos. `PORT` specifies the number of
-the digital port on the Arduino that the servo is connected to.
+The `servo` node is designed to control servos. `PORT` specifies the digital
+port on the Arduino that the servo is connected to.
 
-`VAL` has a value ranging from 0–1; it turns the servo shaft from 0–180
-degrees.
+`VAL` has a value ranging from 0 to 1; it turns the servo shaft from 0 to 180°.
 
 When the fun is over get another portion in the [next lesson](../12-help/).

@@ -9,10 +9,9 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-Before this experiment, we specified the node values manually with the
-Inspector. However, the data can be transferred from the output pin to the
-input pin of every node. This is the core idea of all node-based visual
-programming, including XOD.
+Previously, we specified the node values manually with the Inspector. However,
+the data can be transferred from the output pin of one node to the input pin of
+another node. This is the core idea of XOD programming.
 
 ![Patch](./patch.png)
 
@@ -29,18 +28,18 @@ The circuit is the same as for the previous lesson.
 
 ## Instructions
 
-1. Click on the `constant-number` node, and specify a value for the `VAL`
-   output pin.
+1. Click on the `constant-number` node, and set the value of 1 for the `VAL`
+   output in the Inspector.
 2. Connect the `VAL` pin with the `LUM` pin on the LED1 node. To do this,
    simply click on the `VAL` pin and then on the `LUM` pin. You will then see a
    green line connecting the two pins. This line is called a *link*.
-3. Do the same with the LED2 node.
+3. Make another link between the `VAL` pin and `LUM` pin on the LED2 node.
 4. Upload the patch to the Arduino.
 
 ![Screencast](./screencast.gif)
 
-Now, both LEDs are on. However, the value of the `LUM` pin is transferred from
-the `VAL` pin of the `constant-number` node.
+The both LEDs should be on. Now the values of the `LUM` pins of both `led`
+nodes are taken form the `VAL` pin of the `constant-number` node.
 
 The `constant-number` node transfers data to the `VAL` pin. You can specify the
 data in the Inspector. Try to change values of the constant and upload again.

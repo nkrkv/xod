@@ -44,8 +44,9 @@ inverts the value from the `and` node, so the `LUM` pin receives its `true`
 value (1). Thus, the LED turns on.
 
 Pressing one of the buttons changes nothing. The LED will turn off only when
-the `LUM` pin receives 0 (false). This will happen only if the `not` node
-receives the `true` value, which is possible only if both buttons are pressed.
+the `LUM` pin receives false (0). This will happen only if the `not` node
+receives the true value, which is possible only if both buttons are pressed at
+the same time.
 
 Explore other logic nodes by yourself using node help.
 

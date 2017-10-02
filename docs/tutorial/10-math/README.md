@@ -10,11 +10,11 @@ same tutorial there.
 </div>
 
 You probably noticed that there is a `UPD` input pin on the pot node and that
-it's blue.
+it’s blue.
 
 ![Patch](./patch.png)
 
-The pin’s color indicates the type of data that this pin is compatible with.
+The pin’s color indicates the *type* of data that this pin is compatible with.
 Green pins can take and return numerical values. Blue pins work with pulses, a
 special data type that we will return to later.
 
@@ -37,7 +37,7 @@ The circuit is the same as for the previous lesson.
 ## Instructions
 
 1. Delete the link between the `pot` node and LED2.
-2. Link the `VAL` pin to the `X` pin of the `multiply` node. Then, connect the
+2. Link the pot `VAL` pin to the `X` pin of the `multiply` node. Then, connect the
    `PROD` pin to the `LUM` pin on LED2.
 3. Upload the patch to the Arduino.
 
@@ -45,13 +45,12 @@ The circuit is the same as for the previous lesson.
 
 Turn the potentiometer knob. The LED on port 11 will reach the maximum
 brightness with a half-turn of the knob. This happens because the `multiply` node
-multiplied the values of `X` and `Y` and transferred them to the `PROD` pin. As
-`Y` was set to 2 in the Inspector, the value of the pot node doubles before
+multiplied the values of `X` and `Y`, and transferred them to the `PROD` pin. As
+`Y` was set to 2 in the Inspector, the value of the `pot` node doubles before
 reaching the `LUM` pin of LED2.
 
-In `xod/core`, you will find nodes for any mathematical calculations.
-
-(TODO: add to the project)
+In `xod/core`, you will find nodes for different mathematical and trigonometric
+calculations.
 
 Try other operators like `add`, `subtract`, `divide`. When ready proceed to the
 [next lesson](../11-servo/).

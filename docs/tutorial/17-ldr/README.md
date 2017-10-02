@@ -12,10 +12,10 @@ same tutorial there.
 Now, let's learn how to work with conditionals in XOD.
 
 We will measure something, and if the values exceed or are below the threshold,
-we will turn on the LED.
+we will turn an LED on or off.
 
-A light dependent resistor (LDR for short) would do a great job of measuring
-the light level. However, there is a small problem: we do not have a
+A photoresistor (aka light dependent resistor or LDR) would do a great job of
+measuring the light level. However, there is a small problem: we do not have a
 photoresistor node in XOD.
 
 Yet, we have basic nodes for working with the digital and analog ports of the
@@ -40,6 +40,14 @@ The circuit is the same as for the previous lesson.
 
 1. Assemble the circuit.
 2. Find the `analog-input` node in `xod/core` and add it to the patch.
+   <div class="ui segment">
+   <span class="ui ribbon label">Note</span>
+   <p>You can find any node using the Quick Search feature. Press “I” key or
+   double click anywhere on the patch. Then type what you are looking for.</p>
+   <p>It searches not only in nodes titles, but even in the nodes description,
+   like a small and dumb built-in Google.</p>
+   </div>
+
 3. Read the description of the node on the help page. Pay attention to the
    range of values the node returns.
 4. Link the `VAL` output pin of the `analog-input` node to the `LUM` pin.

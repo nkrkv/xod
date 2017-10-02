@@ -9,33 +9,28 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-So: buttons, here we are!
+So, buttons!
 
-We have already added the `button` node from `xod/common` hardware. As you
-remember, in that library, you can find nodes for working with specific
-hardware.
+We have already added the `button` node from `xod/common` hardware.
 
 ![Patch](./patch.png)
 
 The button node has a purple output pin called the `PRS`. This pin returns a new
-type of data: *Boolean*.
+type of data: *boolean*.
 
-(TODO: conditions → states in the proj)
-
-Boolean data can have only two states: true or false.
+Boolean data can have either of two values: true or false.
 In our case, the `button` node returns a value of `false` when idle and `true`
 while the button is being pressed.
 
-Good news, everyone! In XOD, some types of data are compatible with others.
-Booleans and numbers are just two of them. Here are some basic rules of
-datacasting:
+Good news, in XOD boolean and number data types are compatible. Here are two
+rules of datacasting:
 
-* If you send a boolean (purple) `false` to a numeric (green) input, it will be
-  interpreted as a numeric 0.
-* If you send a boolean `true`, it will be interpreted as a numeric 1.
-* If you send any numeric value except 0 to a boolean (purple) input, it will
-  be interpreted as `true`.
-* And if you send numeric 0, it will be interpreted as boolean `false`.
+* Boolean-to-number: if you send a boolean false to a numeric (green) input, it
+  will be interpreted as a numeric 0; if you send a boolean true, it will be
+  interpreted as a numeric 1.
+* Number-to-boolean: if you send any numeric value except 0 to a boolean
+  (purple) input; it will be interpreted as true, and if you send 0, it will be
+  interpreted as false.
 
 ## Test circuit
 
@@ -56,7 +51,8 @@ The circuit is the same as for the previous lesson.
 
 ![Screencast](./screencast.gif)
 
-Press the button. The `button` node transfers the `true` value, the `led` node
-interprets it as 1, and the LED turns on at full brightness.
+When you press the button the `button` node sets the `PRS` pin to `true`, the
+`led` node (`LUM` pin) interprets it as 1, and the LED turns on at full
+brightness.
 
 Send a WOW morse-signal with the button and go to the [next lesson](../16-logic).

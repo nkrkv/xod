@@ -9,9 +9,9 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-Actually, we were lucky in the previous patch. The range of values from `pot`
-(0–1) matched the range accepted by the servo node. However, that doesn’t
-always happen. Often value ranges on different nodes are incompatible,
+Actually, we were lucky in the previous patch because the range of values from `pot`
+(0–1) matched the range accepted by the `servo` node. However, that doesn’t
+always happen. Often, value ranges on different nodes are incompatible,
 and we need to match them.
 
 ![Patch](./patch.png)
@@ -20,10 +20,10 @@ and we need to match them.
 
 1. Find out the range of the `Tc` output on the thermometer node. To do so,
    click the node, and then click the book icon in the Inspector. You will see
-   the help page. The other way to do it is to click on the node and then press
-   H key.
+   a help page. The other way to do it is to click on the node and then press
+   the H key.
 2. Read the description. Every node description contains information about the
-   input and output ranges and types of data.
+   input and output ranges and the types of data.
 
 ![Screencast](./screencast.gif)
 

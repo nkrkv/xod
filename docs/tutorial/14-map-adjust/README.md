@@ -9,20 +9,13 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-After the previous lesson, the `map-range` node linearly maps the 20–30°C range
-to 0–90 degrees.
+After the previous lesson, the `map-range` node linearly maps the
+20–50°C range to 0–90°.
 
 ![Patch](./patch.png)
 
-However, what will happen if the `X` pin receives data that is outside the input
-range (10 or 42, for example)?
-
-Easy. Anything that is out of range will be rounded to `Smin` or `Smax`. Thus,
-if `X` receives a value of 10, the `map-range` node will accept it as 20, and
-42 will be accepted as 30.
-
-Now, try to make the servo rotate smoothly from 0–180 degrees when the
-temperature changes from 20°C to 27°C.
+Now, try to make the servo rotate smoothly from 0 to 180° when the temperature
+changes from 10°C to 50°C.
 
 ## Test circuit
 
@@ -37,11 +30,11 @@ The circuit is the same as for the previous lesson.
 
 ## Instructions
 
-1. Set the input range (Smin to Smax) to 20–27.
-2. Set the output range (Tmin to Tmax) to 0–1.
+1. Set the input range (`Smin` and `Smax`) to 10–50.
+2. Set the output range (`Tmin` and `Tmax`) to 0–1.
 3. (Optional) If you prefer °F, you can easily translate the data from the
-   thermometer with the `c-to-f` node in `xod/units`. The range will be
-   68–77°F.
+   thermometer with the `c-to-f` node from `xod/units`. The range will be
+   50–122°F.
 4. Upload.
 
 ![Screencast](./screencast.gif)
