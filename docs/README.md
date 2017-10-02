@@ -5,8 +5,8 @@ title: XOD Documentation
 XOD Documentation
 =================
 
-Tutorial
---------
+Tutorials
+---------
 
 * [Installing and Running XOD](./tutorial/install/)
 
