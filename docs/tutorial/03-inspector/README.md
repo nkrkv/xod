@@ -41,9 +41,7 @@ The circuit is the same as for the previous lesson.
 
 1. Click on the `led` node. You will see the Inspector under the list of
    projects. You can set the node parameters in Inspector.
-
 2. In Inspector, change the LUM value from 1 to 0.
-
 3. Upload the program to Arduino. Again, select “Deploy → Upload to Arduino”
    from the menu.
 

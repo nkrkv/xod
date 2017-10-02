@@ -31,7 +31,6 @@ The circuit is the same as for the previous lesson.
 
 1. Set the `LUM` to 0.4. To do this, click on the `led` node and type in the value
    in the Inspector.
-
 2. Upload the patch to Arduino as you did it before.
 
 ![Inspector](./inspector.gif)

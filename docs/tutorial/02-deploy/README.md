@@ -19,12 +19,10 @@ Sweet! Now let's upload your patch with the `led` node to Arduino! Here it is:
 
 [↓ Download as Fritzing project](./circuit.fzz)
 
-## Act
+## Instructions
 
 1. Assemble the circuit according to the picture above.
-
 2. Connect Arduino to your computer.
-
 3. Upload your first program. To do this, select “Deploy → Upload to Arduino”
    from the main menu.
 

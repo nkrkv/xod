@@ -26,13 +26,12 @@ You can see a comment as well. Even though it is there, it does not affect the
 patch, because it is invisible to a machine. It’s only visible to you, a
 clever human. You can drag it to move too.
 
-## Act
+## Instructions
 
 1. On the left side you will find a list with available projects. The list is
    called a *Project Browser*. The first item in it is `welcome-to-xod`. This
    is a special tutorial project you’re working with right now. Expand the
    project by clicking on it.
-
 2. As you can see, the `welcome-to-xod` project consists of many patches. Here
    we are at the patch `01-hello`. Next part of the Tutorial is in the patch
    `02-deploy`.  Double-click it to open the
