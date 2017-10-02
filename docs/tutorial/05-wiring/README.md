@@ -20,11 +20,6 @@ number that you are about to use. You can do this with the `PORT` pin.
 
 ## Test circuit
 
-<div class="ui segment">
-<span class="ui ribbon label">Note</span>
-The circuit is the same as for the previous lesson.
-</div>
-
 ![Circuit](./circuit.fz.png)
 
 [↓ Download as a Fritzing project](./circuit.fzz)

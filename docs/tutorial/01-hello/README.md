@@ -37,7 +37,8 @@ clever human. You can drag it to move too.
    project by clicking on it.
 2. As you can see, the `welcome-to-xod` project consists of many patches. Here
    we are at the patch `01-hello`. Next part of the Tutorial is in the patch
-   `02-deploy`.  Double-click it to open the
-   [next tutorial lesson](../02-deploy/).
+   `02-deploy`.  
 
 ![Open next patch](./open-next-patch.gif)
+
+Double-click it to open the [next tutorial lesson](../02-deploy/).

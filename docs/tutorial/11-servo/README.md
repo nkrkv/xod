@@ -21,7 +21,9 @@ special node called `servo`. You will find it in `xod/common-hardware`.
 
 <div class="ui segment">
 <span class="ui ribbon label">Note</span>
-The circuit is the same as for the previous lesson.
+Although we don’t need the two LEDs used before in this particular lesson you
+can leave them as is on your own breadboard. We’ll use them again in later
+lessons. The same is true for any “disappearing” parts in next chapters.
 </div>
 
 ![Circuit](./circuit.fz.png)

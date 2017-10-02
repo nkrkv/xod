@@ -16,7 +16,7 @@ Sweet! Now let's upload your patch with the `led` node to Arduino! Here it is:
 
 ![Patch](./patch.png)
 
-## Circuit
+## Test circuit
 
 ![Circuit](./circuit.fz.png)
 
