@@ -27,8 +27,6 @@ The circuit is the same as for the previous lesson.
 
 ## Instructions
 
-(TODO: remove word node from (1) item in the project)
-
 1. Connect the servo to the Arduino as shown on the image above.
 2. Link the `VAL` pin of the `pot` node to the `VAL` pin of the servo node.
 3. Upload the patch to the Arduino.

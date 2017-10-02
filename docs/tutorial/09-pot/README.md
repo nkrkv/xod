@@ -9,8 +9,6 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-(TODO: transfer → link in the project)
-
 Let’s try some more practice. Now, we will control the LEDs’ brightness with a
 potentiometer. All you need to do is to replace the `constant-number` node from the
 previous lesson with a `pot` node and transfer the brightness value to LED1 and LED2

@@ -15,8 +15,6 @@ in `xod/core`.
 
 ![Patch](./patch.png)
 
-(TODO: clarify in the proj)
-
 * `and` returns `true` if both A *and* B are `true`
 * `or` returns `true` if A, B, or both are `true`
 * `not` inverts the input value
