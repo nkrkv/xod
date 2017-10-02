@@ -17,7 +17,7 @@ Sweet! Now let's upload your patch with the `led` node to Arduino! Here it is:
 
 ![Circuit](./circuit.fz.png)
 
-[↓ Download as Fritzing project](./circuit.fzz)
+[↓ Download as a Fritzing project](./circuit.fzz)
 
 ## Instructions
 

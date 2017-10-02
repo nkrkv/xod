@@ -25,7 +25,7 @@ The circuit is the same as for the previous lesson.
 
 ![Circuit](./circuit.fz.png)
 
-[↓ Download as Fritzing project](./circuit.fzz)
+[↓ Download as a Fritzing project](./circuit.fzz)
 
 ## Instructions
 
