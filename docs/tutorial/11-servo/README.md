@@ -4,7 +4,7 @@ title: Controlling Servos
 
 # #11. Controlling Servos
 
-<div class="ui segment">
+<div class="ui segment note">
 <span class="ui ribbon label">Note</span>
 This is a web-version of a tutorial chapter embedded right into the XOD IDE.
 To get a better learning experience we recommend to
@@ -19,7 +19,7 @@ special node called `servo`. You will find it in `xod/common-hardware`.
 
 ## Test circuit
 
-<div class="ui segment">
+<div class="ui segment note">
 <span class="ui ribbon label">Note</span>
 Although we don’t need the two LEDs used before in this particular lesson you
 can leave them as is on your own breadboard. We’ll use them again in later

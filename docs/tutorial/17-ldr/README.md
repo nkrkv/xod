@@ -4,7 +4,7 @@ title: Reading lightness
 
 # #05. Reading lightness
 
-<div class="ui segment">
+<div class="ui segment note">
 <span class="ui ribbon label">Note</span>
 This is a web-version of a tutorial chapter embedded right into the XOD IDE.
 To get a better learning experience we recommend to
@@ -38,7 +38,7 @@ read its value from the analog port on the Arduino. To do so, we will use an
 
 1. Assemble the circuit.
 2. Find the `analog-input` node in `xod/core` and add it to the patch.
-   <div class="ui segment">
+   <div class="ui segment note">
    <span class="ui ribbon label">Note</span>
    <p>You can find any node using the Quick Search feature. Press “I” key or
    double click anywhere on the patch. Then type what you are looking for.</p>

@@ -4,7 +4,7 @@ title: Comparing Numbers
 
 # #18. Comparing Numbers
 
-<div class="ui segment">
+<div class="ui segment note">
 <span class="ui ribbon label">Note</span>
 This is a web-version of a tutorial chapter embedded right into the XOD IDE.
 To get a better learning experience we recommend to
@@ -19,7 +19,7 @@ mathematical comparisons.
 
 ## Test circuit
 
-<div class="ui segment">
+<div class="ui segment note">
 <span class="ui ribbon label">Note</span>
 The circuit is the same as for the previous lesson.
 </div>

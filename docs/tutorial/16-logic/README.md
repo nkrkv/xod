@@ -4,7 +4,7 @@ title: Logic Nodes
 
 # #16. Logic Nodes
 
-<div class="ui segment">
+<div class="ui segment note">
 <span class="ui ribbon label">Note</span>
 This is a web-version of a tutorial chapter embedded right into the XOD IDE.
 To get a better learning experience we recommend to

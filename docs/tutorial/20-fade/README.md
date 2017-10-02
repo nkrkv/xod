@@ -4,7 +4,7 @@ title: Smoother Changes
 
 # #20. Smoother Changes
 
-<div class="ui segment">
+<div class="ui segment note">
 <span class="ui ribbon label">Note</span>
 This is a web-version of a tutorial chapter embedded right into the XOD IDE.
 To get a better learning experience we recommend to
@@ -36,7 +36,7 @@ value from the last one returned.
 
 ## Test circuit
 
-<div class="ui segment">
+<div class="ui segment note">
 <span class="ui ribbon label">Note</span>
 The circuit is the same as for the previous lesson.
 </div>
@@ -54,8 +54,8 @@ The circuit is the same as for the previous lesson.
 
 Now, the servo will turn at a speed of 18° per second (0.1 = 18°).
 
-<div class="ui segment">
-<span class="ui ribbon label">The end</span>
+<div class="ui segment note">
+<span class="ui ribbon label">The<br/>End</span>
 <p>
 Congratulations! You’ve completed the crash-course tutorial. Now you are
 officially a Xoder. Welcome on board!

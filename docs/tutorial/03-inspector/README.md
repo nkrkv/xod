@@ -4,7 +4,7 @@ title: Pins, data, and the Inspector
 
 # #03. Pins, data, and the Inspector
 
-<div class="ui segment">
+<div class="ui segment note">
 <span class="ui ribbon label">Note</span>
 This is a web-version of a tutorial chapter embedded right into the XOD IDE.
 To get a better learning experience we recommend to
@@ -31,7 +31,7 @@ port to the port on Arduino. Number of Arduino port is defined by `PORT` value.
 
 ## Test circuit
 
-<div class="ui segment">
+<div class="ui segment note">
 <span class="ui ribbon label">Note</span>
 The circuit is the same as for the previous lesson.
 </div>
