@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "Actually, we were lucky in the previous patch because the range of values from pot (0–1) matched the range accepted by the servo node. However, that doesn't always happen. Very often, value ranges on different nodes are incompatible, and we need to match them.\n\nInstructions:\n1. Find out the range of the Tc output pin on the thermometer node. To do so, click the node, and then click the book icon in the Inspector. You will see the help page. The other way to do it is to click on the node and then press \"H\".\n\n2. Read the description. Every node's description contains full information about the node including the input and output ranges and the types of data.\n\nNow you can figure out the node range by yourself; you just need to read the help page. Proceed to the next patch.",
+      "content": "Actually, we were lucky in the previous patch because the range of values from `pot` (0–1) matched the range accepted by the `servo` node. However, that doesn’t always happen. Often, value ranges on different nodes are incompatible, and we need to match them.\n\n## Instructions\n\n1. Find out the range of the `Tc` output pin on the thermometer node. To do so, click the node, and then click the book icon in the Inspector. You will see a help page. The other way to do it is to click on the node and then press the H key.\n\n2. Read the description. Every node’s description contains full information about the node including the input and output ranges and the types of data.\n\nNow you can figure out the node range by yourself; you just need to read the help page. Proceed to the next patch.",
       "id": "B1bloO6YZ",
       "position": {
         "x": -68,
@@ -13,10 +13,10 @@
       }
     },
     {
-      "content": "This node allows one to read data from thermometers (TMP36 chips).\nPORT — the number of analog Arduino port thermometer are connected.\nTc — temperature value.",
+      "content": "This node allows one to read data from TMP36 thermometers.\n`PORT` — an analog Arduino port the thermometer is connected to.\n`Tc` — the temperature value.",
       "id": "H13O5OpYb",
       "position": {
-        "x": 340,
+        "x": 374,
         "y": 0
       },
       "size": {

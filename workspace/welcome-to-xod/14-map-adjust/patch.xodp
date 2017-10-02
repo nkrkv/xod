@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "The map-range node will now linearly map the 20–30°C range from 0 to 90 degrees.\n\nNow, try to make the servo rotate smoothly from 0 to 180° when the temperature changes from 20°C to 27°C.\n\nInstructions:\n1. Set the input range (Smin to Smax) to 20–27.\n\n2. Set the output range (Tmin to Tmax) to 0–1.\n\n3. (Optional) If you prefer °F, you can easily translate the data from the thermometer with the \"c-to-f\" node in xod/units. The range will be 68–77°F.\n\nNow the servo is more sensitive to the changes of the temperature sensor.\n\nYou will use the map-range node quite often. It is located in xod/core.",
+      "content": "The `map-range` node will now linearly map the 20–50°C range to 0–90°.\n\nNow, try to make the servo rotate smoothly from 0 to 180° when the temperature changes from 10°C to 50°C.\n\n## Instructions\n\n1. Set the input range (`Smin` and `Smax`) to 10–50.\n\n2. Set the output range (`Tmin` and `Tmax`) to 0–1.\n\n3. (Optional) If you prefer °F, you can easily translate the data from the thermometer with the `c-to-f` node from `xod/units`. The range will be 50–122°F.\n\n4. Upload.\n\nNow the servo is more sensitive to the changes of the temperature sensor.\n\nYou will use the `map-range` node quite often. It is located in `xod/core`.",
       "id": "r1WPI5CKb",
       "position": {
         "x": -68,

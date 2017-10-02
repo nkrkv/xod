@@ -1,14 +1,26 @@
 {
   "comments": [
     {
-      "content": "Boolean values are cool. You can use them to construct complex logic systems. In XOD, you will find a lot of nodes for this purpose. All of them are located in xod/core.\n\nand: returns “true” if A and B are true.\nor: returns “true” if A or B is true.\nnot: inverts the input value.\nExplore other logic nodes by yourself using node help (click to the node and press \"H\")\n\nInstructions:\n1. Assemble the scheme with two buttons and a LED https://goo.gl/ts9EdE.\n\n2. Upload the patch to the Arduino.\n\nThe and node returns “false” until both buttons are pressed. The not node inverts the value from the and node, so the LUM pin receives its true value (1). Thus, the LED turns on.\n\nPressing one of the buttons changes nothing. The LED will turn off only when the LUM pin receives 0 (false). This will happen only if the not node receives the true value, which is possible only if both buttons are pressed.",
+      "content": "* `and`: returns `true` if both `A` *and* `B` are `true`.\n* `or`: returns `true` if A, B, or both are `true`.\n* `not` inverts the input value.\n\nExplore other logic nodes by yourself using node help (click a node and press H key).",
+      "id": "H1I643knZ",
+      "position": {
+        "x": 612,
+        "y": 204
+      },
+      "size": {
+        "height": 153,
+        "width": 442
+      }
+    },
+    {
+      "content": "Boolean values are cool. You can use them to construct complex logic systems. In XOD, you will find a lot of nodes for this purpose. All of them are located in `xod/core`.\n\n## Instructions\n\n1. Assemble a circuit with two buttons and a LED as shown at https://goo.gl/ts9EdE\n\n2. Upload the patch to the Arduino.\n\nThe `and` node returns `false` until both buttons are pressed. The not node inverts the value from the `and` node, so the `LUM` pin receives its true value (1). Thus, the LED turns on.\n\nPressing one of the buttons changes nothing. The LED will turn off only when the `LUM` pin receives false (0). This will happen only if the `not` node receives the true value, which is possible only if both buttons are pressed at the same time.",
       "id": "H1YyvTRt-",
       "position": {
         "x": -34,
         "y": 0
       },
       "size": {
-        "height": 561,
+        "height": 459,
         "width": 306
       }
     }

@@ -1,10 +1,10 @@
 {
   "comments": [
     {
-      "content": "LHS and RHS are the input pins for the numeric values to be compared.\nLT returns “true” if LHS < RHS and “false” otherwise.",
+      "content": "`LHS` and `RHS` are the input for the values to compare\n`LT` returns `true` if LHS < RHS and `false` otherwise.",
       "id": "B1XVTkyc-",
       "position": {
-        "x": 340,
+        "x": 374,
         "y": 306
       },
       "size": {
@@ -13,19 +13,19 @@
       }
     },
     {
-      "content": "LHS and RHS are input pins for numeric values for comparison.\nGT returns “true” if LHS > RHS and “false” otherwise.",
+      "content": "`LHS` and `RHS` are input pins for numeric values to compare\n`GT` returns `true` if LHS > RHS and `false` otherwise.",
       "id": "BJBXpkJq-",
       "position": {
-        "x": 340,
+        "x": 374,
         "y": 102
       },
       "size": {
         "height": 51,
-        "width": 442
+        "width": 476
       }
     },
     {
-      "content": "Now for comparisons. XOD has greater-than and less-than nodes to do simple mathematical comparisons.\n\nInstructions:\n1. Link the VAL pin of the analog-input node to the LHS pin on the greater-than node.\n\n2. Set a value of 0.4 on the RHS pin. You can still do this in the Inspector. This is the value we will compare the photoresistor value with.\n\n3. Link the GT pin on the greater-than node to the LUM pin of the led node.\n\nNow, if the analog-input node (photoresistor) returns a value greater than 0.4, the greater-than node sets GT pin to “true,” and the LED will turn on.\n\nTry to set the comparison value manually using the potentiometer.\n\nTips:\n1. Connect the potentiometer and add another analog-input node from xod/core. Define the PORT value for the Arduino port that the potentiometer is connected to.\n\n2. Link the output of this node to the RHS pin of the greater-than node.\n\nNow the threshold value is not fixed but is defined by the potentiometer.",
+      "content": "Now for comparisons. XOD has `greater`-than and `less`-than nodes to do simple mathematical comparisons.\n\n## Instructions\n\n1. Link the `VAL` pin of the `analog-input` node to the `LHS` pin on the `greater` node.\n\n2. Set a value of 0.4 on the `RHS` pin. You can still do this in the Inspector. This is the value we will compare the photoresistor value with.\n\n3. Link the `GT` pin on the `greater` node to the `LUM` pin of the `led` node.\n\nNow, if the `analog-input` node (our photoresistor) returns a value greater than 0.4, the `greater` node will set the `GT` pin to “true,” and the LED will turn on.\n\nTry to set the comparison value manually using a potentiometer. Tips:\n1. Connect the potentiometer and add another `analog-input` node from `xod/core`. Define the `PORT` value for the Arduino port that the potentiometer is connected to.\n\n2. Link the output of this node to the `RHS` pin of the `greater` node.\n\nNow the threshold value is not fixed but is defined by the potentiometer.",
       "id": "H1dIB11c-",
       "position": {
         "x": -68,
