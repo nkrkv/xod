@@ -27,25 +27,25 @@
   ],
   "links": [
     {
-      "id": "B1-MUw4FW",
-      "input": {
-        "nodeId": "r1V3SDEtW",
-        "pinKey": "HyYh1a3LZ"
-      },
-      "output": {
-        "nodeId": "r1_oSw4FZ",
-        "pinKey": "SyBtREhlW"
-      }
-    },
-    {
-      "id": "HJAxXj9ib",
+      "id": "S1_ZaA13Z",
       "input": {
         "nodeId": "SJihHwNKb",
         "pinKey": "HyYh1a3LZ"
       },
       "output": {
-        "nodeId": "r1_oSw4FZ",
-        "pinKey": "SyBtREhlW"
+        "nodeId": "SyclTC1hb",
+        "pinKey": "H1sM2A12-"
+      }
+    },
+    {
+      "id": "rkrZaAkn-",
+      "input": {
+        "nodeId": "r1V3SDEtW",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "SyclTC1hb",
+        "pinKey": "H1sM2A12-"
       }
     }
   ],
@@ -61,6 +61,14 @@
         "y": 204
       },
       "type": "xod/common-hardware/led"
+    },
+    {
+      "id": "SyclTC1hb",
+      "position": {
+        "x": 306,
+        "y": 0
+      },
+      "type": "xod/common-hardware/pot"
     },
     {
       "boundValues": {
@@ -84,15 +92,6 @@
         "y": 204
       },
       "type": "xod/common-hardware/led"
-    },
-    {
-      "id": "r1_oSw4FZ",
-      "label": "Pot",
-      "position": {
-        "x": 306,
-        "y": 0
-      },
-      "type": "xod/core/analog-input"
     }
   ]
 }

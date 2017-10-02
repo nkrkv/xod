@@ -38,13 +38,12 @@
       "type": "xod/common-hardware/servo"
     },
     {
-      "id": "rJj6LvVY-",
-      "label": "Pot",
+      "id": "rk_tTCk2Z",
       "position": {
         "x": 306,
         "y": 0
       },
-      "type": "xod/core/analog-input"
+      "type": "xod/common-hardware/pot"
     }
   ]
 }
