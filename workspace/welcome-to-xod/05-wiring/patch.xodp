@@ -1,0 +1,42 @@
+{
+  "comments": [
+    {
+      "content": "PORT — assigns the number of Arduino's digital port to be used.\nLUM - controls the brightness (value is between 0 and 1).",
+      "id": "BJ7AzfhK-",
+      "position": {
+        "x": 374,
+        "y": 204
+      },
+      "size": {
+        "height": 51,
+        "width": 476
+      }
+    },
+    {
+      "content": "Now you know what LUM pin does.\nBut LED could be connected to any digital port on Arduino. So you need to inform the node about the port number that you are about to use. You can do it with PORT pin.\n\nInstructions:\n1. Reconnect the LED to digital port 10 on Arduino (scheme: https://goo.gl/RwQRvD).\n\n2. Change the PORT pin value to 10 and LUM pin to 1.\n\n3. Upload your patch to Arduino.\n\nThe LED should turn on at Arduino's port 10.\n",
+      "id": "rkZofM3KW",
+      "position": {
+        "x": -34,
+        "y": 0
+      },
+      "size": {
+        "height": 357,
+        "width": 306
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "B1oqkTnIb": 11,
+        "HyYh1a3LZ": 0.4
+      },
+      "id": "B1I7-DEYW",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}

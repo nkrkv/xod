@@ -1,0 +1,77 @@
+{
+  "comments": [
+    {
+      "content": "The map-range node will now linearly map the 20–30°C range from 0 to 90 degrees.\n\nNow, try to make the servo rotate smoothly from 0 to 180° when the temperature changes from 20°C to 27°C.\n\nInstructions:\n1. Set the input range (Smin to Smax) to 20–27.\n\n2. Set the output range (Tmin to Tmax) to 0–1.\n\n3. (Optional) If you prefer °F, you can easily translate the data from the thermometer with the \"c-to-f\" node in xod/units. The range will be 68–77°F.\n\nNow the servo is more sensitive to the changes of the temperature sensor.\n\nYou will use the map-range node quite often. It is located in xod/core.",
+      "id": "r1WPI5CKb",
+      "position": {
+        "x": -68,
+        "y": 0
+      },
+      "size": {
+        "height": 459,
+        "width": 306
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BkFSFD4t-",
+      "input": {
+        "nodeId": "BJrNFP4tZ",
+        "pinKey": "r1sfQ_6fb"
+      },
+      "output": {
+        "nodeId": "rkK7FPNFb",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    },
+    {
+      "id": "HkvHKDNKW",
+      "input": {
+        "nodeId": "rkK7FPNFb",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "B1WVFPEtZ",
+        "pinKey": "rkFgMITM-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "H1s0WI6MZ": 1
+      },
+      "id": "B1WVFPEtZ",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/common-hardware/thermometer-tmp36"
+    },
+    {
+      "boundValues": {
+        "S1vGmu6Gb": 9
+      },
+      "id": "BJrNFP4tZ",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "type": "xod/common-hardware/servo"
+    },
+    {
+      "boundValues": {
+        "HJCWLAdSwyW": 30,
+        "rkpbU0OrwyZ": 180,
+        "ry1z8CuBDy-": 20
+      },
+      "id": "rkK7FPNFb",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "xod/core/map-range"
+    }
+  ]
+}

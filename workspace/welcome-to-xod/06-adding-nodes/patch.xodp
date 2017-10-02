@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "content": "Now let's turn on two LEDs together! You will need another led node.\n\nInstructions:\n1. Assemble the scheme according to picture (https://goo.gl/Ch43rm).\n\n2. In the node list (below the \"welcome-to-xod\") you will find \"xod/common-hardware\" section. This is the section where you can find nodes to work with specific hardware.\n\n3. Find the led node. Note that nodes are arranged in alphabetical order.\n\n4. Hover the cursor over that node and press \"+\" symbol to add it to workspace (patch).\n\n5. Drag this node to any slot. \n\n6. Now assign the new values for PORT and LUM pins to turn on second LED.\n\n7. Upload the patch to Arduino.\n\nBoth LEDs should turn on now.\n",
+      "id": "SJwr3fhFb",
+      "position": {
+        "x": -34,
+        "y": 0
+      },
+      "size": {
+        "height": 459,
+        "width": 306
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "B1oqkTnIb": 10,
+        "HyYh1a3LZ": 1
+      },
+      "id": "Hkg_WP4Kb",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}
