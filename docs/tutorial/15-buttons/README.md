@@ -12,9 +12,9 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-So, buttons!
-
-We have already added the `button` node from `xod/common` hardware.
+So, buttons! They could be read with a `button` node from `xod/common`
+hardware. The node makes all the work related to signal debouncing so that
+you have not to bother about it.
 
 ![Patch](./patch.png)
 
@@ -41,16 +41,19 @@ rules of datacasting:
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
+## How-to
 
-1. Assemble the circuit.
-2. Link the `PRS` pin to the `LUM` pin.
-3. Upload your patch.
+Let’s bind a button with the LED.
+
+1. Add a `xod/common-hardware/button` node.
+2. Set the `PORT` value.
+3. Link the `PRS` button output to the destination pin (`LUM` of the `led` in
+   our example).
 
 ![Screencast](./screencast.gif)
 
-When you press the button the `button` node sets the `PRS` pin to `true`, the
-`led` node (`LUM` pin) interprets it as 1, and the LED turns on at full
+Now, when you press the button the `button` node sets the `PRS` pin to `true`,
+the `led` node (`LUM` pin) interprets it as 1, and the LED turns on at full
 brightness.
 
-Send a WOW morse-signal with the button and go to the [next lesson](../16-logic).
+[Next lesson →](../16-logic)
