@@ -12,10 +12,10 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-Let’s introduce a new sensor to measure ambient light level.  A photoresistor
-(aka light dependent resistor or LDR) would do a great job of measuring the
-parameter. However, there is a small problem: we do not have a photoresistor
-node in XOD.
+Let’s introduce a new sensor to measure an ambient light level.  A
+photoresistor (aka light dependent resistor or LDR) would do a great job of
+measuring the parameter. However, there is a small problem: we do not have a
+photoresistor node in XOD.
 
 Yet, we have basic nodes for working with the digital and analog ports of the
 Arduino. A photoresistor is a pretty primitive device, and all we need to do is

@@ -22,8 +22,8 @@ a servo angle will fall outside the desired range too.
 
 For such cases there is a sibling node called `map-clip-range`. It works the
 same way, but any input that is out of range will be rounded to `Smin` or
-`Smax`.  Thus, if `X` receives a value of 10, the map-range node will accept it
-as 15, and 42 will be accepted as 30.
+`Smax`.  Thus, if `X` receives a value of 10, the `map-clip-range` node will
+accept it as 15, and 42 will be accepted as 30.
 
 ![Patch](./patch.png)
 
