@@ -42,9 +42,9 @@ The circuit is the same as for the previous lesson.
 
 ## How-to
 
-1. Add a new `multiply` node to the patch.
+1. Add a new `multiply` or another math node to the patch.
 2. Link its `X` input to the first value provider.
-3. Set the `Y` input value with the Inspector.
+3. Set the `Y` input value with the Inspector or link it to an output too.
 
 ![Screencast](./screencast.gif)
 

@@ -12,25 +12,21 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-Actually, we were lucky in the previous patch because the range of values from `pot`
-(0–1) matched the range accepted by the `servo` node. However, that doesn’t
-always happen. Often, value ranges on different nodes are incompatible,
-and we need to match them.
+There are many nodes in XOD. You can figure out which node does what by
+yourself; you just need to read the help page. There you would also
+details about pin value ranges.
 
-![Patch](./patch.png)
+![The helpbar](./helpbar.png)
 
-## Instructions
+## How-to
 
-1. Find out the range of the `Tc` output on the thermometer node. To do so,
-   click the node, and then click the book icon in the Inspector. You will see
-   a help page. The other way to do it is to click on the node and then press
-   the H key.
-2. Read the description. Every node description contains information about the
-   input and output ranges and the types of data.
+There are several ways to access a node help page.
+
+* Select a node you’re interested in. Open the Helpbar either by clicking main
+  menu item “View → Toggle Helpbar” or pressing the “H” key.
+* Click the book icon in the Inspector or Project Browser to open the same
+  help article in a web browser.
 
 ![Screencast](./screencast.gif)
 
-Now you can figure out the node range by yourself; you just need to read the help page.
-
-Read help articles on few other nodes you wish and proceed to the [next
-lesson](../13-map/).
+[Next lesson →](../13-map/)

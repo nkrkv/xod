@@ -12,18 +12,30 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-If you have finished the previous experiment, you will have noticed that the
-thermometer node returns an output temperature value to the `Tc` pin in degrees
-Celsius. The `servo` node can work only with values ranging from 0 to 1 (0 is
-0°, 1 is 180°).
+If you have read the documentation page of the thermometer node, you will have
+noticed that it provides an output temperature value to the `Tc` pin in degrees
+Celsius. If we’re going to show the temperature with an arrow driven by a servo,
+we’re in trouble. The `servo` node can work only with values ranging from 0 to
+1 (0 is 0°, 1 is 180°).
 
 The practical task is to make the servo rotate smoothly from 0 to 90°,
 reflecting a temperature change from 20°C to 50°C.
 
-You can actually do this using few math nodes, but we have a special node for
+You can actually do this using few math nodes, but XOD has a special node for
 such cases. This node is called the `map-range` node.
 
 ![Patch](./patch.png)
+
+The node has pins:
+
+* `X` — the input value that needs to be transformed;
+* `Smin` — the lower bound of the input range;
+* `Smax` — the upper bound of the input range;
+* `Tmin` — the lower bound of the transformed value;
+* `Tmax` — the upper bound of the transformed value;
+* `Xm` — the mapped (transformed) value.
+
+Setting them properly would map an input from one range to an output in another.
 
 ## Test circuit
 
@@ -36,21 +48,18 @@ The circuit is the same as for the previous lesson.
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
+## How-to
 
-1. Connect a TMP36 thermometer to the Arduino as shown above.
-2. Link the `Tc` pin to the `X` pin on the `map-range` node.
-3. Define the input range. In our case, it will be numbers from 20 to 50. Open the
-   Inspector for the `map-range`, and then set `Smin` to 20 and `Smax` to 50.
-4. Define the output range: set the `Tmin` to 0 and `Tmax` to 0.5.
-5. Link the `Xm` output to the `VAL` servo input.
-6. Upload to the Arduino.
+1. Add the `xod/core/map-range` node to your patch.
+2. Link the `X` input to a value to be mapped.
+3. Set input (source) range bounds with `Smin` and `Smax` (e.g. 20 and 50).
+4. Set output (target) range bounds with `Tmin` and `Tmax` (e.g. 0 and 0.5).
+5. Use `Xm` as the resulting value in the new range.
 
 ![Screencast](./screencast.gif)
 
-Try to heat the thermometer with a cup of coffee or lightfire. At a temperature
-of 35°C (half the input range), the servo should rotate to 45°, which is half
-the output range.
+If you followed the example try to heat the thermometer with a hot object (i.e.
+a paper knife heated with a lighfire). At a temperature of 35°C (half the input
+range), the servo should rotate to 45°, which is half the output range.
 
-We’ll do more practice with the `map-range` in the [next
-lesson](../14-map-adjust/).
+[Next lesson →](../14-map-adjust/)

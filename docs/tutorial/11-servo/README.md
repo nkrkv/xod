@@ -15,6 +15,10 @@ same tutorial there.
 Controlling servos in XOD is just as easy as controlling LEDs. There is a
 special node called `servo`. You will find it in `xod/common-hardware`.
 
+Its `PORT` pin specifies the digital port on the Arduino that the servo is
+connected to. The pin `VAL` accepts values ranging from 0 to 1; it turns the
+servo shaft from 0 to 180°.
+
 ![Patch](./patch.png)
 
 ## Test circuit
@@ -30,19 +34,14 @@ lessons. The same is true for any “disappearing” parts in next chapters.
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
+## How-to
 
-1. Connect the servo to the Arduino as shown on the image above.
-2. Link the `VAL` pin of the `pot` node to the `VAL` pin of the servo node.
-3. Upload the patch to the Arduino.
+1. Add a `servo` node to the patch
+2. Set its `PORT` pin value
+3. Link the `VAL` input to an output which provides value in range 0–1.
 
 ![Screencast](./screencast.gif)
 
-Done! Turn the potentiometer knob, and watch the servo turn, too!
+Turn the potentiometer knob, and watch the servo turn, too!
 
-The `servo` node is designed to control servos. `PORT` specifies the digital
-port on the Arduino that the servo is connected to.
-
-`VAL` has a value ranging from 0 to 1; it turns the servo shaft from 0 to 180°.
-
-When the fun is over get another portion in the [next lesson](../12-help/).
+[Next lesson →](../12-help/)
