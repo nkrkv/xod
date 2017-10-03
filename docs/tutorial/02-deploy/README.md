@@ -44,8 +44,8 @@ do this.
    “Deploy → Show Code for Arduino”. Select all code and copy it to the
    clipboard.
 3. Launch Arduino IDE and paste the code copied as is.
-4. Select proper port and board in the “Tools” menu.
-5. Click the “Upload” board on the Toolbar.
+4. Select a proper port and board in the “Tools” menu.
+5. Click the “Upload” button on the toolbar.
 
 <div class="ui segment note">
 <span class="ui ribbon label">Note</span>

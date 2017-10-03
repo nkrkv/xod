@@ -12,12 +12,11 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-The LUM pin on led node can take values from 0 to 1. 0 means absolute minimum
-of LED brightness. Basically, it means that LED is off. 1 means full
-brightness. You can control LED brightness by setting fractional values on
-`LUM` pin.
-
-![Patch](./patch.png)
+XOD uses fractional numbers (also known as floats) extensively. For example,
+the `LUM` pin on the `led` node can take values from 0 to 1.
+0 means absolute minimum of LED brightness. Basically, it means that LED is
+off. 1 means full brightness. You can control LED brightness by setting
+fractional values on `LUM` pin.
 
 ## Test circuit
 
@@ -30,13 +29,15 @@ The circuit is the same as for the previous lesson.
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
+## How-to
 
-1. Set the `LUM` to 0.4. To do this, click on the `led` node and type in the value
-   in the Inspector.
-2. Upload the patch to Arduino as you did it before.
+Use Inspector to enter a value with floating point. The following notations
+are supported:
+
+* 0.4
+* .4 (same as 0.4)
+* 4e-6 (scientific, 4×10<sup>-6</sup> = 0.000004)
 
 ![Inspector](./inspector.gif)
 
-Now LED is lightning not so bright. Feel free to try other values between 0 and
-1 before moving on to the [next lesson](../05-wiring).
+[Next lesson →](../05-wiring)

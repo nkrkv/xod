@@ -12,11 +12,19 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-Now you know what the `LUM` pin does. However, an LED could be connected to any
-digital port on an Arduino, so you need to inform the node of the port
-number that you are about to use. You can do this with the `PORT` pin.
+Devices are physically connected to digital or analog ports on the Arduino.
+To associate them with nodes, you need to inform the node of the port
+number that you are about to use.
 
-![Patch](./patch.png)
+By a convention the leftmost pins are used to define the wiring information.
+If the device is simple and communicates with the Arduino via a single hardware
+port the corresponding XOD pin is called a `PORT`.
+
+Note, that many devices require some specific hardware capabilities from the
+port they are connected to. Notably, to smoothly control a parameter (like
+LED’s brightness) the port should support PWM (pulse width modulation).
+PWM-enabled ports have a tilde (~) symbol printed next to their numbers on
+Arduino boards.
 
 ## Test circuit
 
@@ -24,19 +32,10 @@ number that you are about to use. You can do this with the `PORT` pin.
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
+## How-to
 
-1. Reconnect the LED to digital port 10 on the Arduino according to the scheme
-   above.
-2. Change the `PORT` value to 10 and the `LUM` value to 1.
-3. Upload your patch to the Arduino.
+You can set port values exactly the same way as you do with other pins.
 
 ![Screencast](./screencast.gif)
 
-The LED should turn on at the Arduino’s port 10.
-
-`PORT` (the input) assigns the number of the Arduino’s digital port to be used
-by this node, and `LUM` (whose value is between 0 and 1) controls the
-brightness.
-
-When done, follow to the [next lesson](../06-adding-nodes/).
+[Next lesson →](../06-adding-nodes/)

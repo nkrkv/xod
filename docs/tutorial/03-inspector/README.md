@@ -12,22 +12,27 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-The LED is on because of the `led` node. Node is a visual representation of some
-physical device (like ports on Arduino) or some function (adding, subtracting
-and more complicated stuff).
+A node is a visual representation of some physical device (like ports on
+Arduino) or some function (adding, subtracting and more complicated stuff).
+
+The `led` is a simple LED controlling node. It can control only a one-colored
+LED. The node has only input pins — `PORT` and `LUM`.
 
 ![Patch](./patch.png)
+
+## Pins
 
 Small colored circles on nodes are called *pins*. Pins are divided into inputs
 and outputs. Inputs are always on the top side of nodes, outputs — on the
 bottom.
 
-The `led` is a simple LED controlling node. It can control only a one-colored
-LED. The node has only input pins — `PORT` and `LUM`.
-
 Pins are used to transfer data between nodes. Nodes can read and write that
-data and produce a result. In our case, node transfers the fixed value on `LUM`
-port to the port on Arduino. Number of Arduino port is defined by `PORT` value.
+data and produce a result. In our example, the node transfers the fixed value
+of `LUM` pin to the port on an Arduino board. The number of Arduino port is
+defined by the `PORT` value.
+
+You can change values of pins with a sidebar called *Inspector*. You will see
+the Inspector under the list of projects.
 
 ## Test circuit
 
@@ -40,18 +45,13 @@ The circuit is the same as for the previous lesson.
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
+## How-to
 
-1. Click on the `led` node. You will see the Inspector under the list of
-   projects. You can set the node parameters in Inspector.
-2. In Inspector, change the LUM value from 1 to 0.
-3. Upload the program to Arduino. Again, select “Deploy → Upload to Arduino”
-   from the menu.
-
-After uploading the program, the LED on your board should turn off. It happened
-because led node sen the value of 0 to certain (defined in `PORT`) port on
-Arduino  – which means to stop voltage supply on that port.
+1. Click on a node for which you want to change pin values. In our example, the
+   `led` node. It will make the node selected.
+2. In the Inspector, change the values you desire.
+3. Upload the patch again to apply the changes.
 
 ![Inspector](./inspector.gif)
 
-When done, follow up to the [next lesson](../04-pwm).
+[Next lesson →](../04-pwm)

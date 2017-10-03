@@ -12,7 +12,8 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-Now, let’s turn on two LEDs together! You will need another `led` node.
+There are several ways you can add a new node to the patch in XOD. The
+effect is the same, use one that is more handy for a given situation.
 
 ![Patch](./patch.png)
 
@@ -22,24 +23,25 @@ Now, let’s turn on two LEDs together! You will need another `led` node.
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
+## How-to
 
-1. Assemble the circuit according to the picture above.
-2. In the node list (below the `welcome-to-xod` project), you will find the
-   `xod/common-hardware` section. This is a *library* where you can find nodes
-   for working with specific hardware.
-3. Find the `led` node. Note that the nodes are arranged in alphabetical order.
-4. Hover the cursor over the `led` node, and click the plus (+) symbol to add
-   it to the patch.
-5. Drag this node to any slot.
-6. Now, assign the new values for the `PORT` and `LUM` pins to turn on the
-   second LED.
-7. Upload the patch to the Arduino.
+For instance, let’s add few new `led` nodes.
+
+One way is using the Project Browser. In the node list, you will find the
+`xod/common-hardware` section. This is a *library* where you can find nodes
+for working with specific hardware. Find the `led` node there. Note that the
+nodes are arranged in alphabetical order. Hover the cursor over the `led` node,
+and click the plus <i class="fitted add circle icon"></i> symbol to add it to the
+patch. Then drag it to any slot.
+
+Alternatively, you may drag the node from the Project Browser instead of clicking
+the  <i class="fitted add circle icon"></i> button.
+
+Yet another way to add a node is the Quick Search feature. Press “I” key or
+double click anywhere on the patch. Then type what you are looking for.
+It searches not only in nodes titles, but even in the nodes description,
+like a small and dumb built-in Google.
 
 ![Screencast](./screencast.gif)
 
-Both LEDs should turn on now.
-
-Alternatively, you may drag a node from the Project Browser instead of clicking
-the (+) button. Try to add yet more `led` nodes to your project and then
-proceed to the [next lesson](../07-labels/).
+[Next lesson →](../07-labels/)

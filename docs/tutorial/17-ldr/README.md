@@ -38,14 +38,6 @@ read its value from the analog port on the Arduino. To do so, we will use an
 
 1. Assemble the circuit.
 2. Find the `analog-input` node in `xod/core` and add it to the patch.
-   <div class="ui segment note">
-   <span class="ui ribbon label">Note</span>
-   <p>You can find any node using the Quick Search feature. Press “I” key or
-   double click anywhere on the patch. Then type what you are looking for.</p>
-   <p>It searches not only in nodes titles, but even in the nodes description,
-   like a small and dumb built-in Google.</p>
-   </div>
-
 3. Read the description of the node on the help page. Pay attention to the
    range of values the node returns.
 4. Link the `VAL` output pin of the `analog-input` node to the `LUM` pin.

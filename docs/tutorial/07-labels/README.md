@@ -12,33 +12,22 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-From the previous experiments we have two led nodes. They have identical names
-but control different LEDs. To add some clarity, let’s rename them!
+In many cases you would use multiple identical hardware parts to control
+different aspects of the device or implement multiple channels of something.
+To avoid confusion you can rename nodes.
 
 ![Patch](./patch.png)
 
-## Test circuit
+The function and type of each node remains the same. This feature just makes
+your patch more readable. You can always check out the original node type in
+the Inspector.
 
-<div class="ui segment note">
-<span class="ui ribbon label">Note</span>
-The circuit is the same as for the previous lesson.
-</div>
+## How-to
 
-![Circuit](./circuit.fz.png)
-
-[↓ Download as a Fritzing project](./circuit.fzz)
-
-## Instructions
-
-1. Click on any node. There is a field with a green flag in the Inspector; you
+1. Select a node you’d like to rename.
+2. There is a field with a green flag in the Inspector; you
    can find it above the pins. Type any name for the node into this field.
-2. Do the same for the second node.
 
 ![Screencast](./screencast.gif)
 
-Now the names of the nodes are different, and you can easily distinguish one
-from the other. However, the function and type of each node remains the same.
-This feature just makes your patch more readable.
-
-OK, now you know how to put things in order. Let’s skip to the [next
-lesson](../08-constants/).
+[Next lesson →](../08-constants/)
