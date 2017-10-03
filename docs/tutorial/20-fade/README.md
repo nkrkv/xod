@@ -12,8 +12,9 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-Our servo can turn to the set angle at its maximum speed. High speed is not
-always necessary and can damage the servo itself if the shaft hits an obstacle.
+In the previous examples our servo turns to the set angle at its maximum speed.
+High speed is not always necessary and can damage the servo itself if the shaft
+hits an obstacle.
 
 Let’s improve our patch by making the servo move more smoothly. To achieve
 that, we’ll need to set the `VAL` pin value along with a series of transitional
@@ -24,9 +25,8 @@ values. There’s a node for that, and it's called `fade`.
 The `fade` node is in `xod/core`. This node returns a smooth series of
 transitional values, so it will smoothen our servo motion.
 
-The `TARG` pin waits for a target value.
-
-The `RATE` pin is a number that defines amount of change for the transitional
+* The `TARG` pin waits for a target value.
+* The `RATE` pin is a number that defines amount of change for the transitional
 values per each second.
 
 The output pin returns 0 at the start of the program. Then, it starts to move
@@ -44,13 +44,6 @@ The circuit is the same as for the previous lesson.
 ![Circuit](./circuit.fz.png)
 
 [↓ Download as a Fritzing project](./circuit.fzz)
-
-## Instructions
-
-1. Set the `RATE` value to 0.1.
-2. Upload the patch to the Arduino.
-
-![Screencast](./screencast.gif)
 
 Now, the servo will turn at a speed of 18° per second (0.1 = 18°).
 

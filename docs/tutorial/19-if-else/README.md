@@ -25,26 +25,17 @@ from the `F` pin to the `R` pin.
 
 ![Patch](./patch.png)
 
+Now simply set the `T` value to 0.25 and the `F` value to 0.75 to make things
+work.
+
 ## Test circuit
 
 ![Circuit](./circuit.fz.png)
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
-
-1. Assemble the circuit as shown above.
-2. Define the value on the `RHS` pin of the `greater` node. This value will be
-   compared to the value from the photoresistor (coming to the `LHS` pin).
-3. Define the values for the `T` and `F` pins on the `if-else` node. These values
-   will be sent to the servo. Remember about the value range of the servo
-   node: 45° of the servo will be 0.25, and 135° will be 0.75.
-4. Upload the patch to the Arduino.
-
-![Screencast](./screencast.gif)
-
 Now, if the comparison condition is true, the servo will turn to the angle from
-the `T` pin of the `if-else` node or, otherwise, to the angle set in the `F` pin
-of the same node.
+the `T` pin of the `if-else` node or, otherwise, to the angle set in the `F`
+pin of the same node.
 
-Play with values and then go to the [next lesson](../20-fade/).
+[Next lesson →](../20-fade/)

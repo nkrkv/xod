@@ -51,4 +51,4 @@ In the example shown, if the `analog-input` node (our photoresistor) returns a
 value greater than the threshold, the `greater` node will set the `GT` pin to
 `true`, and the LED will turn on.
 
-Success? Follow to the [next lesson](../19-if-else/).
+[Next lesson →](../19-if-else/)
