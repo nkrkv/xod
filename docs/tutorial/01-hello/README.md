@@ -17,28 +17,31 @@ visual objects instead.
 
 ![XOD window](./xod-window.png)
 
+## Patch board
+
 The large gray field with a box is your program. It’s called a *patch*. In this
-patch you can see only one interesting object – the `led` node — a grey
+patch you can see one interesting object – the `led` node — a grey
 rectangle with two little green circles. You will be able to make complicated
 programs, using these rectangles.
 
-First, try to move it. Position on the patch board does not affect your program,
-but can make it more readable.
+You can move nodes by dragging them. Position on the patch board does not
+affect your program, but can make it more readable.
 
 You can see a comment as well. Even though it is there, it does not affect the
 patch, because it is invisible to a machine. It’s only visible to you, a
 clever human. You can drag it to move too.
 
-## Instructions
+## Project browser
 
-1. On the left side you will find a list with available projects. The list is
-   called a *Project Browser*. The first item in it is `welcome-to-xod`. This
-   is a special tutorial project you’re working with right now. Expand the
-   project by clicking on it.
-2. As you can see, the `welcome-to-xod` project consists of many patches. Here
-   we are at the patch `01-hello`. Next part of the Tutorial is in the patch
-   `02-deploy`.  
+On the left side you will find a list with available projects. The list is
+called a *Project Browser*. When you launch XOD for the first time the first
+item in the list is `welcome-to-xod`. This is a special tutorial project you
+can follow to learn XOD right inside the XOD IDE.
+
+To expand a project click on it.  Projects consist of many patches. The
+`welcome-to-xod` is not an exception. You can double-click any patch name to
+open it on the patch board.
 
 ![Open next patch](./open-next-patch.gif)
 
-Double-click it to open the [next tutorial lesson](../02-deploy/).
+[Next lesson →](../02-deploy/)

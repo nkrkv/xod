@@ -12,7 +12,9 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-Sweet! Now let's upload your patch with the `led` node to Arduino! Here it is:
+Let's learn how to upload your patch with the node to Arduino! For an example
+we’re going to use the `welcome-to-xod/02-deploy` patch. Although the process
+is the same for any patch.
 
 ![Patch](./patch.png)
 
@@ -24,12 +26,12 @@ Sweet! Now let's upload your patch with the `led` node to Arduino! Here it is:
 
 ## Instructions for the desktop IDE
 
-1. Assemble the circuit according to the picture above.
-2. Connect Arduino to your computer.
-3. Upload your first program. To do this, select “Deploy → Upload to Arduino”
-   from the main menu.
+1. Connect an Arduino to your computer.
+2. Hit “Deploy → Upload to Arduino” from the main menu.
+3. Select your board model and the port it is connected to, then click
+   “Upload”.
 
-![Upload to Arduino](./upload.gif)
+![Upload to Arduino](./upload-desktop.gif)
 
 ## Instructions for the browser IDE
 
@@ -54,7 +56,7 @@ little overhead after compilation. You don't need to understand how it
 actually works. For now, think of it as a black box.
 </div>
 
-![Upload via Arduino IDE](./upload-browser.gif)
+![Upload via Arduino IDE](./upload-web.gif)
 
 <div class="ui segment note">
 <span class="ui ribbon label">Feedback</span>
@@ -63,5 +65,4 @@ href="//forum.xod.io">forum</a>. Describe what you're doing, what you expect to
 get, and what you actually get. We will help.
 </div>
 
-If you did it right way, you will see the LED turned on. Great! Proceed to the
-[next lesson](../03-inspector).
+[Next lesson →](../03-inspector)
