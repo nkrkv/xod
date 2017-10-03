@@ -12,10 +12,11 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-Let’s try some more practice. Now, we will control the LEDs’ brightness with a
-potentiometer. All you need to do is to replace the `constant-number` node from the
-previous lesson with a `pot` node and transfer the brightness value to LED1 and LED2
-from this pot node instead of the `constant-number`.
+Another ubiquitous source of values is a potentiometer (or simply “pot” for
+short). It is very handy to adjust some parameters smoothly.
+
+There is a special node `pot` to read values from a potentiometer. You will
+find it in the `xod/common-hardware` library.
 
 ![Patch](./patch.png)
 
@@ -25,25 +26,18 @@ from this pot node instead of the `constant-number`.
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
+## How-to
 
-1. Delete the links between the pins. To do this, click on a link, then press
-   either Delete or Backspace key.
-2. Delete the `constant-number` node. Click on it and press Delete or
-   Backspace.
-3. Find the `pot` node in the Project Browser inside the `xod/common-hardware`
-   library.
-4. Connect a potentiometer to the Arduino according to the scheme above.
-5. Set the `PORT` pin value on the `pot` node to 0, bacause it’s connected to
-   analog Arduino port A0.
-6. Link the `pot` node `VAL` pin to the `LUM` pins on the LED1 and LED2 nodes.
-7. Upload the patch to the Arduino.
+1. Add the `pot` node to your patch.
+2. Set the `PORT` pin value on the `pot` node to 0 if you have connected
+   the potentiometer to Arduino port A0 as shown above.
+3. Link the `pot` node `VAL` pin to input pins of nodes to control.
 
 ![Screencast](./screencast.gif)
 
-If you turn the potentiometer knob, it will affect the brightness of the LEDs.
-Depending on the angle of the knob, the `pot` node returns a value from 0.0 to
-1.0 to the `VAL` pin, and that value is transferred to the `LUM` pins of both
-LED nodes.
+In our example, if you turn the potentiometer knob, it will affect the
+brightness of the LEDs. Depending on the angle of the knob, the `pot` node
+returns a value from 0.0 to 1.0 to the `VAL` pin, and that value is transferred
+to the `LUM` pins of both LED nodes.
 
-When done continue to the [next lesson](../10-math/).
+[Next lesson →](../10-math/)
