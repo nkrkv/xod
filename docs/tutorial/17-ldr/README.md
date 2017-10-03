@@ -2,7 +2,7 @@
 title: Reading lightness
 ---
 
-# #05. Reading lightness
+# #17. Reading lightness
 
 <div class="ui segment note">
 <span class="ui ribbon label">Note</span>
@@ -12,14 +12,10 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-Now, let's learn how to work with conditionals in XOD.
-
-We will measure something, and if the values exceed or are below the threshold,
-we will turn an LED on or off.
-
-A photoresistor (aka light dependent resistor or LDR) would do a great job of
-measuring the light level. However, there is a small problem: we do not have a
-photoresistor node in XOD.
+Let’s introduce a new sensor to measure ambient light level.  A photoresistor
+(aka light dependent resistor or LDR) would do a great job of measuring the
+parameter. However, there is a small problem: we do not have a photoresistor
+node in XOD.
 
 Yet, we have basic nodes for working with the digital and analog ports of the
 Arduino. A photoresistor is a pretty primitive device, and all we need to do is
@@ -28,24 +24,18 @@ read its value from the analog port on the Arduino. To do so, we will use an
 
 ![Patch](./patch.png)
 
+It is a low-level node that reads an analog port of Arduino directly and
+outputs the value measured in 0–1 range where 0 corresponds to 0 volts (value
+of 0 in the Arduino native language) and 1 corresponds to the power voltage
+(usually 5 or 3.3 volts; value of 1023 in C++).
+
 ## Test circuit
 
 ![Circuit](./circuit.fz.png)
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
+Try to create a device as shown above, cover the photoresistor with your hand,
+and watch how the brightness of the LED changes.
 
-1. Assemble the circuit.
-2. Find the `analog-input` node in `xod/core` and add it to the patch.
-3. Read the description of the node on the help page. Pay attention to the
-   range of values the node returns.
-4. Link the `VAL` output pin of the `analog-input` node to the `LUM` pin.
-5. Upload the patch to the Arduino.
-
-![Screencast](./screencast.gif)
-
-Cover the photoresistor with your hand, and watch how the brightness of the LED
-changes.
-
-When done follow to the [next lesson](../18-comparisons/).
+[Next lesson →](../18-comparisons/)

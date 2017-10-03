@@ -12,10 +12,18 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-Now for comparisons. XOD has `greater`-than and `less`-than nodes to do simple
-mathematical comparisons.
+Now, let's learn how to work with conditionals in XOD.
+
+We will measure a lightness level, and if the values exceed or are below the
+threshold, we will turn an LED on or off.
+
+XOD has `greater`-than and `less`-than nodes to do simple
+mathematical comparisons. They are in `xod/core`.
 
 ![Patch](./patch.png)
+
+The `LHS` and `RHS` pins receive numbers to compare, and output pins return
+the comparison result expressed as a boolean value (true or false).
 
 ## Test circuit
 
@@ -28,29 +36,19 @@ The circuit is the same as for the previous lesson.
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
+## How-to
 
-
-1. Link the `VAL` pin of the `analog-input` node to the `LHS` pin on the
-   `greater` node.
-2. Set a value of 0.4 on the `RHS` pin. You can still do this in the Inspector.
-   This is the value we will compare the photoresistor value with.
-3. Link the `GT` pin on the `greater` node to the `LUM` pin of the `led` node.
-4. Upload the program.
+* Place a `xod/core/less` (or `greater`) node to trigger an action when
+  a measured parameter goes under (or over) a threshold value.
+* Use the `LHS` pin to link the value measured.
+* Set the threshold as the `RHS` pin value.
+* In cases where figuring out the proper threshold is tricky use a value
+  from a potentiometer to adjust it dynamically.
 
 ![Screencast](./screencast.gif)
 
-Now, if the `analog-input` node (our photoresistor) returns a value greater
-than 0.4, the `greater` node will set the `GT` pin to `true`, and the LED will
-turn on.
-
-Try to set the comparison value manually using a potentiometer. Tips:
-
-1. Connect the potentiometer and add another `analog-input` node from
-   `xod/core`. Define the `PORT` value for the Arduino port that the
-   potentiometer is connected to.
-2. Link the output of this node to the `RHS` pin of the `greater` node.
-
-Now the threshold value is not fixed but is defined by the potentiometer.
+In the example shown, if the `analog-input` node (our photoresistor) returns a
+value greater than the threshold, the `greater` node will set the `GT` pin to
+`true`, and the LED will turn on.
 
 Success? Follow to the [next lesson](../19-if-else/).
