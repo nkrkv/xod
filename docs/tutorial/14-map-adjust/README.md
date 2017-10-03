@@ -13,12 +13,19 @@ same tutorial there.
 </div>
 
 After the previous lesson, the `map-range` node linearly maps the
-20–50°C range to 0–90°.
+20–50°C range to the 0–90° servo rotation. Let’s raise the sensitivity.
+Say, we want to map 15–30°C to 0–90° rotation.
+
+However, what will happen if the `X` pin of the `map-range` receives data that
+is outside the input range (10 or 42, for example)? The output value which is
+a servo angle will fall outside the desired range too.
+
+For such cases there is a sibling node called `map-clip-range`. It works the
+same way, but any input that is out of range will be rounded to `Smin` or
+`Smax`.  Thus, if `X` receives a value of 10, the map-range node will accept it
+as 15, and 42 will be accepted as 30.
 
 ![Patch](./patch.png)
-
-Now, try to make the servo rotate smoothly from 0 to 180° when the temperature
-changes from 10°C to 50°C.
 
 ## Test circuit
 
@@ -31,20 +38,15 @@ The circuit is the same as for the previous lesson.
 
 [↓ Download as a Fritzing project](./circuit.fzz)
 
-## Instructions
+## How-to
 
-1. Set the input range (`Smin` and `Smax`) to 10–50.
-2. Set the output range (`Tmin` and `Tmax`) to 0–1.
-3. (Optional) If you prefer °F, you can easily translate the data from the
-   thermometer with the `c-to-f` node from `xod/units`. The range will be
-   50–122°F.
-4. Upload.
+Just use the `map-clip-range` instead of the `map-range` if you want the
+output range to be guaranteed.
+
+If you prefer °F, you can easily translate the data from the
+thermometer with the `c-to-f` node from `xod/units`. The range will be
+59–95°F.
 
 ![Screencast](./screencast.gif)
 
-Now the servo is more sensitive to the changes of the temperature sensor.
-
-You will use the `map-range` node quite often. It is located in `xod/core`.
-
-Try to play with the map values and when done follow to the [next
-lesson](../15-buttons/).
+[Next lesson →](../15-buttons/)
