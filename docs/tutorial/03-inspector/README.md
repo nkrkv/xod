@@ -12,8 +12,8 @@ To get a better learning experience we recommend to
 same tutorial there.
 </div>
 
-A node is a visual representation of some physical device (like ports on
-Arduino) or some function (adding, subtracting and more complicated stuff).
+A node is a visual representation of some physical device (such as the ports on
+an Arduino) or some function (adding, subtracting and more complicated stuff).
 
 The `led` is a simple LED controlling node. It can control only a one-colored
 LED. The node has only input pins — `PORT` and `LUM`.
@@ -22,17 +22,16 @@ LED. The node has only input pins — `PORT` and `LUM`.
 
 ## Pins
 
-Small colored circles on nodes are called *pins*. Pins are divided into inputs
-and outputs. Inputs are always on the top side of nodes, outputs — on the
-bottom.
+The small colored circles on nodes are called *pins*. Pins are divided into
+inputs and outputs. Inputs are always on the top side of nodes, outputs — on
+the bottom.
 
-Pins are used to transfer data between nodes. Nodes can read and write that
-data and produce a result. In our example, the node transfers the fixed value
-of `LUM` pin to the port on an Arduino board. The number of Arduino port is
-defined by the `PORT` value.
+Pins are used to transfer data between nodes. Nodes process these values and
+take some action or give a result. In this example, the `led` node transfers
+the led brightnes value (set in `LUM`) to the Arduino port (set in `PORT`).
 
 You can change values of pins with a sidebar called *Inspector*. You will see
-the Inspector under the list of projects.
+the Inspector on the left under the list of projects.
 
 ## Test circuit
 
