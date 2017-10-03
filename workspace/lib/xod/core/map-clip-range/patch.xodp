@@ -1,4 +1,5 @@
 {
+  "description": "Projects a number from one range to another preserving ratio. Then clips a result to the target range.",
   "links": [
     {
       "id": "B1-dxJl2Z",
@@ -142,7 +143,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "description": "Projects a number from one range to another preserving ratio. Then clips a result to the target range.",
       "id": "S1TMl1ehW",
       "position": {
         "x": 170,
