@@ -243,10 +243,10 @@ bool isInputDirtyImpl(NodeId nid, size_t wiringOffset) {
     return isOutputDirty(ref.nodeId, ref.pinIndex);
 }
 
-template<typename InputT>
+/*template<typename InputT>
 bool isInputDirty(NodeId nid) {
     return isInputDirtyImpl(nid, InputT::WIRING_OFFSET);
-}
+}*/
 
 void markPinDirty(NodeId nid, uint8_t index) {
     g_dirtyFlags[nid] |= 1 << (index + 1);
@@ -353,10 +353,10 @@ void idle() {
 // Public API (can be used by native nodes’ `evaluate` functions)
 //----------------------------------------------------------------------------
 
-template<typename InputOutputT>
+/*template<typename InputOutputT>
 typename InputOutputT::ValueT getValue(Context ctx) {
     return GetValue<InputOutputT>::getValue(ctx);
-}
+}*/
 
 template<typename OutputT>
 void emitValue(NodeId nid, typename OutputT::ValueT value) {

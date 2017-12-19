@@ -24,10 +24,22 @@ void runTransaction() {
     }
 
   {{#each nodes}}
+    static {{ ns patch }}::Storage storage_{{ id }};
+  {{/each}}
+
+  {{#each nodes}}
     {
         constexpr NodeId nid = {{ id }};
+        {{ns patch }}::ContextObject ctxObj;
+
+      {{#each inputs }}
+        // {{ json this }}
+        ctxObj._input_{{ pinKey }} = storage_{{ nodeId }}.output_{{ fromPinKey }};
+        ctxObj._isInputDirty_{{ pinKey }} = storage_{{ nodeId }}.isOutputDirty_{{ fromPinKey }};
+      {{/each}}
+
         if (isNodeDirty(nid)) {
-            evaluateNode(nid);
+            {{ ns patch }}::evaluate(&ctxObj);
             if (isTimedOut(nid)) // note [1]
                 clearTimeout(nid);
         }
@@ -62,6 +74,7 @@ namespace xod {
     //-------------------------------------------------------------------------
     // Dynamic data
     //-------------------------------------------------------------------------
+    /*
   {{#each nodes}}
   {{mergePins }}
     // Storage of #{{ id }} {{ patch.owner }}/{{ patch.libName }}/{{ patch.patchName }}
@@ -76,6 +89,7 @@ namespace xod {
       {{/each}}
     };
   {{/each}}
+    */
 
     DirtyFlags g_dirtyFlags[NODE_COUNT] = {
         {{#each nodes}}DirtyFlags({{ dirtyFlags }}){{#unless @last}},
@@ -87,6 +101,7 @@ namespace xod {
     //-------------------------------------------------------------------------
     // Static (immutable) data
     //-------------------------------------------------------------------------
+    /*
   {{#each nodes}}
   {{mergePins }}
     // Wiring of #{{ id }} {{ patch.owner }}/{{ patch.libName }}/{{ patch.patchName }}
@@ -124,7 +139,7 @@ namespace xod {
       {{#each nodes}}
         &storage_{{ id }}{{#unless @last }},{{/unless }}
       {{/each}}
-    };
+    };*/
 }
 
 // TODO: move to own file

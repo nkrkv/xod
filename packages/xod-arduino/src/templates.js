@@ -93,6 +93,9 @@ Handlebars.registerHelper('ns', R.compose(
   R.props(['owner', 'libName', 'patchName'])
 ));
 
+// Debug helper
+Handlebars.registerHelper('json', JSON.stringify);
+
 // Returns declaration type specifier for an initial value of an output
 Handlebars.registerHelper('decltype', (type, value) => (
   (type === PIN_TYPE.STRING && value !== '')

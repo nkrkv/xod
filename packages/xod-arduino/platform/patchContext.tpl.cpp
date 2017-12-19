@@ -12,21 +12,22 @@ struct Storage {
   {{/each}}
 };
 
-enum Pins {
-  {{#each inputs}}
-    input_{{ pinKey }},
-  {{/each}}
-  {{#each outputs}}
-    input_{{ pinKey }},
-  {{/each}}
-    PIN_COUNT {{!-- A dummy to forget trailing comma problems --}}
+{{#each inputs}}
+struct input_{{ pinKey }} {
+    using T = {{ cppType type }};
 };
+{{/each}}
+{{#each outputs}}
+struct output_{{ pinKey }} {
+    using T = {{ cppType type }};
+};
+{{/each}}
 
-struct Context {
-    Storage* storage;
+struct ContextObject {
+    Storage* _storage;
 
   {{#each inputs}}
-    {{ cppType type }}* _input_{{ pinKey }};
+    {{ cppType type }} _input_{{ pinKey }};
   {{/each}}
 
   {{#each inputs}}
@@ -34,24 +35,44 @@ struct Context {
   {{/each}}
 };
 
+using Context = ContextObject*;
+
+template<typename PinT> typename PinT::T getValue(Context ctx) {
+    // TODO: throw compile error
+}
+
 {{#each inputs}}
 template<> input_{{ pinKey }}::T getValue<input_{{ pinKey }}>(Context ctx) {
-    return *ctx._input_{{pinKey }};
+    return ctx->_input_{{pinKey }};
 }
 {{/each}}
 {{#each outputs}}
 template<> output_{{ pinKey }}::T getValue<output_{{ pinKey }}>(Context ctx) {
-    return ctx.storage->otput_{{ pinKey }};
+    return ctx->_storage->output_{{ pinKey }};
 }
 {{/each}}
 
+template<typename InputT> bool isInputDirty(Context ctx) {
+    // TODO: throw compile error
+}
+
+{{#each inputs}}
+template<> bool isInputDirty<input_{{ pinKey }}>(Context ctx) {
+    return ctx->_isInputDirty_{{ pinKey }};
+}
+{{/each}}
+
+template<typename OutputT> void emitValue(Context ctx, typename OutputT::T val) {
+    // TODO: throw compile error
+}
+
 {{#each outputs}}
-template<> emitValue<output_{{ pinKey }}>(Context ctx, output_{{ pinKey }}::T val) {
-    ctx.storage->otput_{{ pinKey }} = val;
-    ctx.storage->isOutputDirty_{{ pinKey }} = true;
+template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} val) {
+    ctx->_storage->output_{{ pinKey }} = val;
+    ctx->_storage->isOutputDirty_{{ pinKey }} = true;
 }
 {{/each}}
 
 State* getState(Context ctx) {
-    return &ctx.storage->state;
+    return &ctx->_storage->state;
 }
