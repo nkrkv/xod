@@ -1,3 +1,52 @@
+
+namespace xod {
+
+void runTransaction() {
+    g_transactionTime = millis();
+
+    XOD_TRACE_F("Transaction started, t=");
+    XOD_TRACE_LN(g_transactionTime);
+
+    // defer-* nodes are always at the very bottom of the graph,
+    // so no one will recieve values emitted by them.
+    // We must evaluate them before everybody else
+    // to give them a chance to emit values.
+    for (NodeId nid = NODE_COUNT - DEFER_NODE_COUNT; nid < NODE_COUNT; ++nid) {
+        if (isTimedOut(nid)) {
+            evaluateNode(nid);
+            // Clear node dirty flag, so it will evaluate
+            // on "regular" pass only if it has a dirty input.
+            // We must save dirty output flags,
+            // or 'isInputDirty' will not work correctly in "downstream" nodes.
+            g_dirtyFlags[nid] &= ~0x1;
+            clearTimeout(nid);
+        }
+    }
+
+  {{#each nodes}}
+    {
+        constexpr NodeId nid = {{ id }};
+        if (isNodeDirty(nid)) {
+            evaluateNode(nid);
+            if (isTimedOut(nid)) // note [1]
+                clearTimeout(nid);
+        }
+    }
+  {{/each}}
+
+    // [1] if the schedule is stale, clear timeout so that
+    // the node would not be marked dirty again in idle
+
+    // Clear dirtieness for all nodes and pins
+    memset(g_dirtyFlags, 0, sizeof(g_dirtyFlags));
+
+    XOD_TRACE_F("Transaction completed, t=");
+    XOD_TRACE_LN(millis());
+}
+
+} // namespace xod
+
+
 {{!-- Template for program graph --}}
 {{!-- Accepts the context with list of Nodes --}}
 /*=============================================================================
@@ -76,4 +125,22 @@ namespace xod {
         &storage_{{ id }}{{#unless @last }},{{/unless }}
       {{/each}}
     };
+}
+
+// TODO: move to own file
+//----------------------------------------------------------------------------
+// Entry point
+//----------------------------------------------------------------------------
+void setup() {
+    // FIXME: looks like there is a rounding bug. Waiting for 100ms fights it
+    delay(100);
+#ifdef XOD_DEBUG
+    DEBUG_SERIAL.begin(115200);
+#endif
+    XOD_TRACE_FLN("\n\nProgram started");
+}
+
+void loop() {
+    xod::idle();
+    xod::runTransaction();
 }
