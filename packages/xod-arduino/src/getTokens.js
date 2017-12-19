@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 
+// TODO: move this module to `xod-client` as it has nothing to do with transpilation
 const getTokens = () => [
   {
     regex: /\b((?:input|output)_[A-Z0-9-_]+)\b/gm,
