@@ -23,12 +23,27 @@ void runTransaction() {
         }
     }
 
+    // Define/allocate persistent storages (state + output data) for all nodes
   {{#each nodes}}
-    static {{ ns patch }}::Storage storage_{{ id }};
+    {{~ mergePins }}
+    {{#each outputs }}
+    {{ decltype type value }} node_{{ ../id }}_output_{{ pinKey }} = {{ cppValue type value }};
+    {{/each}}
+    static {{ ns patch }}::Storage storage_{{ id }} = {
+        { }, // state
+      {{#each outputs}}
+        node_{{ ../id }}_output_{{ pinKey }},
+      {{/each}}
+      {{#each outputs}}
+        true, // {{ pinKey }} dirty
+      {{/each}}
+        true // node itself dirty
+    };
   {{/each}}
 
+    // Evaluate all dirty nodes
   {{#each nodes}}
-    {
+    { // {{ ns patch }} #{{ id }}
         constexpr NodeId nid = {{ id }};
         {{ns patch }}::ContextObject ctxObj;
 

@@ -10,6 +10,7 @@ struct Storage {
   {{#each outputs}}
     bool isOutputDirty_{{ pinKey }} : 1;
   {{/each}}
+    bool isNodeDirty : 1;
 };
 
 {{#each inputs}}
