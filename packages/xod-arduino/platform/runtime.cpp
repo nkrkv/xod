@@ -139,31 +139,31 @@ namespace detail {
 // Marks timed out node dirty. Do not reset timeoutAt here to give
 // a chance for a node to get a reasonable result from `isTimedOut`
 // later during its `evaluate`
-template<typename StorageT>
-void checkTriggerTimeout(StorageT* storage, TimeMs now) {
-    TimeMs t = storage->timeoutAt;
+template<typename NodeT>
+void checkTriggerTimeout(NodeT* node, TimeMs now) {
+    TimeMs t = node->timeoutAt;
     // TODO: deal with uint32 overflow
-    storage->isNodeDirty |= (t && t < now);
+    node->isNodeDirty |= (t && t < now);
 }
 
-template<typename StorageT>
-bool isTimedOut(const StorageT& storage) {
-    TimeMs t = storage.timeoutAt;
+template<typename NodeT>
+bool isTimedOut(const NodeT* node) {
+    TimeMs t = node->timeoutAt;
     // TODO: deal with uint32 overflow
     return t && t < transactionTime();
 }
 
-template<typename StorageT>
-void clearTimeout(StorageT* storage) {
-    storage->timeoutAt = 0;
+template<typename NodeT>
+void clearTimeout(NodeT* node) {
+    node->timeoutAt = 0;
 }
 
-template<typename StorageT>
-void clearDirtieness(StorageT* storage) {
+template<typename NodeT>
+void clearDirtieness(NodeT* node) {
     // TODO: clear all pin flags
-    storage->isNodeDirty = false;
-    if (isTimedOut(*storage))
-        clearTimeout(storage);
+    node->isNodeDirty = false;
+    if (isTimedOut(node))
+        clearTimeout(node);
 }
 
 } // namespace detail
@@ -178,17 +178,17 @@ TimeMs transactionTime() {
 
 template<typename ContextT>
 void setTimeout(ContextT* ctx, TimeMs timeout) {
-    ctx->_storage->timeoutAt = transactionTime() + timeout;
+    ctx->_node->timeoutAt = transactionTime() + timeout;
 }
 
 template<typename ContextT>
 void clearTimeout(ContextT* ctx) {
-    detail::clearTimeout(*ctx->_storage);
+    detail::clearTimeout(*ctx->_node);
 }
 
 template<typename ContextT>
 bool isTimedOut(const ContextT* ctx) {
-    return detail::isTimedOut(*ctx->_storage);
+    return detail::isTimedOut(*ctx->_node);
 }
 
 } // namespace xod

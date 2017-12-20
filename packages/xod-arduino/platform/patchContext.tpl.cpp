@@ -1,7 +1,7 @@
 {{!-- Template for GENERATED_CODE token inside each patch implementation --}}
 {{!-- Accepts the Node context --}}
 
-struct Storage {
+struct Node {
     State state;
     TimeMs timeoutAt;
   {{#each outputs}}
@@ -26,7 +26,7 @@ struct output_{{ pinKey }} {
 {{/each}}
 
 struct ContextObject {
-    Storage* _storage;
+    Node* _node;
 
   {{#each inputs}}
     {{ cppType type }} _input_{{ pinKey }};
@@ -50,7 +50,7 @@ template<> input_{{ pinKey }}::T getValue<input_{{ pinKey }}>(Context ctx) {
 {{/each}}
 {{#each outputs}}
 template<> output_{{ pinKey }}::T getValue<output_{{ pinKey }}>(Context ctx) {
-    return ctx->_storage->output_{{ pinKey }};
+    return ctx->_node->output_{{ pinKey }};
 }
 {{/each}}
 
@@ -70,11 +70,11 @@ template<typename OutputT> void emitValue(Context ctx, typename OutputT::T val) 
 
 {{#each outputs}}
 template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} val) {
-    ctx->_storage->output_{{ pinKey }} = val;
-    ctx->_storage->isOutputDirty_{{ pinKey }} = true;
+    ctx->_node->output_{{ pinKey }} = val;
+    ctx->_node->isOutputDirty_{{ pinKey }} = true;
 }
 {{/each}}
 
 State* getState(Context ctx) {
-    return &ctx->_storage->state;
+    return &ctx->_node->state;
 }

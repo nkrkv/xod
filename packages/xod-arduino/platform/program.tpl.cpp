@@ -15,7 +15,7 @@ namespace xod {
 {{#each outputs }}
 {{ decltype type value }} node_{{ ../id }}_output_{{ pinKey }} = {{ cppValue type value }};
 {{/each}}
-{{ ns patch }}::Storage storage_{{ id }} = {
+{{ ns patch }}::Node node_{{ id }} = {
     { }, // state
     0, // timeoutAt
   {{#each outputs}}
@@ -31,7 +31,7 @@ namespace xod {
 void idle() {
     TimeMs now = millis();
     {{#each nodes}}
-    detail::checkTriggerTimeout(&storage_{{ id }}, now);
+    detail::checkTriggerTimeout(&node_{{ id }}, now);
     {{/each}}
 }
 
@@ -47,14 +47,14 @@ void runTransaction() {
     // to give them a chance to emit values.
     {{#eachDeferNode }}
     {
-        Storage& storage = storage_{{ id }};
-        if (detail::isTimedOut(&storage)) {
-            storage.isOutputDirty_OUT = true;
+        Storage& node = node_{{ id }};
+        if (detail::isTimedOut(&node)) {
+            node.isOutputDirty_OUT = true;
 
             // mark downstream nodes dirty
           {{#each outputs }}
             {{#each to}}
-            storage_{{ this }}.isNodeDirty = true;
+            node_{{ this }}.isNodeDirty = true;
             {{/each}}
           {{/each}}
 
@@ -64,9 +64,9 @@ void runTransaction() {
             //
             // We must save dirty output flags, or `isInputDirty` will not work
             // correctly in downstream nodes.
-            storage.isNodeDirty = false;
+            node.isNodeDirty = false;
 
-            detail::clearTimeout(&storage);
+            detail::clearTimeout(&node);
         }
     }
     {{/eachDeferNode }}
@@ -74,14 +74,14 @@ void runTransaction() {
     // Evaluate all dirty nodes
   {{#each nodes}}
     { // {{ ns patch }} #{{ id }}
-        if (storage_{{ id }}.isNodeDirty) {
+        if (node_{{ id }}.isNodeDirty) {
             {{ns patch }}::ContextObject ctxObj;
-            ctxObj._storage = &storage_{{ id }};
+            ctxObj._node = &node_{{ id }};
 
           {{#each inputs }}
             // {{ json this }}
-            ctxObj._input_{{ pinKey }} = storage_{{ nodeId }}.output_{{ fromPinKey }};
-            ctxObj._isInputDirty_{{ pinKey }} = storage_{{ nodeId }}.isOutputDirty_{{ fromPinKey }};
+            ctxObj._input_{{ pinKey }} = node_{{ nodeId }}.output_{{ fromPinKey }};
+            ctxObj._isInputDirty_{{ pinKey }} = node_{{ nodeId }}.isOutputDirty_{{ fromPinKey }};
           {{/each}}
 
             {{ ns patch }}::evaluate(&ctxObj);
@@ -89,7 +89,7 @@ void runTransaction() {
             // mark downstream nodes dirty
           {{#each outputs }}
             {{#each to}}
-            storage_{{ this }}.isNodeDirty |= storage_{{ ../../id }}.isOutputDirty_{{ ../pinKey }};
+            node_{{ this }}.isNodeDirty |= node_{{ ../../id }}.isOutputDirty_{{ ../pinKey }};
             {{/each}}
           {{/each}}
         }
@@ -98,7 +98,7 @@ void runTransaction() {
 
     // Clear dirtieness and timeouts for all nodes and pins
   {{#each nodes }}
-    detail::clearDirtieness(&storage_{{ id }});
+    detail::clearDirtieness(&node_{{ id }});
   {{/each }}
 
     XOD_TRACE_F("Transaction completed, t=");
