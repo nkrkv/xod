@@ -160,8 +160,7 @@ void clearTimeout(NodeT* node) {
 }
 
 template<typename NodeT>
-void clearDirtieness(NodeT* node) {
-    node->dirtyFlags = 0;
+void clearStaleTimeout(NodeT* node) {
     if (isTimedOut(node))
         clearTimeout(node);
 }

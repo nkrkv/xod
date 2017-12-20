@@ -150,6 +150,14 @@ Handlebars.registerHelper('eachNonConstantNode', function eachNonConstantNode(op
   )(this.nodes);
 });
 
+Handlebars.registerHelper('eachNodeUsingTimeouts', function eachNodeUsingTimeouts(options) {
+  return R.compose(
+    R.join(''),
+    R.map(node => options.fn(node)),
+    R.filter(R.path(['patch', 'usesTimeouts']))
+  )(this.nodes);
+});
+
 // =============================================================================
 //
 // Templates and settings

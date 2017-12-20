@@ -122,6 +122,13 @@ const createTConfig = def(
   })(project)
 );
 
+// Checks for `#pragma XOD use setTimeout` directive in source
+const usesTimeouts = def(
+  'usesTimeouts :: String -> Boolean',
+  R.test(/#\s*pragma\s+XOD\s+use\s+setTimeout\s*(\/(\/|\*).*)?$/m)
+);
+
+
 const createTPatches = def(
   'createTPatches :: PatchPath -> Project -> [TPatch]',
   (entryPath, project) => R.compose(
@@ -158,6 +165,7 @@ const createTPatches = def(
       const isThisIsThat = {
         isDefer: Project.isDeferNodeType(path),
         isConstant: Project.isConstantNodeType(path),
+        usesTimeouts: usesTimeouts(impl),
       };
 
       return R.mergeAll([

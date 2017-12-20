@@ -1,9 +1,11 @@
 {{!-- Template for GENERATED_CODE token inside each patch implementation --}}
-{{!-- Accepts the Node context --}}
+{{!-- Accepts TPatch context --}}
 
 struct Node {
     State state;
+  {{#if usesTimeouts}}
     TimeMs timeoutAt;
+  {{/if}}
   {{#each outputs}}
     {{ cppType type }} output_{{ pinKey }};
   {{/each}}

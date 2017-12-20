@@ -56,6 +56,7 @@ export const TPatch = Model('TPatch', {
   patchName: $.String,
   isDefer: $.Boolean,
   isConstant: $.Boolean,
+  usesTimeouts: $.Boolean,
   outputs: $.Array(TPatchOutput),
   inputs: $.Array(TPatchInput),
   impl: $.String,
