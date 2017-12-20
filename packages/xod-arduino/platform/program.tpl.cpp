@@ -35,7 +35,7 @@ void idle() {
     {{/each}}
 }
 
-void runTransaction() {
+void runTransaction(bool firstRun) {
     g_transactionTime = millis();
 
     XOD_TRACE_F("Transaction started, t=");
@@ -92,7 +92,12 @@ void runTransaction() {
           {{/each}}
 
           {{#each inputs }}
-            ctxObj._isInputDirty_{{ pinKey }} = node_{{ nodeId }}.isOutputDirty_{{ fromPinKey }};
+            {{!--
+              // Constants do not store dirtieness. They are never dirty
+              // except the very first run
+            --}}
+            ctxObj._isInputDirty_{{ pinKey }} = {{#if patch.isConstant ~}}
+                firstRun{{else}}node_{{ nodeId }}.isOutputDirty_{{ fromPinKey }}{{/if}};
           {{/each}}
 
             {{ ns patch }}::evaluate(&ctxObj);
@@ -130,9 +135,11 @@ void setup() {
     DEBUG_SERIAL.begin(115200);
 #endif
     XOD_TRACE_FLN("\n\nProgram started");
+
+    xod::runTransaction(true);
 }
 
 void loop() {
     xod::idle();
-    xod::runTransaction();
+    xod::runTransaction(false);
 }
