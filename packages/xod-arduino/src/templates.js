@@ -142,6 +142,14 @@ Handlebars.registerHelper('eachDeferNode', function eachDeferNode(options) {
     .join('\n');
 });
 
+Handlebars.registerHelper('eachNonConstantNode', function eachNonConstantNode(options) {
+  return R.compose(
+    R.join(''),
+    R.map(node => options.fn(node)),
+    R.reject(R.path(['patch', 'isConstant']))
+  )(this.nodes);
+});
+
 // =============================================================================
 //
 // Templates and settings

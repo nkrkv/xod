@@ -45,7 +45,7 @@ void runTransaction() {
     // so no one will recieve values emitted by them.
     // We must evaluate them before everybody else
     // to give them a chance to emit values.
-    {{#eachDeferNode }}
+  {{#eachDeferNode }}
     {
         Storage& node = node_{{ id }};
         if (detail::isTimedOut(&node)) {
@@ -69,10 +69,10 @@ void runTransaction() {
             detail::clearTimeout(&node);
         }
     }
-    {{/eachDeferNode }}
+  {{/eachDeferNode }}
 
     // Evaluate all dirty nodes
-  {{#each nodes}}
+  {{#eachNonConstantNode}}
     { // {{ ns patch }} #{{ id }}
         if (node_{{ id }}.isNodeDirty) {
             {{ns patch }}::ContextObject ctxObj;
@@ -94,7 +94,7 @@ void runTransaction() {
           {{/each}}
         }
     }
-  {{/each}}
+  {{/eachNonConstantNode}}
 
     // Clear dirtieness and timeouts for all nodes and pins
   {{#each nodes }}
