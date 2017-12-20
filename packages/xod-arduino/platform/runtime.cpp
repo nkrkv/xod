@@ -120,6 +120,7 @@ typedef uint32_t NodeId;
 #endif
 
 typedef unsigned long TimeMs;
+typedef uint8_t DirtyFlags;
 
 //----------------------------------------------------------------------------
 // Global variables
@@ -160,8 +161,7 @@ void clearTimeout(NodeT* node) {
 
 template<typename NodeT>
 void clearDirtieness(NodeT* node) {
-    // TODO: clear all pin flags
-    node->isNodeDirty = false;
+    node->dirtyFlags = 0;
     if (isTimedOut(node))
         clearTimeout(node);
 }

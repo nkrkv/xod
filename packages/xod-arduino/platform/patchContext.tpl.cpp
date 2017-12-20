@@ -8,10 +8,16 @@ struct Node {
     {{ cppType type }} output_{{ pinKey }};
   {{/each}}
 
-  {{#each outputs}}
-    bool isOutputDirty_{{ pinKey }} : 1;
-  {{/each}}
-    bool isNodeDirty : 1;
+    union {
+        struct {
+          {{#each outputs}}
+            bool isOutputDirty_{{ pinKey }} : 1;
+          {{/each}}
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
 };
 
 {{#each inputs}}
