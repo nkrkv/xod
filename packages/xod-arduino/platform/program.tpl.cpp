@@ -15,6 +15,7 @@ namespace xod {
 {{#each outputs }}
 {{ decltype type value }} node_{{ ../id }}_output_{{ pinKey }} = {{ cppValue type value }};
 {{/each}}
+{{#unless patch.isConstant}}
 {{ ns patch }}::Node node_{{ id }} = {
     { }, // state
     0, // timeoutAt
@@ -26,13 +27,14 @@ namespace xod {
   {{/each}}
     true // node itself dirty
 };
+{{/unless}}
 {{/each}}
 
 void idle() {
     TimeMs now = millis();
-    {{#each nodes}}
+    {{#eachNonConstantNode}}
     detail::checkTriggerTimeout(&node_{{ id }}, now);
-    {{/each}}
+    {{/eachNonConstantNode}}
 }
 
 void runTransaction(bool firstRun) {
@@ -113,9 +115,9 @@ void runTransaction(bool firstRun) {
   {{/eachNonConstantNode}}
 
     // Clear dirtieness and timeouts for all nodes and pins
-  {{#each nodes }}
+  {{#eachNonConstantNode}}
     detail::clearDirtieness(&node_{{ id }});
-  {{/each }}
+  {{/eachNonConstantNode}}
 
     XOD_TRACE_F("Transaction completed, t=");
     XOD_TRACE_LN(millis());
