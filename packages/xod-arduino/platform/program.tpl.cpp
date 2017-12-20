@@ -45,16 +45,25 @@ void runTransaction() {
   {{#each nodes}}
     { // {{ ns patch }} #{{ id }}
         constexpr NodeId nid = {{ id }};
-        {{ns patch }}::ContextObject ctxObj;
-
-      {{#each inputs }}
-        // {{ json this }}
-        ctxObj._input_{{ pinKey }} = storage_{{ nodeId }}.output_{{ fromPinKey }};
-        ctxObj._isInputDirty_{{ pinKey }} = storage_{{ nodeId }}.isOutputDirty_{{ fromPinKey }};
-      {{/each}}
-
         if (isNodeDirty(nid)) {
+            {{ns patch }}::ContextObject ctxObj;
+            ctxObj._storage = &storage_{{ id }};
+
+          {{#each inputs }}
+            // {{ json this }}
+            ctxObj._input_{{ pinKey }} = storage_{{ nodeId }}.output_{{ fromPinKey }};
+            ctxObj._isInputDirty_{{ pinKey }} = storage_{{ nodeId }}.isOutputDirty_{{ fromPinKey }};
+          {{/each}}
+
             {{ ns patch }}::evaluate(&ctxObj);
+
+            // mark downstream nodes dirty
+          {{#each outputs }}
+            {{#each to}}
+            storage_{{ this }}.isNodeDirty |= storage_{{ ../../id }}.isOutputDirty_{{ ../pinKey }};
+            {{/each}}
+          {{/each}}
+
             if (isTimedOut(nid)) // note [1]
                 clearTimeout(nid);
         }
