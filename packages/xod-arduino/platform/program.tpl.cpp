@@ -78,9 +78,20 @@ void runTransaction() {
             {{ns patch }}::ContextObject ctxObj;
             ctxObj._node = &node_{{ id }};
 
+            // copy data from upstream nodes into context
           {{#each inputs }}
-            // {{ json this }}
-            ctxObj._input_{{ pinKey }} = node_{{ nodeId }}.output_{{ fromPinKey }};
+            {{!--
+              // We refer to node_42.output_FOO as data source in case
+              // of a regular node and directly use node_42_output_VAL
+              // initial value constexpr in case of a constant. It’s
+              // because store no Node structures at the global level
+            --}}
+            ctxObj._input_{{ pinKey }} = node_{{ nodeId }}
+                {{~#if patch.isConstant }}_{{else}}.{{/if~}}
+                output_{{ fromPinKey }};
+          {{/each}}
+
+          {{#each inputs }}
             ctxObj._isInputDirty_{{ pinKey }} = node_{{ nodeId }}.isOutputDirty_{{ fromPinKey }};
           {{/each}}
 
