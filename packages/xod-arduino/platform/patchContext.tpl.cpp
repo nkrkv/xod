@@ -3,6 +3,7 @@
 
 struct Storage {
     State state;
+    TimeMs timeoutAt;
   {{#each outputs}}
     {{ cppType type }} output_{{ pinKey }};
   {{/each}}
