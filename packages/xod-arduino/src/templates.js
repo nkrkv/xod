@@ -135,6 +135,13 @@ Handlebars.registerHelper('cppValue', (type, value) =>
   })(value)
 );
 
+Handlebars.registerHelper('eachDeferNode', function eachDeferNode(options) {
+  return this.nodes
+    .filter(R.path(['patch', 'isDefer']))
+    .map(node => options.fn(node))
+    .join('\n');
+});
+
 // =============================================================================
 //
 // Templates and settings

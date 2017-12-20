@@ -122,20 +122,19 @@ typedef uint32_t NodeId;
 typedef unsigned long TimeMs;
 
 //----------------------------------------------------------------------------
-// Forward declarations
+// Global variables
 //----------------------------------------------------------------------------
 
 // TODO: replace with a compact list
 TimeMs g_schedule[NODE_COUNT] = { 0 };
 
-void clearTimeout(NodeId nid);
-bool isTimedOut(NodeId nid);
+TimeMs g_transactionTime;
 
 //----------------------------------------------------------------------------
 // Engine (private API)
 //----------------------------------------------------------------------------
 
-TimeMs g_transactionTime;
+namespace detail {
 
 // Marks timed out node dirty. Do not reset timeoutAt here to give
 // a chance for a node to get a reasonable result from `isTimedOut`
@@ -148,19 +147,26 @@ void checkTriggerTimeout(StorageT* storage, TimeMs now) {
 }
 
 template<typename StorageT>
-bool isStorageTimedOut(const StorageT& storage) {
+bool isTimedOut(const StorageT& storage) {
     TimeMs t = storage.timeoutAt;
     // TODO: deal with uint32 overflow
     return t && t < transactionTime();
 }
 
 template<typename StorageT>
+void clearTimeout(StorageT* storage) {
+    storage->timeoutAt = 0;
+}
+
+template<typename StorageT>
 void clearDirtieness(StorageT* storage) {
     // TODO: clear all pin flags
     storage->isNodeDirty = false;
-    if (isStorageTimedOut(*storage))
-        storage->timeoutAt = 0;
+    if (isTimedOut(*storage))
+        clearTimeout(storage);
 }
+
+} // namespace detail
 
 //----------------------------------------------------------------------------
 // Public API (can be used by native nodes’ `evaluate` functions)
@@ -177,12 +183,12 @@ void setTimeout(ContextT* ctx, TimeMs timeout) {
 
 template<typename ContextT>
 void clearTimeout(ContextT* ctx) {
-    ctx->_storage->timeoutAt = 0;
+    detail::clearTimeout(*ctx->_storage);
 }
 
 template<typename ContextT>
 bool isTimedOut(const ContextT* ctx) {
-    return isStorageTimedOut(*ctx->_storage);
+    return detail::isTimedOut(*ctx->_storage);
 }
 
 } // namespace xod

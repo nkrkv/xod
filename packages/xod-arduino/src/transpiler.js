@@ -145,6 +145,7 @@ const createTPatches = def(
         Project.normalizePinLabels,
         Project.listOutputPins
       )(patch);
+
       const inputs = R.compose(
         R.map(R.applySpec({
           type: Project.getPinType,
@@ -154,13 +155,20 @@ const createTPatches = def(
         Project.listInputPins
       )(patch);
 
-      return R.merge(names,
+      const isThisIsThat = {
+        isDefer: Project.isDeferNodeType(path),
+        isConstant: Project.isConstantNodeType(path),
+      };
+
+      return R.mergeAll([
+        names,
+        isThisIsThat,
         {
           outputs,
           inputs,
           impl,
         }
-      );
+      ]);
     }),
     R.omit([entryPath]),
     R.indexBy(Project.getPatchPath),

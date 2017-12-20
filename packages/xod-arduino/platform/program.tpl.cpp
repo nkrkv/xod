@@ -31,7 +31,7 @@ namespace xod {
 void idle() {
     TimeMs now = millis();
     {{#each nodes}}
-    checkTriggerTimeout(&storage_{{ id }}, now);
+    detail::checkTriggerTimeout(&storage_{{ id }}, now);
     {{/each}}
 }
 
@@ -45,17 +45,31 @@ void runTransaction() {
     // so no one will recieve values emitted by them.
     // We must evaluate them before everybody else
     // to give them a chance to emit values.
-    /*for (NodeId nid = NODE_COUNT - DEFER_NODE_COUNT; nid < NODE_COUNT; ++nid) {
-        if (isTimedOut(nid)) {
-            evaluateNode(nid);
-            // Clear node dirty flag, so it will evaluate
-            // on "regular" pass only if it has a dirty input.
-            // We must save dirty output flags,
-            // or 'isInputDirty' will not work correctly in "downstream" nodes.
-            g_dirtyFlags[nid] &= ~0x1;
-            clearTimeout(nid);
+    {{#eachDeferNode }}
+    {
+        Storage& storage = storage_{{ id }};
+        if (detail::isTimedOut(&storage)) {
+            storage.isOutputDirty_OUT = true;
+
+            // mark downstream nodes dirty
+          {{#each outputs }}
+            {{#each to}}
+            storage_{{ this }}.isNodeDirty = true;
+            {{/each}}
+          {{/each}}
+
+            // Clear node dirty flag (do not clear output dirieness), so it
+            // will evaluate on the regular pass only if it pushed a new value
+            // again.
+            //
+            // We must save dirty output flags, or `isInputDirty` will not work
+            // correctly in downstream nodes.
+            storage.isNodeDirty = false;
+
+            detail::clearTimeout(&storage);
         }
-    }*/
+    }
+    {{/eachDeferNode }}
 
     // Evaluate all dirty nodes
   {{#each nodes}}
@@ -84,7 +98,7 @@ void runTransaction() {
 
     // Clear dirtieness and timeouts for all nodes and pins
   {{#each nodes }}
-    clearDirtieness(&storage_{{ id }});
+    detail::clearDirtieness(&storage_{{ id }});
   {{/each }}
 
     XOD_TRACE_F("Transaction completed, t=");
