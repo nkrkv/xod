@@ -23,15 +23,20 @@ struct Node {
 };
 
 {{#each inputs}}
-struct input_{{ pinKey }} {
-    using T = {{ cppType type }};
-};
+struct input_{{ pinKey }} { };
 {{/each}}
 {{#each outputs}}
-struct output_{{ pinKey }} {
-    using T = {{ cppType type }};
-};
+struct output_{{ pinKey }} { };
 {{/each}}
+
+template<typename PinT> struct ValueType { using T = void; };
+{{#each inputs}}
+template<> struct ValueType<input_{{ pinKey }}> { using T = {{ cppType type }}; };
+{{/each}}
+{{#each outputs}}
+template<> struct ValueType<output_{{ pinKey }}> { using T = {{ cppType type }}; };
+{{/each}}
+
 
 struct ContextObject {
     Node* _node;
@@ -47,7 +52,7 @@ struct ContextObject {
 
 using Context = ContextObject*;
 
-template<typename PinT> typename PinT::T getValue(Context ctx) {
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
     static_assert(always_false<PinT>::value,
             "Invalid pin descriptor. Expected one of:" \
             "{{#each inputs}} input_{{pinKey}}{{/each}}" \
@@ -55,12 +60,12 @@ template<typename PinT> typename PinT::T getValue(Context ctx) {
 }
 
 {{#each inputs}}
-template<> input_{{ pinKey }}::T getValue<input_{{ pinKey }}>(Context ctx) {
-    return ctx->_input_{{pinKey }};
+template<> {{ cppType type }} getValue<input_{{ pinKey }}>(Context ctx) {
+    return ctx->_input_{{ pinKey }};
 }
 {{/each}}
 {{#each outputs}}
-template<> output_{{ pinKey }}::T getValue<output_{{ pinKey }}>(Context ctx) {
+template<> {{ cppType type }} getValue<output_{{ pinKey }}>(Context ctx) {
     return ctx->_node->output_{{ pinKey }};
 }
 {{/each}}
@@ -77,7 +82,7 @@ template<> bool isInputDirty<input_{{ pinKey }}>(Context ctx) {
 }
 {{/each}}
 
-template<typename OutputT> void emitValue(Context ctx, typename OutputT::T val) {
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
     static_assert(always_false<OutputT>::value,
             "Invalid output descriptor. Expected one of:" \
             "{{#each outputs}} output_{{pinKey}}{{/each}}");
