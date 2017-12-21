@@ -42,6 +42,7 @@ export const TConfig = Model('TConfig', {
 
 const TPatchOutput = Model('TPatchOutput', {
   type: $.String,
+  isDirtyOnBoot: $.Boolean,
   pinKey: $.String,
   value: DataValue,
 });

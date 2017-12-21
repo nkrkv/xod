@@ -25,7 +25,7 @@ namespace xod {
     node_{{ ../id }}_output_{{ pinKey }},
   {{/each}}
   {{#each outputs}}
-    true, // {{ pinKey }} dirty
+    {{ isDirtyOnBoot }}, // {{ pinKey }} dirty
   {{/each}}
     true // node itself dirty
 };

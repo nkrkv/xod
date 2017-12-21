@@ -143,6 +143,11 @@ const createTPatches = def(
       const outputs = R.compose(
         R.map(R.applySpec({
           type: Project.getPinType,
+          isDirtyOnBoot: R.compose(
+            R.not,
+            R.equals(Project.PIN_TYPE.PULSE),
+            Project.getPinType
+          ),
           pinKey: Project.getPinLabel,
           value: R.compose(
             Project.defaultValueOfType,
