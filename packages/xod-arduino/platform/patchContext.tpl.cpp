@@ -48,7 +48,10 @@ struct ContextObject {
 using Context = ContextObject*;
 
 template<typename PinT> typename PinT::T getValue(Context ctx) {
-    // TODO: throw compile error
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            "{{#each inputs}} input_{{pinKey}}{{/each}}" \
+            "{{#each outputs}} output_{{pinKey}}{{/each}}");
 }
 
 {{#each inputs}}
@@ -63,7 +66,9 @@ template<> output_{{ pinKey }}::T getValue<output_{{ pinKey }}>(Context ctx) {
 {{/each}}
 
 template<typename InputT> bool isInputDirty(Context ctx) {
-    // TODO: throw compile error
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "{{#each inputs}} input_{{pinKey}}{{/each}}");
 }
 
 {{#each inputs}}
@@ -73,7 +78,9 @@ template<> bool isInputDirty<input_{{ pinKey }}>(Context ctx) {
 {{/each}}
 
 template<typename OutputT> void emitValue(Context ctx, typename OutputT::T val) {
-    // TODO: throw compile error
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            "{{#each outputs}} output_{{pinKey}}{{/each}}");
 }
 
 {{#each outputs}}
