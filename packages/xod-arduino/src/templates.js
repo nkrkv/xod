@@ -158,6 +158,14 @@ Handlebars.registerHelper('eachNodeUsingTimeouts', function eachNodeUsingTimeout
   )(this.nodes);
 });
 
+Handlebars.registerHelper('eachLinkedInput', function eachLinkedInput(options) {
+  return R.compose(
+    R.join(''),
+    R.map(node => options.fn(node)),
+    R.filter(R.has('nodeId'))
+  )(this.inputs);
+});
+
 // =============================================================================
 //
 // Templates and settings

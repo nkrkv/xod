@@ -182,12 +182,12 @@ void setTimeout(ContextT* ctx, TimeMs timeout) {
 
 template<typename ContextT>
 void clearTimeout(ContextT* ctx) {
-    detail::clearTimeout(*ctx->_node);
+    detail::clearTimeout(ctx->_node);
 }
 
 template<typename ContextT>
 bool isTimedOut(const ContextT* ctx) {
-    return detail::isTimedOut(*ctx->_node);
+    return detail::isTimedOut(ctx->_node);
 }
 
 } // namespace xod

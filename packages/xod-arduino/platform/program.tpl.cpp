@@ -83,7 +83,7 @@ void runTransaction(bool firstRun) {
             ctxObj._node = &node_{{ id }};
 
             // copy data from upstream nodes into context
-          {{#each inputs }}
+          {{#eachLinkedInput}}
             {{!--
               // We refer to node_42.output_FOO as data source in case
               // of a regular node and directly use node_42_output_VAL
@@ -93,16 +93,16 @@ void runTransaction(bool firstRun) {
             ctxObj._input_{{ pinKey }} = node_{{ nodeId }}
                 {{~#if patch.isConstant }}_{{else}}.{{/if~}}
                 output_{{ fromPinKey }};
-          {{/each}}
+          {{/eachLinkedInput}}
 
-          {{#each inputs }}
+          {{#eachLinkedInput}}
             {{!--
               // Constants do not store dirtieness. They are never dirty
               // except the very first run
             --}}
             ctxObj._isInputDirty_{{ pinKey }} = {{#if patch.isConstant ~}}
                 firstRun{{else}}node_{{ nodeId }}.isOutputDirty_{{ fromPinKey }}{{/if}};
-          {{/each}}
+          {{/eachLinkedInput}}
 
             {{ ns patch }}::evaluate(&ctxObj);
 
