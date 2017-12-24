@@ -12,9 +12,9 @@ struct Node {
 
     union {
         struct {
-          {{#each outputs}}
+          {{#eachDirtyable outputs}}
             bool isOutputDirty_{{ pinKey }} : 1;
-          {{/each}}
+          {{/eachDirtyable}}
             bool isNodeDirty : 1;
         };
 
@@ -45,9 +45,9 @@ struct ContextObject {
     {{ cppType type }} _input_{{ pinKey }};
   {{/each}}
 
-  {{#each inputs}}
+  {{#eachDirtyable inputs}}
     bool _isInputDirty_{{ pinKey }};
-  {{/each}}
+  {{/eachDirtyable}}
 };
 
 using Context = ContextObject*;
@@ -73,14 +73,14 @@ template<> {{ cppType type }} getValue<output_{{ pinKey }}>(Context ctx) {
 template<typename InputT> bool isInputDirty(Context ctx) {
     static_assert(always_false<InputT>::value,
             "Invalid input descriptor. Expected one of:" \
-            "{{#each inputs}} input_{{pinKey}}{{/each}}");
+            "{{#eachDirtyable inputs}} input_{{pinKey}}{{/eachDirtyable}}");
 }
 
-{{#each inputs}}
+{{#eachDirtyable inputs}}
 template<> bool isInputDirty<input_{{ pinKey }}>(Context ctx) {
     return ctx->_isInputDirty_{{ pinKey }};
 }
-{{/each}}
+{{/eachDirtyable}}
 
 template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
     static_assert(always_false<OutputT>::value,
@@ -91,7 +91,9 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 {{#each outputs}}
 template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} val) {
     ctx->_node->output_{{ pinKey }} = val;
+  {{#if isDirtyable ~}}
     ctx->_node->isOutputDirty_{{ pinKey }} = true;
+  {{~/if}}
 }
 {{/each}}
 

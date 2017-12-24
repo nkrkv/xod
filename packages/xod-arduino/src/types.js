@@ -42,13 +42,16 @@ export const TConfig = Model('TConfig', {
 
 const TPatchOutput = Model('TPatchOutput', {
   type: $.String,
-  isDirtyOnBoot: $.Boolean,
   pinKey: $.String,
   value: DataValue,
+  isDirtyable: $.Boolean,
+  isDirtyOnBoot: $.Boolean,
 });
 
 const TPatchInput = Model('TPatchInput', {
+  type: $.String,
   pinKey: $.String,
+  isDirtyable: $.Boolean,
 });
 
 export const TPatch = Model('TPatch', {

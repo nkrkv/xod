@@ -24,9 +24,9 @@ namespace xod {
   {{#each outputs}}
     node_{{ ../id }}_output_{{ pinKey }},
   {{/each}}
-  {{#each outputs}}
+  {{#eachDirtyable outputs}}
     {{ isDirtyOnBoot }}, // {{ pinKey }} dirty
-  {{/each}}
+  {{/eachDirtyable}}
     true // node itself dirty
 };
 {{/unless}}
@@ -99,18 +99,29 @@ void runTransaction(bool firstRun) {
             {{!--
               // Constants do not store dirtieness. They are never dirty
               // except the very first run
+              //
+              // TODO: do not copy upstream dirtieness if the upstream
+              // pin is not dirtyable
             --}}
+            {{#if isDirtyable}}
             ctxObj._isInputDirty_{{ pinKey }} = {{#if patch.isConstant ~}}
                 firstRun{{else}}node_{{ nodeId }}.isOutputDirty_{{ fromPinKey }}{{/if}};
+            {{/if}}
           {{/eachLinkedInput}}
 
             {{ ns patch }}::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
           {{#each outputs }}
+            {{#if isDirtyable ~}}
             {{#each to}}
             node_{{ this }}.isNodeDirty |= node_{{ ../../id }}.isOutputDirty_{{ ../pinKey }};
             {{/each}}
+            {{else}}
+            {{#each to}}
+            node_{{ this }}.isNodeDirty = true;
+            {{/each}}
+            {{/if}}
           {{/each}}
         }
     }

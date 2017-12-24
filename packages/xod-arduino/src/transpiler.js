@@ -128,6 +128,11 @@ const usesTimeouts = def(
   R.test(/#\s*pragma\s+XOD\s+use\s+setTimeout\s*(\/(\/|\*).*)?$/m)
 );
 
+// Checks for `#pragma XOD disable dirty values` directive in source
+const areDirtyValuesDisabled = def(
+  'usesTimeouts :: String -> Boolean',
+  R.test(/#\s*pragma\s+XOD\s+disable\s+dirty\s+values\s*(\/(\/|\*).*)?$/m)
+);
 
 const createTPatches = def(
   'createTPatches :: PatchPath -> Project -> [TPatch]',
@@ -140,17 +145,23 @@ const createTPatches = def(
         Project.getImpl(patch)
       );
 
+      const dirtyValuesEnabled = !areDirtyValuesDisabled(impl);
+      const isDirtyable = pin =>
+        dirtyValuesEnabled ||
+          Project.getPinType(pin) === Project.PIN_TYPE.PULSE;
+
       const outputs = R.compose(
         R.map(R.applySpec({
           type: Project.getPinType,
-          isDirtyOnBoot: R.compose(
-            R.not,
-            R.equals(Project.PIN_TYPE.PULSE),
-            Project.getPinType
-          ),
           pinKey: Project.getPinLabel,
           value: R.compose(
             Project.defaultValueOfType,
+            Project.getPinType
+          ),
+          isDirtyable,
+          isDirtyOnBoot: R.compose(
+            R.not,
+            R.equals(Project.PIN_TYPE.PULSE),
             Project.getPinType
           ),
         })),
@@ -162,6 +173,7 @@ const createTPatches = def(
         R.map(R.applySpec({
           type: Project.getPinType,
           pinKey: Project.getPinLabel,
+          isDirtyable,
         })),
         Project.normalizePinLabels,
         Project.listInputPins

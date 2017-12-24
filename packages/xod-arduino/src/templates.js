@@ -166,6 +166,14 @@ Handlebars.registerHelper('eachLinkedInput', function eachLinkedInput(options) {
   )(this.inputs);
 });
 
+Handlebars.registerHelper('eachDirtyable', (pins, block) =>
+  R.compose(
+    R.join(''),
+    R.map(pin => block.fn(pin)),
+    R.filter(R.prop('isDirtyable'))
+  )(pins)
+);
+
 // =============================================================================
 //
 // Templates and settings
