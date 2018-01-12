@@ -206,34 +206,62 @@ describe('Timeouts', () => {
 });
 
 describe('Dirtieness', () => {
-  it('enabled by default', () => {
+  it('enabled on outputs and disabled on inputs by default', () => {
     const code = `
       void evaluate(Context ctx) {
       }
       `;
 
+    assert.equal(isDirtienessEnabled(code, 'input_FOO'), false);
+    assert.equal(isDirtienessEnabled(code, 'output_BAR'), true);
+  });
+
+  it('auto-enabled on inputs when found in code', () => {
+    const code = `
+      void evaluate(Context ctx) {
+        bool isDirtyFoo = isInputDirty<input_FOO>(ctx);
+        bool isDirtyBar = isInputDirty<   input_BAR /* hello */>(ctx);
+      }
+      `;
+
     assert.equal(isDirtienessEnabled(code, 'input_FOO'), true);
+    assert.equal(isDirtienessEnabled(code, 'input_BAR'), true);
   });
 
   it('can be disabled for all pins at once', () => {
     const code = `
       #pragma XOD dirtieness disable
       void evaluate(Context ctx) {
+        bool isDirtyFoo = isInputDirty<input_FOO>(ctx);
       }
       `;
 
     assert.equal(isDirtienessEnabled(code, 'input_FOO'), false);
+    assert.equal(isDirtienessEnabled(code, 'output_BAR'), false);
   });
 
-  it('can be disabled individually', () => {
+  it('can be enabled for all pins at once', () => {
     const code = `
-      #pragma XOD dirtieness disable input_FOO
+      #pragma XOD dirtieness enable
       void evaluate(Context ctx) {
       }
       `;
 
-    assert.equal(isDirtienessEnabled(code, 'input_FOO'), false);
-    assert.equal(isDirtienessEnabled(code, 'input_BAR'), true);
+    assert.equal(isDirtienessEnabled(code, 'input_FOO'), true);
+    assert.equal(isDirtienessEnabled(code, 'output_BAR'), true);
+  });
+
+  it('can be controlled individually', () => {
+    const code = `
+      #pragma XOD dirtieness enable input_FOO
+      #pragma XOD dirtieness disable output_QUX
+      void evaluate(Context ctx) {
+      }
+      `;
+
+    assert.equal(isDirtienessEnabled(code, 'input_FOO'), true);
+    assert.equal(isDirtienessEnabled(code, 'input_BAR'), false);
+    assert.equal(isDirtienessEnabled(code, 'output_QUX'), false);
   });
 
   it('supports cascading', () => {

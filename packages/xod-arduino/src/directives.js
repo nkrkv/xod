@@ -1,7 +1,7 @@
 // @flow
 
 import * as R from 'ramda';
-import type { UnaryFn, CurriedFunction2 } from 'ramda';
+import type { UnaryFn, CurriedFunction2, CurriedFunction3 } from 'ramda';
 
 import * as XF from 'xod-func-tools';
 
@@ -44,9 +44,13 @@ const findXodPragmas: UnaryFn<CppCode, Pragmas> =
 
 const doesReferSymbol: CurriedFunction2<string, CppCode, boolean> =
   R.curry((symbol, code: CppCode) => R.compose(
-    R.not,
-    R.isEmpty,
-    R.match(new RegExp(`\\b${symbol}\\b`)),
+    R.test(new RegExp(`\\b${symbol}\\b`)),
+    stripCppComments
+  )(code));
+
+const doesReferTemplateSymbol: CurriedFunction3<string, string, CppCode, boolean> =
+  R.curry((symbol, templateArg, code: CppCode) => R.compose(
+    R.test(new RegExp(`\\b${symbol}\\s*\\<\\s*${templateArg}\\s*\\>`)),
     stripCppComments
   )(code));
 
@@ -86,6 +90,9 @@ const isDirtienessRelatedTo: CurriedFunction2<string, PragmaTokens, boolean> =
     nthToken(2),
   )(pragma));
 
+const isOutput: UnaryFn<string, boolean> =
+  R.test(/^output_/);
+
 export const areTimeoutsEnabled: UnaryFn<CppCode, boolean> =
   code => R.compose(
     endisToBoolean(doesReferSymbol('setTimeout', code)),
@@ -99,7 +106,8 @@ export const isDirtienessEnabled: CurriedFunction2<CppCode, string, boolean> =
         (isDirtienessRelatedTo(identifier, pragma)
           ? endisToBoolean(acc, nthToken(1, pragma))
           : acc),
-      true /* dirtieness enabled by default */
+      isOutput(identifier) || /* dirtieness enabled on outputs by default */
+        doesReferTemplateSymbol('isInputDirty', identifier, code)
     ),
     filterPragmasByFeature('dirtieness'),
     findXodPragmas,
