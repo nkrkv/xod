@@ -1,12 +1,9 @@
 
 import { assert } from 'chai';
 import {
-  forUnitTests,
-  areTimeoutsEnabled,
-  isDirtienessEnabled,
+  stripCppComments,
+  findXodPragmas,
 } from '../src/directives';
-
-const { stripCppComments, findXodPragmas } = forUnitTests;
 
 describe('Stripping C++ comments', () => {
   function assertStrippedEqual(code, expected) {

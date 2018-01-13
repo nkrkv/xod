@@ -1,11 +1,14 @@
 .idea/
 dist/
+packages/*/lib/
 .tmp/
 doc/_build
 *.orig
 .dir-locals.el
 npm-debug.log
 lerna-debug.log
+yarn-error.log
+.merlin
 
 node_modules/
 

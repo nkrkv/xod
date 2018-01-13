@@ -3,7 +3,9 @@
   "version": "0.17.0",
   "description": "XOD project: Arduino transpiler",
   "scripts": {
-    "build": "babel src/ -d dist/ --source-maps",
+    "build:js": "babel src/ -d dist/ --source-maps",
+    "build:re": "bsb -make-world",
+    "build": "yarn build:js && yarn build:re",
     "dev": "yarn run build --watch",
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
     "test": "BABEL_DISABLE_CACHE=1 mocha test/**/*.spec.js",
@@ -15,6 +17,7 @@
   "license": "AGPL-3.0",
   "main": "dist/index.js",
   "dependencies": {
+    "@glennsl/bs-revamp": "^0.1.1",
     "handlebars": "^4.0.6",
     "hm-def": "^0.2.1",
     "ramda": "^0.24.1",
@@ -25,6 +28,7 @@
   },
   "devDependencies": {
     "babel-plugin-inline-import": "^2.0.4",
+    "bs-platform": "^2.1.0",
     "chai": "^3.5.0",
     "dirty-chai": "^1.2.2",
     "xod-fs": "^0.17.0"

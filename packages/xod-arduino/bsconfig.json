@@ -1,0 +1,20 @@
+// This is the configuration file used by BuckleScript's build system bsb. Its documentation lives here: http://bucklescript.github.io/bucklescript/docson/#build-schema.json
+// BuckleScript comes with its own parser for bsconfig.json, which is normal JSON, with the extra support of comments and trailing commas.
+{
+  "name": "xod-arduino",
+  "version": "0.17.0",
+  "sources": [
+    "src"
+  ],
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": false
+  },
+  "suffix": ".js",
+  "bs-dependencies": [
+    "@glennsl/rebase",
+    "@glennsl/bs-revamp"
+  ],
+  "namespace": true,
+  "refmt": 3
+}
