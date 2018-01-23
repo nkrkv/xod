@@ -1,15 +1,23 @@
 
 import { assert } from 'chai';
-import {
+/*import {
   forUnitTests,
   areTimeoutsEnabled,
   isNodeIdEnabled,
   isDirtienessEnabled,
 } from '../src/directives';
 
-const { stripCppComments, findXodPragmas } = forUnitTests;
+const { stripCppComments, findXodPragmas } = forUnitTests;*/
 
-describe('Stripping C++ comments', () => {
+import {
+  isDirtienessEnabled,
+  isNodeIdEnabled,
+  areTimeoutsEnabled,
+  stripCppComments,
+  findXodPragmas,
+} from '../src/directives';
+
+describe.only('Stripping C++ comments', () => {
   function assertStrippedEqual(code, expected) {
     assert.strictEqual(
       stripCppComments(code),
@@ -97,7 +105,7 @@ describe('Stripping C++ comments', () => {
   });
 });
 
-describe('Search for #pragma XOD', () => {
+describe.only('Search for #pragma XOD', () => {
   function assertPragmasFound(code, expected) {
     assert.deepEqual(findXodPragmas(code), expected);
   }
@@ -158,7 +166,7 @@ describe('Search for #pragma XOD', () => {
   });
 });
 
-describe('Timeouts', () => {
+describe.only('Timeouts', () => {
   it('are disabled by default', () => {
     const code = `
       void setup() {
@@ -206,7 +214,7 @@ describe('Timeouts', () => {
   });
 });
 
-describe('Node ID', () => {
+describe.only('Node ID', () => {
   it('is disabled by default', () => {
     const code = `
       void evaluate(Context ctx) {
@@ -251,7 +259,7 @@ describe('Node ID', () => {
   });
 });
 
-describe('Dirtieness', () => {
+describe.only('Dirtieness', () => {
   it('enabled on outputs and disabled on inputs by default', () => {
     const code = `
       void evaluate(Context ctx) {
