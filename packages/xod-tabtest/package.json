@@ -1,0 +1,16 @@
+{
+  "name": "xod-tabtest",
+  "version": "0.19.2",
+  "scripts": {
+    "refmt": "refmt --in-place src/*.re src/*.rei",
+    "build": "bsb -make-world"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "author": "XOD",
+  "license": "AGPL-3.0",
+  "devDependencies": {
+    "bs-platform": "^2.2.2"
+  }
+}
