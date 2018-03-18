@@ -8,21 +8,8 @@ Loader.loadProject(["../../workspace"], "../../workspace/blink")
 |> Js.Promise.then_(project =>
      createTestPatch("xod/core/not")
      |> Project.assocPatch("@/test", _, project)
-     |> (
-       res =>
-         (
-           switch (res) {
-           | Ok(project') =>
-             /* TODO: chain result */
-             switch (Transpiler.transpile(project', "@/test")) {
-             | Ok(code) => Js.Result.Ok(code)
-             | Error(err) => Js.Result.Error(err)
-             }
-           | Error(err) => Js.Result.Error(err)
-           }
-         )
-         |> Js.Promise.resolve
-     )
+     |> Resulty.chain(Transpiler.transpile(_, "@/test"))
+     |> Js.Promise.resolve
    )
 |> Js.Promise.then_(result =>
      switch (result) {
