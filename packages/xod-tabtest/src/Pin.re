@@ -14,6 +14,11 @@ type direction =
   | Input
   | Output;
 
+module FFI = {
+  [@bs.module "xod-project"]
+  external normalizeLabels : array(t) => array(t) = "normalizePinLabels";
+};
+
 let getDirection = (pin: t) : direction => {
   let dir = pin##direction;
   switch (pin##direction) {
@@ -25,3 +30,6 @@ let getDirection = (pin: t) : direction => {
     )
   };
 };
+
+let normalizeLabels = pins =>
+  pins |> Belt.List.toArray |> FFI.normalizeLabels |> Belt.List.ofArray;

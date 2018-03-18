@@ -5,3 +5,5 @@ type direction =
   | Output;
 
 let getDirection: t => direction;
+
+let normalizeLabels: list(t) => list(t);

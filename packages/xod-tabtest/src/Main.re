@@ -11,9 +11,9 @@ Loader.loadProject(["../../workspace"], "../../workspace/blink")
        switch (project |> Project.getPatchByPath(patchPathToTest)) {
        | Some(patch) =>
          Js.log("Inputs:");
-         Js.log(Patch.listInputPins(patch));
+         Js.log(Patch.listInputPins(patch) |> Pin.normalizeLabels);
          Js.log("Outputs:");
-         Js.log(Patch.listOutputPins(patch));
+         Js.log(Patch.listOutputPins(patch) |> Pin.normalizeLabels);
          true;
        | None =>
          Js.log("Patch path not found");
