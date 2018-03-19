@@ -1,39 +1,50 @@
-let typeToProbeName = (tp: Pin.dataType) : string =>
-  switch (tp) {
-  | Pulse => "probe-pulse"
-  | Boolean => "probe-boolean"
-  | Number => "probe-number"
-  | String => "probe-string"
-  };
-
-let createProbe = pin =>
-  Node.create(
-    Node.origin,
-    "xod/tabtest/" ++ (pin |> Pin.getType |> typeToProbeName),
-  );
-
-let getProbePinKeyExn = (node, project) => {
-  let pt = Node.getType(node);
-  let patch =
-    switch (Project.getPatchByNode(node, project)) {
-    | Some(patch') => patch'
-    | None => Js.Exn.raiseError("Probe has unexpected type " ++ pt)
-    };
-  let pin =
-    Patch.findPinByLabel(
-      patch,
-      "VAL",
-      ~normalize=true,
-      ~direction=Some(Pin.Output),
+module Probe = {
+  /*
+   * Returns full patch path for the probe of a given type. The probe patch
+   * nodes are stocked up in the `workspace` inside the package
+   */
+  let typeToPatchPath = (tp: Pin.dataType) : string =>
+    "xod/tabtest/"
+    ++ (
+      switch (tp) {
+      | Pulse => "probe-pulse"
+      | Boolean => "probe-boolean"
+      | Number => "probe-number"
+      | String => "probe-string"
+      }
     );
-  switch (pin) {
-  | Some(pin) => pin |> Pin.getKey
-  | None =>
-    Js.Exn.raiseError(
-      "Expected all probes to have the only output labeled 'VAL'. "
-      ++ pt
-      ++ " violates the rule",
-    )
+  /*
+   * Creates a new probe node matching the type of pin provided
+   */
+  let create = pin =>
+    Node.create(Node.origin, pin |> Pin.getType |> typeToPatchPath);
+  /*
+   * Returns a pin key of the only output conventionally labeled `VAL` for a
+   * probe node.
+   */
+  let getPinKeyExn = (node, project) => {
+    let pt = Node.getType(node);
+    let patch =
+      switch (Project.getPatchByNode(node, project)) {
+      | Some(patch') => patch'
+      | None => Js.Exn.raiseError("Probe has unexpected type " ++ pt)
+      };
+    let pin =
+      Patch.findPinByLabel(
+        patch,
+        "VAL",
+        ~normalize=true,
+        ~direction=Some(Pin.Output),
+      );
+    switch (pin) {
+    | Some(pin) => pin |> Pin.getKey
+    | None =>
+      Js.Exn.raiseError(
+        "Expected all probes to have the only output labeled 'VAL'. "
+        ++ pt
+        ++ " violates the rule",
+      )
+    };
   };
 };
 
@@ -53,10 +64,10 @@ let createTestPatch =
     Patch.listInputPins(patchToTest)
     |> Pin.normalizeLabels
     /*
-       For each input pin of a node under the test, create a new probe node
-       and link its output `VAL` to that pin.
-    */
-    |> Belt.List.map(_, pin => (pin, pin |> createProbe))
+        For each input pin of a node under the test, create a new probe node
+        and link its output `VAL` to that pin.
+     */
+    |> Belt.List.map(_, pin => (pin, pin |> Probe.create))
     |> Belt.List.reduce(
          _, Js.Result.Ok(draftPatch), (patchAcc, (targPin, probe)) =>
          patchAcc
@@ -65,7 +76,7 @@ let createTestPatch =
                 Link.create(
                   Pin.getKey(targPin),
                   theNodeId,
-                  getProbePinKeyExn(probe, project),
+                  Probe.getPinKeyExn(probe, project),
                   Node.getId(probe),
                 );
               patch |> Patch.assocNode(probe) |> Patch.assocLink(link);
