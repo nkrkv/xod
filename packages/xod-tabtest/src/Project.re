@@ -14,3 +14,6 @@ let assocPatch = (path, patch, project) =>
 
 let getPatchByPath = (path, project) =>
   FFI.getPatchByPath(path, project) |> Maybe.toOption;
+
+let getPatchByNode = (node, project) =>
+  getPatchByPath(node |> Node.getType, project);

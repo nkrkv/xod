@@ -1,6 +1,8 @@
+type key = string;
+
 type t = {
   .
-  "key": string,
+  "key": key,
   "direction": string,
   "label": string,
   "_type": string,
@@ -40,6 +42,8 @@ let getDirection = (pin: t) : direction => {
 let normalizeLabels = pins =>
   pins |> Belt.List.toArray |> FFI.normalizeLabels |> Belt.List.ofArray;
 
+let getKey = pin => pin##key;
+
 let getType = (pin: t) : dataType => {
   let tp = pin##_type;
   switch (tp) {
@@ -53,3 +57,5 @@ let getType = (pin: t) : dataType => {
     )
   };
 };
+
+let getLabel = pin => pin##label;
