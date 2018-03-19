@@ -3,12 +3,18 @@ type t = {
   "key": string,
   "direction": string,
   "label": string,
-  "type": string,
+  "_type": string,
   "defaultValue": string,
   "order": int,
   "description": string,
   "isBindable": bool,
 };
+
+type dataType =
+  | Pulse
+  | Boolean
+  | Number
+  | String;
 
 type direction =
   | Input
@@ -21,7 +27,7 @@ module FFI = {
 
 let getDirection = (pin: t) : direction => {
   let dir = pin##direction;
-  switch (pin##direction) {
+  switch (dir) {
   | "input" => Input
   | "output" => Output
   | _ =>
@@ -33,3 +39,17 @@ let getDirection = (pin: t) : direction => {
 
 let normalizeLabels = pins =>
   pins |> Belt.List.toArray |> FFI.normalizeLabels |> Belt.List.ofArray;
+
+let getType = (pin: t) : dataType => {
+  let tp = pin##_type;
+  switch (tp) {
+  | "pulse" => Pulse
+  | "boolean" => Boolean
+  | "number" => Number
+  | "string" => String
+  | _ =>
+    Js.Exn.raiseTypeError(
+      {j|Pin type should be "pulse", "boolean", "number", etc, got "$tp"|j},
+    )
+  };
+};

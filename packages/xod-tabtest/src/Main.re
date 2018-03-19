@@ -1,5 +1,16 @@
-let createTestInputNode = _pin =>
-  Node.create(Node.origin, "xod/tabtest/input-number");
+let typeToProbeName = (tp: Pin.dataType) : string =>
+  switch (tp) {
+  | Pulse => "probe-pulse"
+  | Boolean => "probe-boolean"
+  | Number => "probe-number"
+  | String => "probe-string"
+  };
+
+let createTestInputNode = pin =>
+  Node.create(
+    Node.origin,
+    "xod/tabtest/" ++ (pin |> Pin.getType |> typeToProbeName),
+  );
 
 /* TODO: smarter errors */
 let newError = (_message: string) : Js.Exn.t => [%bs.raw "new Error()"];
@@ -26,7 +37,7 @@ let createTestPatch =
 /* TODO: create a new project rather than loading the `blink` */
 Loader.loadProject(["../../workspace", "workspace"], "../../workspace/blink")
 |> Js.Promise.then_(project => {
-     let patchPathToTest = "xod/core/not";
+     let patchPathToTest = "xod/core/if-else";
      createTestPatch(project, patchPathToTest)
      |> Resulty.chain(Project.assocPatch("@/test", _, project))
      |> Resulty.chain(Transpiler.transpile(_, "@/test"))
