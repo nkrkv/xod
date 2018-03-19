@@ -14,6 +14,13 @@ external _assocLink : (Link.t, t) => Either.t(Js.Exn.t, t) = "assocLink";
 
 let assocLink = (link, patch) => _assocLink(link, patch) |> Either.toResult;
 
+let assocLinkExn = (link, patch) =>
+  switch (assocLink(link, patch)) {
+  | Ok(patch') => patch'
+  | Error(err) =>
+    Js.Exn.raiseError(err |> Js.Exn.message |> Js.Option.getWithDefault(""))
+  };
+
 let listPins = patch => FFI.listPins(patch) |> Belt.List.ofArray;
 
 let listInputPins = patch =>

@@ -1,3 +1,7 @@
+/*
+ * A probe is a node used later to inject values into a node under the test.
+ * Kind of terminal, but for tests.
+ */
 module Probe = {
   /*
    * Returns full patch path for the probe of a given type. The probe patch
@@ -51,37 +55,69 @@ module Probe = {
 /* TODO: smarter errors */
 let newError = (_message: string) : Js.Exn.t => [%bs.raw "new Error()"];
 
-let createTestPatch =
-    (project, patchPathToTest)
-    : Js.Result.t(Patch.t, Js.Exn.t) => {
-  let pptt = patchPathToTest;
-  let theNode = Node.create(Node.origin, pptt);
-  let theNodeId = Node.getId(theNode);
-  let draftPatch = Patch.create() |> Patch.assocNode(theNode);
-  switch (project |> Project.getPatchByPath(pptt)) {
-  | None => Error(newError({j|Patch $pptt not found|j}))
-  | Some(patchToTest) =>
-    Patch.listInputPins(patchToTest)
-    |> Pin.normalizeLabels
-    /*
-        For each input pin of a node under the test, create a new probe node
-        and link its output `VAL` to that pin.
-     */
-    |> Belt.List.map(_, pin => (pin, pin |> Probe.create))
-    |> Belt.List.reduce(
-         _, Js.Result.Ok(draftPatch), (patchAcc, (targPin, probe)) =>
-         patchAcc
-         |> Resulty.chain(patch => {
-              let link =
-                Link.create(
-                  Pin.getKey(targPin),
-                  theNodeId,
-                  Probe.getPinKeyExn(probe, project),
-                  Node.getId(probe),
-                );
-              patch |> Patch.assocNode(probe) |> Patch.assocLink(link);
-            })
-       )
+module Suite = {
+  type t = {
+    patch: Patch.t,
+    /* Maps node ids to symbolic names.
+         For probes they like "probe_XYZ", where XYZ is the label of
+         corresponding input.  The central node maps to "theNode".
+       */
+    symbolMap: Belt.Map.String.t(string),
+  };
+  /*
+   * Creates a new suite for the project provided with the specified
+   * node instance to test. The suite node is *not* associated to the
+   * project automatically.
+   */
+  let create = (project, patchPathToTest) : Js.Result.t(t, Js.Exn.t) => {
+    let pptt = patchPathToTest;
+    let theNode = Node.create(Node.origin, pptt);
+    let theNodeId = Node.getId(theNode);
+    let draftSuite: t = {
+      patch: Patch.create() |> Patch.assocNode(theNode),
+      symbolMap:
+        Belt.Map.String.empty |> Belt.Map.String.set(_, theNodeId, "theNode"),
+    };
+    switch (project |> Project.getPatchByPath(pptt)) {
+    | None => Error(newError({j|Patch $pptt not found|j}))
+    | Some(patchToTest) =>
+      Ok(
+        Patch.listInputPins(patchToTest)
+        |> Pin.normalizeLabels
+        /*
+            For each input pin of a node under the test, create a new probe node
+            and link its output `VAL` to that pin.
+         */
+        |> Belt.List.map(_, pin => (pin, pin |> Probe.create))
+        |> Belt.List.reduce(
+             _,
+             draftSuite,
+             (suite, (targPin, probe)) => {
+               let probeId = Node.getId(probe);
+               let link =
+                 Link.create(
+                   Pin.getKey(targPin),
+                   theNodeId,
+                   Probe.getPinKeyExn(probe, project),
+                   probeId,
+                 );
+               {
+                 patch:
+                   suite.patch
+                   |> Patch.assocNode(probe)
+                   |> Patch.assocLinkExn(link),
+                 symbolMap:
+                   suite.symbolMap
+                   |> Belt.Map.String.set(
+                        _,
+                        probeId,
+                        "probe_" ++ Pin.getLabel(targPin),
+                      ),
+               };
+             },
+           ) /* reduce */
+      ) /* OK */
+    };
   };
 };
 
@@ -89,7 +125,12 @@ let createTestPatch =
 Loader.loadProject(["../../workspace", "workspace"], "../../workspace/blink")
 |> Js.Promise.then_(project => {
      let patchPathToTest = "xod/core/if-else";
-     createTestPatch(project, patchPathToTest)
+     Suite.create(project, patchPathToTest)
+     |> Resulty.map((suite: Suite.t) => {
+          Js.log("Symbol map");
+          Js.log(suite.symbolMap |> Belt.Map.String.toArray);
+          suite.patch;
+        })
      |> Resulty.chain(Project.assocPatch("@/test", _, project))
      |> Resulty.chain(Transpiler.transpile(_, "@/test"))
      |> Js.Promise.resolve;

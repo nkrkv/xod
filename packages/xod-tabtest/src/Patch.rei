@@ -6,6 +6,8 @@ let assocNode: (Node.t, t) => t;
 
 let assocLink: (Link.t, t) => Js.Result.t(t, Js.Exn.t);
 
+let assocLinkExn: (Link.t, t) => t;
+
 let listPins: t => list(Pin.t);
 
 let listInputPins: t => list(Pin.t);
