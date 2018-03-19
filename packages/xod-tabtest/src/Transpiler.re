@@ -2,16 +2,31 @@ module TProject = {
   type t;
 };
 
-module Js = {
-  [@bs.module "xod-arduino"]
-  external transformProject :
-    (Project.t, string) => Either.t(Js.Exn.t, TProject.t) =
-    "transformProject";
-  [@bs.module "xod-arduino"]
-  external transpile : TProject.t => string = "transpile";
+type program = {
+  code: string,
+  nodeIdMap: Belt.Map.String.t(string),
 };
 
-let transpile = (project, patchPath) =>
-  Js.transformProject(project, patchPath)
+[@bs.module "xod-arduino"]
+external _transformProject :
+  (Project.t, string) => Either.t(Js.Exn.t, TProject.t) =
+  "transformProject";
+
+[@bs.module "xod-arduino"]
+external _transpile : TProject.t => string = "transpile";
+
+[@bs.module "xod-arduino"]
+external _getNodeIdsMap : TProject.t => Js.Dict.t(string) = "getNodeIdsMap";
+
+let transpile = (project, patchPath) : Js.Result.t(program, Js.Exn.t) =>
+  _transformProject(project, patchPath)
   |> Either.toResult
-  |> Resulty.map(Js.transpile);
+  |> Resulty.map(tProject =>
+       {
+         code: _transpile(tProject),
+         nodeIdMap:
+           _getNodeIdsMap(tProject)
+           |> Js.Dict.entries
+           |> Belt.Map.String.ofArray,
+       }
+     );

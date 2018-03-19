@@ -94,12 +94,14 @@ Loader.loadProject(["../../workspace", "workspace"], "../../workspace/blink")
      |> Resulty.chain(Transpiler.transpile(_, "@/test"))
      |> Js.Promise.resolve;
    })
-|> Js.Promise.then_(result =>
+|> Js.Promise.then_((result: Js.Result.t(Transpiler.program, Js.Exn.t)) =>
      switch (result) {
-     | Js.Result.Ok(code) =>
-       Js.log(code);
-       /*Js.log("OK");*/
-       Js.Promise.resolve(code);
+     | Js.Result.Ok(program) =>
+       Js.log("OK");
+       Js.log(program.code);
+       Js.log("***");
+       Js.log(program.nodeIdMap |> Belt.Map.String.toArray);
+       Js.Promise.resolve("OK");
      | Js.Result.Error(_) =>
        Js.log("Error");
        Js.Promise.resolve("Error");
