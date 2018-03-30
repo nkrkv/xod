@@ -21,7 +21,7 @@ let assocLinkExn = (link, patch) =>
     Js.Exn.raiseError(err |> Js.Exn.message |> Js.Option.getWithDefault(""))
   };
 
-let listPins = patch => FFI.listPins(patch) |> Belt.List.ofArray;
+let listPins = patch => FFI.listPins(patch) |> Belt.List.fromArray;
 
 let listInputPins = patch =>
   patch

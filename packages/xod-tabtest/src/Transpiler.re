@@ -27,6 +27,6 @@ let transpile = (project, patchPath) : Js.Result.t(program, Js.Exn.t) =>
          nodeIdMap:
            _getNodeIdsMap(tProject)
            |> Js.Dict.entries
-           |> Belt.Map.String.ofArray,
+           |> Belt.Map.String.fromArray,
        }
      );

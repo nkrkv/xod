@@ -40,7 +40,7 @@ let getDirection = (pin: t) : direction => {
 };
 
 let normalizeLabels = pins =>
-  pins |> Belt.List.toArray |> FFI.normalizeLabels |> Belt.List.ofArray;
+  pins |> Belt.List.toArray |> FFI.normalizeLabels |> Belt.List.fromArray;
 
 let getKey = pin => pin##key;
 

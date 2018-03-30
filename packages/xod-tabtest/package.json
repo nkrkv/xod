@@ -11,6 +11,6 @@
   "author": "XOD",
   "license": "AGPL-3.0",
   "devDependencies": {
-    "bs-platform": "^2.2.2"
+    "bs-platform": "^2.2.3"
   }
 }
