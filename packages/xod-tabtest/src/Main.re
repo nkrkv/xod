@@ -103,21 +103,23 @@ module Bench = {
              draftBench,
              (bench, (targPin, probe)) => {
                let probeId = Node.getId(probe);
+               let probePK = Probe.getPinKeyExn(probe, project);
+               let targPK = Pin.getKey(targPin);
                let link =
                  switch (Pin.getDirection(targPin)) {
                  | Input =>
                    Link.create(
-                     Pin.getKey(targPin),
-                     theNodeId,
-                     Probe.getPinKeyExn(probe, project),
-                     probeId,
+                     ~fromPin=probePK,
+                     ~fromNode=probeId,
+                     ~toPin=targPK,
+                     ~toNode=theNodeId,
                    )
                  | Output =>
                    Link.create(
-                     Probe.getPinKeyExn(probe, project),
-                     probeId,
-                     Pin.getKey(targPin),
-                     theNodeId,
+                     ~fromPin=targPK,
+                     ~fromNode=theNodeId,
+                     ~toPin=probePK,
+                     ~toNode=probeId,
                    )
                  };
                {

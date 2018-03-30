@@ -1,4 +1,7 @@
 type t = Js.Types.obj_val;
 
 [@bs.module "xod-project"]
-external create : (Pin.key, Node.id, Pin.key, Node.id) => t = "createLink";
+external create :
+  (~toPin: Pin.key, ~toNode: Node.id, ~fromPin: Pin.key, ~fromNode: Node.id) =>
+  t =
+  "createLink";
