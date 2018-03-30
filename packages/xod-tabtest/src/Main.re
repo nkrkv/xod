@@ -1,3 +1,5 @@
+open Belt;
+
 /*
  * A probe is a node used later to inject values into a node under the test.
  * Kind of terminal, but for tests.
@@ -66,7 +68,7 @@ module Bench = {
          For probes they like "probe_XYZ", where XYZ is the label of
          corresponding input.  The central node maps to "theNode".
        */
-    symbolMap: Belt.Map.String.t(string),
+    symbolMap: Map.String.t(string),
   };
   /*
    * Creates a new bench for the project provided with the specified
@@ -79,8 +81,7 @@ module Bench = {
     let theNodeId = Node.getId(theNode);
     let draftBench: t = {
       patch: Patch.create() |> Patch.assocNode(theNode),
-      symbolMap:
-        Belt.Map.String.empty |> Belt.Map.String.set(_, theNodeId, "theNode"),
+      symbolMap: Map.String.empty |> Map.String.set(_, theNodeId, "theNode"),
     };
     switch (project |> Project.getPatchByPath(pptt)) {
     | None => Error(newError({j|Patch $pptt not found|j}))
@@ -92,8 +93,8 @@ module Bench = {
             For each input pin of a node under the test, create a new probe node
             and link its output `VAL` to that pin.
          */
-        |> Belt.List.map(_, pin => (pin, pin |> Probe.create))
-        |> Belt.List.reduce(
+        |> List.map(_, pin => (pin, pin |> Probe.create))
+        |> List.reduce(
              _,
              draftBench,
              (bench, (targPin, probe)) => {
@@ -112,7 +113,7 @@ module Bench = {
                    |> Patch.assocLinkExn(link),
                  symbolMap:
                    bench.symbolMap
-                   |> Belt.Map.String.set(
+                   |> Map.String.set(
                         _,
                         probeId,
                         "probe_" ++ Pin.getLabel(targPin),
@@ -132,7 +133,7 @@ Loader.loadProject(["../../workspace", "workspace"], "../../workspace/blink")
      Bench.create(project, patchPathToTest)
      |> Resulty.map((suite: Bench.t) => {
           Js.log("Symbol map");
-          Js.log(suite.symbolMap |> Belt.Map.String.toArray);
+          Js.log(suite.symbolMap |> Map.String.toArray);
           suite.patch;
         })
      |> Resulty.chain(Project.assocPatch("@/test", _, project))
@@ -145,7 +146,7 @@ Loader.loadProject(["../../workspace", "workspace"], "../../workspace/blink")
        Js.log("OK");
        Js.log(program.code);
        Js.log("***");
-       Js.log(program.nodeIdMap |> Belt.Map.String.toArray);
+       Js.log(program.nodeIdMap |> Map.String.toArray);
        Js.Promise.resolve("OK");
      | Js.Result.Error(_) =>
        Js.log("Error");

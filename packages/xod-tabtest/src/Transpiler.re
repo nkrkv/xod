@@ -1,10 +1,12 @@
+open Belt;
+
 module TProject = {
   type t;
 };
 
 type program = {
   code: string,
-  nodeIdMap: Belt.Map.String.t(string),
+  nodeIdMap: Map.String.t(string),
 };
 
 [@bs.module "xod-arduino"]
@@ -25,8 +27,6 @@ let transpile = (project, patchPath) : Js.Result.t(program, Js.Exn.t) =>
        {
          code: _transpile(tProject),
          nodeIdMap:
-           _getNodeIdsMap(tProject)
-           |> Js.Dict.entries
-           |> Belt.Map.String.fromArray,
+           _getNodeIdsMap(tProject) |> Js.Dict.entries |> Map.String.fromArray,
        }
      );

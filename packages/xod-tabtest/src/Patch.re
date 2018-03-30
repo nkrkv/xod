@@ -1,3 +1,5 @@
+open Belt;
+
 type t = Js.Types.obj_val;
 
 module FFI = {
@@ -21,17 +23,15 @@ let assocLinkExn = (link, patch) =>
     Js.Exn.raiseError(err |> Js.Exn.message |> Js.Option.getWithDefault(""))
   };
 
-let listPins = patch => FFI.listPins(patch) |> Belt.List.fromArray;
+let listPins = patch => FFI.listPins(patch) |> List.fromArray;
 
 let listInputPins = patch =>
-  patch
-  |> listPins
-  |> Belt.List.keep(_, pin => Pin.getDirection(pin) == Pin.Input);
+  patch |> listPins |> List.keep(_, pin => Pin.getDirection(pin) == Pin.Input);
 
 let listOutputPins = patch =>
   patch
   |> listPins
-  |> Belt.List.keep(_, pin => Pin.getDirection(pin) == Pin.Output);
+  |> List.keep(_, pin => Pin.getDirection(pin) == Pin.Output);
 
 /* TODO: is it defined anywhere already? */
 let identity = a => a;
@@ -39,12 +39,12 @@ let identity = a => a;
 let findPinByLabel = (patch, label, ~normalize, ~direction) : option(Pin.t) =>
   listPins(patch)
   |> (normalize ? Pin.normalizeLabels : identity)
-  |> Belt.List.keep(_, pin => Pin.getLabel(pin) == label)
+  |> List.keep(_, pin => Pin.getLabel(pin) == label)
   |> (
     pins =>
       switch (direction) {
       | None => pins
-      | Some(dir) => Belt.List.keep(pins, pin => Pin.getDirection(pin) == dir)
+      | Some(dir) => List.keep(pins, pin => Pin.getDirection(pin) == dir)
       }
   )
   |> (
