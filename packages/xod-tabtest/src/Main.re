@@ -9,23 +9,32 @@ module Probe = {
    * Returns full patch path for the probe of a given type. The probe patch
    * nodes are stocked up in the `workspace` inside the package
    */
-  let typeToPatchPath = (tp: Pin.dataType) : string =>
+  let patchPath = (tp: Pin.dataType, dir: Pin.direction) : string =>
     "xod/tabtest/"
     ++ (
+      switch (dir) {
+      | Input => "inject-"
+      | Output => "capture-"
+      }
+    )
+    ++ (
       switch (tp) {
-      | Pulse => "probe-pulse"
-      | Boolean => "probe-boolean"
-      | Number => "probe-number"
-      | String => "probe-string"
+      | Pulse => "pulse"
+      | Boolean => "boolean"
+      | Number => "number"
+      | String => "string"
       }
     );
   /*
    * Creates a new probe node matching the type of pin provided
    */
   let create = pin =>
-    Node.create(Node.origin, pin |> Pin.getType |> typeToPatchPath);
+    Node.create(
+      Node.origin,
+      patchPath(Pin.getType(pin), Pin.getDirection(pin)),
+    );
   /*
-   * Returns a pin key of the only output conventionally labeled `VAL` for a
+   * Returns a key of the only pin conventionally labeled `VAL` for a
    * probe node.
    */
   let getPinKeyExn = (node, project) => {
@@ -36,17 +45,12 @@ module Probe = {
       | None => Js.Exn.raiseError("Probe has unexpected type " ++ pt)
       };
     let pin =
-      Patch.findPinByLabel(
-        patch,
-        "VAL",
-        ~normalize=true,
-        ~direction=Some(Pin.Output),
-      );
+      Patch.findPinByLabel(patch, "VAL", ~normalize=true, ~direction=None);
     switch (pin) {
     | Some(pin) => pin |> Pin.getKey
     | None =>
       Js.Exn.raiseError(
-        "Expected all probes to have the only output labeled 'VAL'. "
+        "Expected all probes to have the only pin labeled 'VAL'. "
         ++ pt
         ++ " violates the rule",
       )
@@ -65,8 +69,8 @@ module Bench = {
   type t = {
     patch: Patch.t,
     /* Maps node ids to symbolic names.
-         For probes they like "probe_XYZ", where XYZ is the label of
-         corresponding input.  The central node maps to "theNode".
+          For probes they like "probe_XYZ", where XYZ is the label of
+          corresponding input or output. The central node maps to "theNode".
        */
     symbolMap: Map.String.t(string),
   };
@@ -87,11 +91,11 @@ module Bench = {
     | None => Error(newError({j|Patch $pptt not found|j}))
     | Some(patchToTest) =>
       Ok(
-        Patch.listInputPins(patchToTest)
+        Patch.listPins(patchToTest)
         |> Pin.normalizeLabels
         /*
-            For each input pin of a node under the test, create a new probe node
-            and link its output `VAL` to that pin.
+            For each pin of a node under the test, create a new probe node
+            and link its `VAL` to that pin.
          */
         |> List.map(_, pin => (pin, pin |> Probe.create))
         |> List.reduce(
@@ -100,12 +104,22 @@ module Bench = {
              (bench, (targPin, probe)) => {
                let probeId = Node.getId(probe);
                let link =
-                 Link.create(
-                   Pin.getKey(targPin),
-                   theNodeId,
-                   Probe.getPinKeyExn(probe, project),
-                   probeId,
-                 );
+                 switch (Pin.getDirection(targPin)) {
+                 | Input =>
+                   Link.create(
+                     Pin.getKey(targPin),
+                     theNodeId,
+                     Probe.getPinKeyExn(probe, project),
+                     probeId,
+                   )
+                 | Output =>
+                   Link.create(
+                     Probe.getPinKeyExn(probe, project),
+                     probeId,
+                     Pin.getKey(targPin),
+                     theNodeId,
+                   )
+                 };
                {
                  patch:
                    bench.patch
