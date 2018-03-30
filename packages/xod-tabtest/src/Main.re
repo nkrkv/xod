@@ -85,21 +85,20 @@ module Bench = {
     let theNodeId = Node.getId(theNode);
     let draftBench: t = {
       patch: Patch.create() |> Patch.assocNode(theNode),
-      symbolMap: Map.String.empty |> Map.String.set(_, theNodeId, "theNode"),
+      symbolMap: Map.String.empty |. Map.String.set(theNodeId, "theNode"),
     };
     switch (project |> Project.getPatchByPath(pptt)) {
     | None => Error(newError({j|Patch $pptt not found|j}))
     | Some(patchToTest) =>
       Ok(
         Patch.listPins(patchToTest)
-        |> Pin.normalizeLabels
+        |. Pin.normalizeLabels
         /*
             For each pin of a node under the test, create a new probe node
             and link its `VAL` to that pin.
          */
-        |> List.map(_, pin => (pin, pin |> Probe.create))
-        |> List.reduce(
-             _,
+        |. List.map(pin => (pin, pin |> Probe.create))
+        |. List.reduce(
              draftBench,
              (bench, (targPin, probe)) => {
                let probeId = Node.getId(probe);
@@ -129,8 +128,7 @@ module Bench = {
                    |> Patch.assocLinkExn(link),
                  symbolMap:
                    bench.symbolMap
-                   |> Map.String.set(
-                        _,
+                   |. Map.String.set(
                         probeId,
                         "probe_" ++ Pin.getLabel(targPin),
                       ),
