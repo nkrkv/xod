@@ -55,7 +55,11 @@ module Probe = {
 /* TODO: smarter errors */
 let newError = (_message: string) : Js.Exn.t => [%bs.raw "new Error()"];
 
-module Suite = {
+/*
+ * Test bench is a patch containing a central node under the test and
+ * a set of probes connected to each of its pins.
+ */
+module Bench = {
   type t = {
     patch: Patch.t,
     /* Maps node ids to symbolic names.
@@ -65,15 +69,15 @@ module Suite = {
     symbolMap: Belt.Map.String.t(string),
   };
   /*
-   * Creates a new suite for the project provided with the specified
-   * node instance to test. The suite node is *not* associated to the
+   * Creates a new bench for the project provided with the specified
+   * node instance to test. The bench node is *not* associated to the
    * project automatically.
    */
   let create = (project, patchPathToTest) : Js.Result.t(t, Js.Exn.t) => {
     let pptt = patchPathToTest;
     let theNode = Node.create(Node.origin, pptt);
     let theNodeId = Node.getId(theNode);
-    let draftSuite: t = {
+    let draftBench: t = {
       patch: Patch.create() |> Patch.assocNode(theNode),
       symbolMap:
         Belt.Map.String.empty |> Belt.Map.String.set(_, theNodeId, "theNode"),
@@ -91,8 +95,8 @@ module Suite = {
         |> Belt.List.map(_, pin => (pin, pin |> Probe.create))
         |> Belt.List.reduce(
              _,
-             draftSuite,
-             (suite, (targPin, probe)) => {
+             draftBench,
+             (bench, (targPin, probe)) => {
                let probeId = Node.getId(probe);
                let link =
                  Link.create(
@@ -103,11 +107,11 @@ module Suite = {
                  );
                {
                  patch:
-                   suite.patch
+                   bench.patch
                    |> Patch.assocNode(probe)
                    |> Patch.assocLinkExn(link),
                  symbolMap:
-                   suite.symbolMap
+                   bench.symbolMap
                    |> Belt.Map.String.set(
                         _,
                         probeId,
@@ -125,8 +129,8 @@ module Suite = {
 Loader.loadProject(["../../workspace", "workspace"], "../../workspace/blink")
 |> Js.Promise.then_(project => {
      let patchPathToTest = "xod/core/if-else";
-     Suite.create(project, patchPathToTest)
-     |> Resulty.map((suite: Suite.t) => {
+     Bench.create(project, patchPathToTest)
+     |> Resulty.map((suite: Bench.t) => {
           Js.log("Symbol map");
           Js.log(suite.symbolMap |> Belt.Map.String.toArray);
           suite.patch;
