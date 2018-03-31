@@ -37,14 +37,14 @@ module Probe = {
   let getPinKeyExn = (node, project) => {
     let pt = Node.getType(node);
     let patch =
-      switch (Project.getPatchByNode(node, project)) {
+      switch (Project.getPatchByNode(project, node)) {
       | Some(patch') => patch'
       | None => Js.Exn.raiseError("Probe has unexpected type " ++ pt)
       };
     let pin =
       Patch.findPinByLabel(patch, "VAL", ~normalize=true, ~direction=None);
     switch (pin) {
-    | Some(pin) => pin |> Pin.getKey
+    | Some(pin) => pin |. Pin.getKey
     | None =>
       Js.Exn.raiseError(
         "Expected all probes to have the only pin labeled 'VAL'. "
@@ -84,7 +84,7 @@ module Bench = {
       patch: Patch.create() |. Patch.assocNode(theNode),
       symbolMap: Map.String.empty |. Map.String.set(theNodeId, "theNode"),
     };
-    switch (project |> Project.getPatchByPath(pptt)) {
+    switch (Project.getPatchByPath(project, pptt)) {
     | None => Error(newError({j|Patch $pptt not found|j}))
     | Some(patchToTest) =>
       Ok(
@@ -147,7 +147,7 @@ Loader.loadProject(["../../workspace", "workspace"], "../../workspace/blink")
           Js.log(suite.symbolMap |> Map.String.toArray);
           suite.patch;
         })
-     |> Resulty.chain(Project.assocPatch("@/test", _, project))
+     |> Resulty.chain(Project.assocPatch(project, "@/test"))
      |> Resulty.chain(Transpiler.transpile(_, "@/test"))
      |> Js.Promise.resolve;
    })

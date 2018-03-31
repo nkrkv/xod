@@ -1,19 +1,18 @@
 type t = Js.Types.obj_val;
 
-module FFI = {
-  [@bs.module "xod-project"]
-  external assocPatch : (PatchPath.t, Patch.t, t) => Either.t(Js.Exn.t, t) =
-    "assocPatch";
-  [@bs.module "xod-project"]
-  external getPatchByPath : (PatchPath.t, t) => Maybe.t(Patch.t) =
-    "getPatchByPath";
-};
+[@bs.module "xod-project"]
+external _assocPatch : (PatchPath.t, Patch.t, t) => Either.t(Js.Exn.t, t) =
+  "assocPatch";
 
-let assocPatch = (path, patch, project) =>
-  FFI.assocPatch(path, patch, project) |> Either.toResult;
+let assocPatch = (project, path, patch) =>
+  _assocPatch(path, patch, project) |. Either.toResult;
 
-let getPatchByPath = (path, project) =>
-  FFI.getPatchByPath(path, project) |> Maybe.toOption;
+[@bs.module "xod-project"]
+external _getPatchByPath : (PatchPath.t, t) => Maybe.t(Patch.t) =
+  "getPatchByPath";
 
-let getPatchByNode = (node, project) =>
-  getPatchByPath(node |> Node.getType, project);
+let getPatchByPath = (project, path) =>
+  _getPatchByPath(path, project) |. Maybe.toOption;
+
+let getPatchByNode = (project, node) =>
+  getPatchByPath(project, Node.getType(node));
