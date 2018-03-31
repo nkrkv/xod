@@ -2,6 +2,8 @@ open Belt;
 
 type t = Js.Types.obj_val;
 
+type path = PatchPath.t;
+
 [@bs.module "xod-project"] external create : unit => t = "createPatch";
 
 [@bs.module "xod-project"]

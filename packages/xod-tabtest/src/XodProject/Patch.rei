@@ -1,5 +1,7 @@
 type t;
 
+type path = PatchPath.t;
+
 let create: unit => t;
 
 let assocNode: (t, Node.t) => t;
