@@ -142,13 +142,13 @@ Loader.loadProject(["../../workspace", "workspace"], "../../workspace/blink")
 |> Js.Promise.then_(project => {
      let patchPathToTest = "xod/core/if-else";
      Bench.create(project, patchPathToTest)
-     |> Resulty.map((suite: Bench.t) => {
+     |. Resulty.map((suite: Bench.t) => {
           Js.log("Symbol map");
           Js.log(suite.symbolMap |> Map.String.toArray);
           suite.patch;
         })
-     |> Resulty.chain(Project.assocPatch(project, "@/test"))
-     |> Resulty.chain(Transpiler.transpile(_, "@/test"))
+     |. Resulty.flatMap(Project.assocPatch(project, "@/test"))
+     |. Resulty.flatMap(Transpiler.transpile(_, "@/test"))
      |> Js.Promise.resolve;
    })
 |> Js.Promise.then_((result: Js.Result.t(Transpiler.program, Js.Exn.t)) =>

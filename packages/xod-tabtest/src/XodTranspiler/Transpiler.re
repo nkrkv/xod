@@ -22,8 +22,8 @@ external _getNodeIdsMap : TProject.t => Js.Dict.t(string) = "getNodeIdsMap";
 
 let transpile = (project, patchPath) : Js.Result.t(program, Js.Exn.t) =>
   _transformProject(project, patchPath)
-  |> Either.toResult
-  |> Resulty.map(tProject =>
+  |. Either.toResult
+  |. Resulty.map(tProject =>
        {
          code: _transpile(tProject),
          nodeIdMap:
