@@ -2,11 +2,11 @@ type t;
 
 let create: unit => t;
 
-let assocNode: (Node.t, t) => t;
+let assocNode: (t, Node.t) => t;
 
-let assocLink: (Link.t, t) => Js.Result.t(t, Js.Exn.t);
+let assocLink: (t, Link.t) => Js.Result.t(t, Js.Exn.t);
 
-let assocLinkExn: (Link.t, t) => t;
+let assocLinkExn: (t, Link.t) => t;
 
 let listPins: t => list(Pin.t);
 

@@ -81,7 +81,7 @@ module Bench = {
     let theNode = Node.create(pptt);
     let theNodeId = Node.getId(theNode);
     let draftBench: t = {
-      patch: Patch.create() |> Patch.assocNode(theNode),
+      patch: Patch.create() |. Patch.assocNode(theNode),
       symbolMap: Map.String.empty |. Map.String.set(theNodeId, "theNode"),
     };
     switch (project |> Project.getPatchByPath(pptt)) {
@@ -121,8 +121,8 @@ module Bench = {
                {
                  patch:
                    bench.patch
-                   |> Patch.assocNode(probe)
-                   |> Patch.assocLinkExn(link),
+                   |. Patch.assocNode(probe)
+                   |. Patch.assocLinkExn(link),
                  symbolMap:
                    bench.symbolMap
                    |. Map.String.set(
