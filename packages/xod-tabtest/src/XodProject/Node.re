@@ -11,7 +11,9 @@ type position = {
 let origin = {"x": 0, "y": 0};
 
 [@bs.module "xod-project"]
-external create : (position, PatchPath.t) => t = "createNode";
+external _create : (position, PatchPath.t) => t = "createNode";
+
+let create = patchPath => _create(origin, patchPath);
 
 [@bs.module "xod-project"] external getId : t => id = "getNodeId";
 

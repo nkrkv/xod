@@ -29,10 +29,7 @@ module Probe = {
    * Creates a new probe node matching the type of pin provided
    */
   let create = pin =>
-    Node.create(
-      Node.origin,
-      patchPath(Pin.getType(pin), Pin.getDirection(pin)),
-    );
+    Node.create(patchPath(Pin.getType(pin), Pin.getDirection(pin)));
   /*
    * Returns a key of the only pin conventionally labeled `VAL` for a
    * probe node.
@@ -81,7 +78,7 @@ module Bench = {
    */
   let create = (project, patchPathToTest) : Js.Result.t(t, Js.Exn.t) => {
     let pptt = patchPathToTest;
-    let theNode = Node.create(Node.origin, pptt);
+    let theNode = Node.create(pptt);
     let theNodeId = Node.getId(theNode);
     let draftBench: t = {
       patch: Patch.create() |> Patch.assocNode(theNode),
