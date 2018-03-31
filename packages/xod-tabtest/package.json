@@ -2,7 +2,7 @@
   "name": "xod-tabtest",
   "version": "0.19.2",
   "scripts": {
-    "refmt": "refmt --in-place src/*.re src/*.rei",
+    "refmt": "find src/ -name '*.re*' -exec refmt --in-place {} +",
     "build": "bsb -make-world"
   },
   "keywords": [
