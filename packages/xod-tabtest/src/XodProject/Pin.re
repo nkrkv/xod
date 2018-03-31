@@ -24,11 +24,6 @@ type direction =
   | Input
   | Output;
 
-module FFI = {
-  [@bs.module "xod-project"]
-  external normalizeLabels : array(t) => array(t) = "normalizePinLabels";
-};
-
 let getDirection = (pin: t) : direction => {
   let dir = pin##direction;
   switch (dir) {
@@ -41,8 +36,11 @@ let getDirection = (pin: t) : direction => {
   };
 };
 
+[@bs.module "xod-project"]
+external _normalizeLabels : array(t) => array(t) = "normalizePinLabels";
+
 let normalizeLabels = pins =>
-  pins |> List.toArray |> FFI.normalizeLabels |> List.fromArray;
+  pins |. List.toArray |. _normalizeLabels |. List.fromArray;
 
 let getKey = pin => pin##key;
 
