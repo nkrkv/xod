@@ -1,9 +1,6 @@
 open Belt;
 
-type t = {
-  sourceFiles: Map.String.t(string),
-  runCommand: list(string),
-};
+type t = Map.String.t(string);
 
 /*
  * A probe is a node used later to inject values into a node under the test.
@@ -150,10 +147,6 @@ let generateSuite = (project, patchPath) : Resulty.t(t, Js.Exn.t) => {
      )
   |. Resulty.flatMap(Transpiler.transpile(_, benchPatchPath))
   |. Resulty.map(program =>
-       {
-         sourceFiles:
-           Map.String.empty |. Map.String.set("sketch.cpp", program.code),
-         runCommand: ["g++", "-std=c++11", "-I.", "sketch.cpp"],
-       }
+       Map.String.empty |. Map.String.set("sketch.cpp", program.code)
      );
 };

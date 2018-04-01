@@ -9,10 +9,18 @@ Loader.loadProject(["../../workspace", "workspace"], "../../workspace/blink")
    )
 |> Promise.then_((result: Resulty.t(Tabtest.t, Js.Exn.t)) =>
      switch (result) {
-     | Js.Result.Ok(suite) =>
-       Js.log(suite.sourceFiles |. Map.String.toArray);
-       Js.log("***");
-       Js.log(suite.runCommand |. List.toArray);
+     | Js.Result.Ok(soureFiles) =>
+       soureFiles
+       |. Map.String.forEach((filename, code) => {
+            Js.log("\n");
+            Js.log(
+              "======================== "
+              ++ filename
+              ++ " ========================",
+            );
+            Js.log("\n");
+            Js.log(code);
+          });
        Js.Promise.resolve("OK");
      | Js.Result.Error(_) =>
        Js.log("Error");
