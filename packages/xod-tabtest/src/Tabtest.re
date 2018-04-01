@@ -139,14 +139,53 @@ module Bench = {
   };
 };
 
+module TabData = {
+  type record = Map.String.t(string);
+  type t = list(record);
+  let forPatch = patch : Resulty.t(t, Js.Exn.t) =>
+    Ok([
+      Map.String.empty
+      |. Map.String.set("COND", "true")
+      |. Map.String.set("T", "42")
+      |. Map.String.set("F", "51")
+      |. Map.String.set("R", "42"),
+      Map.String.empty
+      |. Map.String.set("COND", "false")
+      |. Map.String.set("R", "51"),
+    ]);
+};
+
+module TestCase = {
+  type t = string;
+  let generate =
+      (tabData: TabData.t, idMap: Map.String.t(string))
+      : Resulty.t(t, Js.Exn.t) =>
+    Ok("/* Hello */");
+};
+
 let generateSuite = (project, patchPath) : Resulty.t(t, Js.Exn.t) => {
   let benchPatchPath = "@/tabtest-bench";
-  Bench.create(project, patchPath)
-  |. Resulty.flatMap(bench =>
-       Project.assocPatch(project, benchPatchPath, bench.patch)
-     )
-  |. Resulty.flatMap(Transpiler.transpile(_, benchPatchPath))
-  |. Resulty.map(program =>
-       Map.String.empty |. Map.String.set("sketch.cpp", program.code)
-     );
+  let benchR = Bench.create(project, patchPath);
+  let projectWithBenchR =
+    Resulty.flatMap(benchR, bench =>
+      Project.assocPatch(project, benchPatchPath, bench.patch)
+    );
+  let programR =
+    Resulty.flatMap(
+      projectWithBenchR,
+      Transpiler.transpile(_, benchPatchPath),
+    );
+  let tabDataR =
+    Resulty.flatMap(benchR, bench => TabData.forPatch(bench.patch));
+  let idMap: Resulty.t(Map.String.t(string), Js.Exn.t) =
+    Ok(Map.String.empty);
+  let testCaseR = Resulty.liftM2(TestCase.generate, tabDataR, idMap);
+  Resulty.lift2(
+    (program: Transpiler.program, testCase) =>
+      Map.String.empty
+      |. Map.String.set("sketch.cpp", program.code)
+      |. Map.String.set("test.inl", testCase),
+    programR,
+    testCaseR,
+  );
 };
