@@ -157,10 +157,45 @@ module TabData = {
 
 module TestCase = {
   type t = string;
-  let generate =
-      (tabData: TabData.t, idMap: Map.String.t(string))
-      : Resulty.t(t, Js.Exn.t) =>
-    Ok("/* Hello */");
+  let generate = (tabData: TabData.t, idMap: Map.String.t(string)) : t =>
+    Cpp.(
+      dump(
+        source([
+          includeQuot("catch.hpp"),
+          includeQuot("Arduino.h"),
+          blankLine,
+          varDecl(
+            ~type_=literal("auto&"),
+            ~name="probe_COND",
+            ~init=literal("xod::node_0"),
+            (),
+          ),
+          blankLine,
+          funcDef(
+            ~retType=literal("void"),
+            ~name="runCase",
+            [
+              literalLine("theNode.isNodeDirty = true;"),
+              literalLine("loop();"),
+            ],
+          ),
+          macroCallBlock(
+            "TEST_CASE",
+            [quotString("xod/core/if-else"), quotString("[tabtest]")],
+            [
+              literalLine("setup();"),
+              literalLine("loop();"),
+              blankLine,
+              literalLine("using namespace xod;"),
+              blankLine,
+              literalLine("// Case"),
+              literalLine("runCase();"),
+              literalLine("REQUIRE( node_3.output_R == 0 );"),
+            ],
+          ),
+        ]),
+      )
+    );
 };
 
 let generateSuite = (project, patchPath) : Resulty.t(t, Js.Exn.t) => {
@@ -177,9 +212,9 @@ let generateSuite = (project, patchPath) : Resulty.t(t, Js.Exn.t) => {
     );
   let tabDataR =
     Resulty.flatMap(benchR, bench => TabData.forPatch(bench.patch));
-  let idMap: Resulty.t(Map.String.t(string), Js.Exn.t) =
+  let idMapR: Resulty.t(Map.String.t(string), Js.Exn.t) =
     Ok(Map.String.empty);
-  let testCaseR = Resulty.liftM2(TestCase.generate, tabDataR, idMap);
+  let testCaseR = Resulty.lift2(TestCase.generate, tabDataR, idMapR);
   Resulty.lift2(
     (program: Transpiler.program, testCase) =>
       Map.String.empty
