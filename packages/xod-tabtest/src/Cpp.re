@@ -10,74 +10,26 @@ let join = (strings, delimiter) => {
   str;
 };
 
-type ast = [
-  | `source(list(ast))
-  | `blankLine
-  | `literal(string)
-  | `literalLine(string)
-  | `include_(ast)
-  | `quotString(string)
-  | `varDecl(ast, string, option(ast))
-  | `funcDef(ast, string, list(ast))
-  | `macroCallBlock(string, list(ast), list(ast))
-];
+let joinLines = strings => join(strings, "\n");
 
-let source = (x: list(ast)) : ast => `source(x);
+let indent = str => str |> Js.String.replaceByRe([%bs.re "/^/gm"], "    ");
 
-let blankLine = `blankLine;
+let enquote = x => {j|"$x"|j};
 
-let literal = x => `literal(x);
+/* ↓ C++ JSX ↓ */
+let source = (~children, ()) => join(children, "\n");
 
-let literalLine = x => `literalLine(x);
+let blank = (~children, ()) => "";
 
-let quotString = x => `quotString(x);
+let indented = (~children, ()) => children |. joinLines |. indent;
 
-let include_ = (x: ast) : ast => `include_(x);
+let block = (~children, ()) =>
+  ["{", indented(~children, ()), "}"] |. joinLines;
 
-let includeQuot = x => include_(quotString(x));
+let funcDef = (~name, ~children, ()) =>
+  "void " ++ name ++ "() " ++ block(~children, ());
 
-let varDecl = (~type_, ~name, ~init=?, ()) => `varDecl((type_, name, init));
+let testCase = (~name, ~children, ()) =>
+  "TEST_CASE(" ++ enquote(name) ++ ") " ++ block(~children, ());
 
-let funcDef =
-    (~retType=`literal("void"), ~name: string, body: list(ast))
-    : ast =>
-  `funcDef((retType, name, body));
-
-let macroCallBlock = (name: string, args: list(ast), body: list(ast)) =>
-  `macroCallBlock((name, args, body));
-
-let dump = (astNode: ast) : string => {
-  let rec dumpList = (xs: list(ast), delimiter: string) =>
-    xs |. List.map(dumpNode) |. join(delimiter)
-  and dumpInitializer = (initOpt: option(ast)) =>
-    switch (initOpt) {
-    | None => ""
-    | Some(init) => " = " ++ dumpNode(init)
-    }
-  and dumpNode = node =>
-    switch (node) {
-    | `source(x) => dumpList(x, "")
-    | `blankLine => "\n"
-    | `literal(x) => x
-    | `literalLine(x) => x ++ "\n"
-    | `quotString(x) => "\"" ++ x ++ "\""
-    | `include_(x) => "#include " ++ dumpNode(x) ++ "\n"
-    | `varDecl(type_, name, initOpt) =>
-      dumpNode(type_) ++ " " ++ name ++ dumpInitializer(initOpt) ++ ";\n"
-    | `funcDef(retType, name, body) =>
-      dumpNode(retType)
-      ++ " "
-      ++ name
-      ++ "() {\n"
-      ++ dumpList(body, "")
-      ++ "}\n\n"
-    | `macroCallBlock(name, args, body) =>
-      name
-      ++ "("
-      ++ dumpList(args, ", ")
-      ++ ") {\n"
-      ++ dumpList(body, "")
-      ++ "}\n\n"
-    };
-  dumpNode(astNode);
-};
+let requireEqual = (~actual, ~expect, ~children, ()) => {j|REQUIRE($actual == $expect);|j};

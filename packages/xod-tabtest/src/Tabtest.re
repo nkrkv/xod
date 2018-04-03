@@ -159,42 +159,28 @@ module TestCase = {
   type t = string;
   let generate = (tabData: TabData.t, idMap: Map.String.t(string)) : t =>
     Cpp.(
-      dump(
-        source([
-          includeQuot("catch.hpp"),
-          includeQuot("Arduino.h"),
-          blankLine,
-          varDecl(
-            ~type_=literal("auto&"),
-            ~name="probe_COND",
-            ~init=literal("xod::node_0"),
-            (),
-          ),
-          blankLine,
-          funcDef(
-            ~retType=literal("void"),
-            ~name="runCase",
-            [
-              literalLine("theNode.isNodeDirty = true;"),
-              literalLine("loop();"),
-            ],
-          ),
-          macroCallBlock(
-            "TEST_CASE",
-            [quotString("xod/core/if-else"), quotString("[tabtest]")],
-            [
-              literalLine("setup();"),
-              literalLine("loop();"),
-              blankLine,
-              literalLine("using namespace xod;"),
-              blankLine,
-              literalLine("// Case"),
-              literalLine("runCase();"),
-              literalLine("REQUIRE( node_3.output_R == 0 );"),
-            ],
-          ),
-        ]),
-      )
+      <source>
+        "#include \"catch.hpp\""
+        "#include \"Arduino.h\""
+        <blank />
+        "auto& probe_COND = xod::node_0;"
+        <blank />
+        <funcDef name="runCase">
+          "theNode.isNodeDirty = true;"
+          "loop();"
+        </funcDef>
+        <blank />
+        <testCase name="xod/core/if-else">
+          "setup();"
+          "loop();"
+          <blank />
+          "using namespace xod;"
+          <blank />
+          "// Case"
+          "runCase();"
+          <requireEqual actual="node_3.output_R" expect="0" />
+        </testCase>
+      </source>
     );
 };
 
