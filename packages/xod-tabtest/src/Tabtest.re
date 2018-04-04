@@ -195,17 +195,17 @@ module TestCase = {
       |. Map.String.toList
       |. List.map(((name, id)) => {j|auto& $name = xod::node_$id;|j});
     let case = record => {
-      let inject =
+      let injectionStatements =
         probes
         |. Probes.keepInjecting
         |. Probes.map(probe => {
              let name = probe |. Probe.getTargetPin |. Pin.getLabel;
              switch (record |. Map.String.get(name)) {
-             | Some(value) => {j|probe_$name.output_VAL = $value;|j}
-             | None => {j|// no change for $name|j}
+             | Some(value) => {j|INJECT(probe_$name, $value);|j}
+             | None => {j|// No changes for $name|j}
              };
            });
-      let capture =
+      let assertionsStatements =
         probes
         |. Probes.keepCapturing
         |. Probes.map(probe => {
@@ -222,7 +222,13 @@ module TestCase = {
              };
            });
       Cpp.source(
-        ~children=List.flatten([[""], inject, ["runCase();"], capture]),
+        ~children=
+          List.flatten([
+            [""],
+            injectionStatements,
+            ["loop();"],
+            assertionsStatements,
+          ]),
         (),
       );
     };
@@ -230,25 +236,18 @@ module TestCase = {
     Cpp.(
       <source>
         "#include \"catch.hpp\""
-        "#include \"Arduino.h\""
         <blank />
         <source> ...nodeAliases </source>
         <blank />
-        <funcDef name="runCase">
-          "theNode.isNodeDirty = true;"
-          "loop();"
-        </funcDef>
+        "#define INJECT(probe, value) { \\"
+        "        (probe).output_VAL = (value); \\"
+        "        (probe).isNodeDirty = true; \\"
+        "    }"
         <blank />
         <testCase name="xod/core/if-else">
           "setup();"
           "loop();"
-          <blank />
-          "using namespace xod;"
           <source> ...cases </source>
-          <blank />
-          "// Case"
-          "runCase();"
-          <requireEqual actual="node_3.output_R" expect="0" />
         </testCase>
       </source>
     );
@@ -276,8 +275,7 @@ let generateSuite = (project, patchPath) : Resulty.t(t, Js.Exn.t) => {
       |. Map.String.set("probe_COND", "0")
       |. Map.String.set("probe_T", "1")
       |. Map.String.set("probe_F", "2")
-      |. Map.String.set("probe_R", "3")
-      |. Map.String.set("theNode", "4"),
+      |. Map.String.set("probe_R", "4"),
     );
   let testCaseR = Resulty.lift3(TestCase.generate, tabDataR, idMapR, probesR);
   Resulty.lift2(
