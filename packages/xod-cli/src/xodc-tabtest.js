@@ -18,6 +18,23 @@ const tabtestWorkspace = path.resolve(
   'workspace'
 );
 
+const tabtestSources = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  'xod-tabtest',
+  'cpp'
+);
+
+const catch2Sources = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  'vendor',
+  'catch2'
+);
+
 const showErrorAndExit = err => {
   msg.error(err);
   process.exit(1);
@@ -30,23 +47,28 @@ export default (input, patchPath, program) => {
     bundledWorkspace,
   ];
 
-  msg.notice(`Generating C++ test sources ...`);
-
   /* TODO: OS-neutral tmp dir */
   const outDir = '/tmp/xod-tabtest';
+
+  msg.notice(`Preparing test directory: ${outDir} ...`);
+
   fs
     .ensureDir(outDir)
+    .then(R.tap(() => msg.notice('Loading project...')))
     .then(() => loadProject(workspaces, input))
+    .then(R.tap(() => msg.notice('Generating C++ code...')))
     .then(project => Tabtest.generateSuite(project, patchPath))
     .then(foldEither(err => showErrorAndExit(err), R.identity))
     .then(R.toPairs)
+    .then(R.tap(() => msg.notice('Saving files...')))
     .then(
       R.map(([filename, content]) =>
         fs.outputFile(path.join(outDir, filename), content)
       )
     )
+    .then(R.append(fs.copy(tabtestSources, outDir)))
+    .then(R.append(fs.copy(catch2Sources, outDir)))
     .then(allPromises)
-    // .then(promises => Promise.all(promises))
     .then(() => {
       msg.success('Generated successfully');
       process.exit(0);
