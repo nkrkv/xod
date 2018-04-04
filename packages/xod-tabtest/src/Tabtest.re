@@ -281,10 +281,11 @@ let generateSuite = (project, patchPath) : Resulty.t(t, Js.Exn.t) => {
       |. Map.String.set("probe_R", "4"),
     );
   let testCaseR = Resulty.lift3(TestCase.generate, tabDataR, idMapR, probesR);
+  let sketchFooter = "\n\n#include \"test.inl\"\n";
   Resulty.lift2(
     (program: Transpiler.program, testCase) =>
       Map.String.empty
-      |. Map.String.set("sketch.cpp", program.code)
+      |. Map.String.set("sketch.cpp", program.code ++ sketchFooter)
       |. Map.String.set("test.inl", testCase),
     programR,
     testCaseR,
