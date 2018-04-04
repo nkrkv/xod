@@ -17,18 +17,43 @@ let flatMap =
 
 let liftM2 =
     (
-      fn: ('goodA, 'goodB) => t('goodC, 'bad),
+      fn: ('goodA, 'goodB) => t('goodR, 'bad),
       a: t('goodA, 'bad),
       b: t('goodB, 'bad),
     )
-    : t('goodC, 'bad) =>
+    : t('goodR, 'bad) =>
   switch (a, b) {
   | (Ok(goodA), Ok(goodB)) => fn(goodA, goodB)
   | (Error(bad), _)
   | (_, Error(bad)) => Error(bad)
   };
 
+let liftM3 =
+    (
+      fn: ('goodA, 'goodB, 'goodC) => t('goodR, 'bad),
+      a: t('goodA, 'bad),
+      b: t('goodB, 'bad),
+      c: t('goodC, 'bad),
+    )
+    : t('goodR, 'bad) =>
+  switch (a, b, c) {
+  | (Ok(goodA), Ok(goodB), Ok(goodC)) => fn(goodA, goodB, goodC)
+  | (Error(bad), _, _)
+  | (_, Error(bad), _)
+  | (_, _, Error(bad)) => Error(bad)
+  };
+
 let lift2 =
-    (fn: ('goodA, 'goodB) => 'goodC, a: t('goodA, 'bad), b: t('goodB, 'bad))
-    : t('goodC, 'bad) =>
+    (fn: ('goodA, 'goodB) => 'goodR, a: t('goodA, 'bad), b: t('goodB, 'bad))
+    : t('goodR, 'bad) =>
   liftM2((goodA, goodB) => Ok(fn(goodA, goodB)), a, b);
+
+let lift3 =
+    (
+      fn: ('goodA, 'goodB, 'goodC) => 'goodR,
+      a: t('goodA, 'bad),
+      b: t('goodB, 'bad),
+      c: t('goodC, 'bad),
+    )
+    : t('goodR, 'bad) =>
+  liftM3((goodA, goodB, goodC) => Ok(fn(goodA, goodB, goodC)), a, b, c);

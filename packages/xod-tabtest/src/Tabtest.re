@@ -1,12 +1,22 @@
 open Belt;
 
+/* Filename -> Content */
 type t = Map.String.t(string);
 
 /*
  * A probe is a node used later to inject values into a node under the test.
  * Kind of terminal, but for tests.
+ *
+ * A probe stores reference to its target pin and that’s pin label is guaranted
+ * to be normalized.
  */
 module Probe = {
+  type t = {
+    node: Node.t,
+    targetPin: Pin.t,
+  };
+  let getNode = (probe: t) => probe.node;
+  let getTargetPin = (probe: t) => probe.targetPin;
   /*
    * Returns full patch path for the probe of a given type. The probe patch
    * nodes are stocked up in the `workspace` inside the package
@@ -30,13 +40,16 @@ module Probe = {
   /*
    * Creates a new probe node matching the type of pin provided
    */
-  let create = pin =>
-    Node.create(patchPath(Pin.getType(pin), Pin.getDirection(pin)));
+  let create = pin => {
+    node: Node.create(patchPath(Pin.getType(pin), Pin.getDirection(pin))),
+    targetPin: pin,
+  };
   /*
    * Returns a key of the only pin conventionally labeled `VAL` for a
    * probe node.
    */
-  let getPinKeyExn = (node, project) => {
+  let getPinKeyExn = (probe, project) => {
+    let node = getNode(probe);
     let pt = Node.getType(node);
     let patch =
       switch (Project.getPatchByNode(project, node)) {
@@ -46,7 +59,7 @@ module Probe = {
     let pin =
       Patch.findPinByLabel(patch, "VAL", ~normalize=true, ~direction=None);
     switch (pin) {
-    | Some(pin) => pin |. Pin.getKey
+    | Some(pin) => Pin.getKey(pin)
     | None =>
       Js.Exn.raiseError(
         "Expected all probes to have the only pin labeled 'VAL'. "
@@ -55,6 +68,17 @@ module Probe = {
       )
     };
   };
+};
+
+module Probes = {
+  type t = list(Probe.t);
+  let map = List.map;
+  let keepToPinDirection = (probes, dir) =>
+    List.keep(probes, probe =>
+      probe |. Probe.getTargetPin |. Pin.getDirection == dir
+    );
+  let keepInjecting = keepToPinDirection(_, Input);
+  let keepCapturing = keepToPinDirection(_, Output);
 };
 
 /* TODO: smarter errors */
@@ -72,6 +96,7 @@ module Bench = {
           corresponding input or output. The central node maps to "theNode".
        */
     symbolMap: Map.String.t(string),
+    probes: Probes.t,
   };
   /*
    * Creates a new bench for the project provided with the specified
@@ -85,6 +110,7 @@ module Bench = {
     let draftBench: t = {
       patch: Patch.create() |. Patch.assocNode(theNode),
       symbolMap: Map.String.empty |. Map.String.set(theNodeId, "theNode"),
+      probes: [],
     };
     switch (Project.getPatchByPath(project, pptt)) {
     | None => Error(newError({j|Patch $pptt not found|j}))
@@ -96,12 +122,14 @@ module Bench = {
             For each pin of a node under the test, create a new probe node
             and link its `VAL` to that pin.
          */
-        |. List.map(pin => (pin, pin |> Probe.create))
+        |. List.map(Probe.create)
         |. List.reduce(
              draftBench,
-             (bench, (targPin, probe)) => {
-               let probeId = Node.getId(probe);
+             (bench, probe) => {
+               let probeNode = Probe.getNode(probe);
+               let probeId = Node.getId(probeNode);
                let probePK = Probe.getPinKeyExn(probe, project);
+               let targPin = Probe.getTargetPin(probe);
                let targPK = Pin.getKey(targPin);
                let link =
                  switch (Pin.getDirection(targPin)) {
@@ -123,7 +151,7 @@ module Bench = {
                {
                  patch:
                    bench.patch
-                   |. Patch.assocNode(probe)
+                   |. Patch.assocNode(probeNode)
                    |. Patch.assocLinkExn(link),
                  symbolMap:
                    bench.symbolMap
@@ -131,6 +159,7 @@ module Bench = {
                         probeId,
                         "probe_" ++ Pin.getLabel(targPin),
                       ),
+                 probes: [probe, ...bench.probes],
                };
              },
            ) /* reduce */
@@ -153,17 +182,57 @@ module TabData = {
       |. Map.String.set("COND", "false")
       |. Map.String.set("R", "51"),
     ]);
+  let map = List.map;
 };
 
 module TestCase = {
   type t = string;
-  let generate = (tabData: TabData.t, idMap: Map.String.t(string)) : t =>
+  let generate =
+      (tabData: TabData.t, idMap: Map.String.t(string), probes: Probes.t)
+      : t => {
+    let nodeAliases =
+      idMap
+      |. Map.String.toList
+      |. List.map(((name, id)) => {j|auto& $name = xod::node_$id;|j});
+    let case = record => {
+      let inject =
+        probes
+        |. Probes.keepInjecting
+        |. Probes.map(probe => {
+             let name = probe |. Probe.getTargetPin |. Pin.getLabel;
+             switch (record |. Map.String.get(name)) {
+             | Some(value) => {j|probe_$name.output_VAL = $value;|j}
+             | None => {j|// no change for $name|j}
+             };
+           });
+      let capture =
+        probes
+        |. Probes.keepCapturing
+        |. Probes.map(probe => {
+             let name = probe |. Probe.getTargetPin |. Pin.getLabel;
+             switch (record |. Map.String.get(name)) {
+             | Some(value) =>
+               Cpp.requireEqual(
+                 ~expect=value,
+                 ~actual={j|probe_$name.state.lastValue|j},
+                 ~children=[],
+                 (),
+               )
+             | None => {j|// no expectation for $name|j}
+             };
+           });
+      Cpp.source(
+        ~children=List.flatten([[""], inject, ["runCase();"], capture]),
+        (),
+      );
+    };
+    let cases = tabData |. TabData.map(case);
     Cpp.(
       <source>
         "#include \"catch.hpp\""
         "#include \"Arduino.h\""
         <blank />
-        "auto& probe_COND = xod::node_0;"
+        <source> ...nodeAliases </source>
         <blank />
         <funcDef name="runCase">
           "theNode.isNodeDirty = true;"
@@ -175,6 +244,7 @@ module TestCase = {
           "loop();"
           <blank />
           "using namespace xod;"
+          <source> ...cases </source>
           <blank />
           "// Case"
           "runCase();"
@@ -182,11 +252,13 @@ module TestCase = {
         </testCase>
       </source>
     );
+  };
 };
 
 let generateSuite = (project, patchPath) : Resulty.t(t, Js.Exn.t) => {
   let benchPatchPath = "@/tabtest-bench";
   let benchR = Bench.create(project, patchPath);
+  let probesR = Resulty.map(benchR, bench => bench.probes);
   let projectWithBenchR =
     Resulty.flatMap(benchR, bench =>
       Project.assocPatch(project, benchPatchPath, bench.patch)
@@ -199,8 +271,15 @@ let generateSuite = (project, patchPath) : Resulty.t(t, Js.Exn.t) => {
   let tabDataR =
     Resulty.flatMap(benchR, bench => TabData.forPatch(bench.patch));
   let idMapR: Resulty.t(Map.String.t(string), Js.Exn.t) =
-    Ok(Map.String.empty);
-  let testCaseR = Resulty.lift2(TestCase.generate, tabDataR, idMapR);
+    Ok(
+      Map.String.empty
+      |. Map.String.set("probe_COND", "0")
+      |. Map.String.set("probe_T", "1")
+      |. Map.String.set("probe_F", "2")
+      |. Map.String.set("probe_R", "3")
+      |. Map.String.set("theNode", "4"),
+    );
+  let testCaseR = Resulty.lift3(TestCase.generate, tabDataR, idMapR, probesR);
   Resulty.lift2(
     (program: Transpiler.program, testCase) =>
       Map.String.empty
