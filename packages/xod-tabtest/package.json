@@ -10,6 +10,7 @@
   ],
   "author": "XOD",
   "license": "AGPL-3.0",
+  "main": "lib/js/src/Tabtest_Js.bs.js",
   "devDependencies": {
     "bs-platform": "^2.2.3"
   }

@@ -82,7 +82,10 @@ module Probes = {
 };
 
 /* TODO: smarter errors */
-let newError = (_message: string) : Js.Exn.t => [%bs.raw "new Error()"];
+let newError = (message: string) : Js.Exn.t =>
+  try (Js.Exn.raiseError(message)) {
+  | Js.Exn.Error(e) => e
+  };
 
 /*
  * Test bench is a patch containing a central node under the test and
