@@ -171,23 +171,6 @@ module Bench = {
   };
 };
 
-module TabData = {
-  type record = Map.String.t(string);
-  type t = list(record);
-  let forPatch = patch : Resulty.t(t, Js.Exn.t) =>
-    Ok([
-      Map.String.empty
-      |. Map.String.set("COND", "true")
-      |. Map.String.set("T", "42")
-      |. Map.String.set("F", "51")
-      |. Map.String.set("R", "42"),
-      Map.String.empty
-      |. Map.String.set("COND", "false")
-      |. Map.String.set("R", "51"),
-    ]);
-  let map = List.map;
-};
-
 module TestCase = {
   type t = string;
   let generate =
@@ -203,7 +186,7 @@ module TestCase = {
         |. Probes.keepInjecting
         |. Probes.map(probe => {
              let name = probe |. Probe.getTargetPin |. Pin.getLabel;
-             switch (record |. Map.String.get(name)) {
+             switch (record |. TabData.Record.get(name)) {
              | Some(value) => {j|INJECT(probe_$name, $value);|j}
              | None => {j|// No changes for $name|j}
              };
