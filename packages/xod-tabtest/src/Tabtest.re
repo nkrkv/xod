@@ -103,71 +103,61 @@ module Bench = {
   };
   /*
    * Creates a new bench for the project provided with the specified
-   * node instance to test. The bench node is *not* associated to the
+   * node instance to test. The bench patch is *not* associated to the
    * project automatically.
    */
-  let create = (project, patchPathToTest) : Js.Result.t(t, Js.Exn.t) => {
-    let pptt = patchPathToTest;
-    let theNode = Node.create(pptt);
+  let create = (project, patchUnderTest) : t => {
+    let theNode = Node.create(Patch.getPath(patchUnderTest));
     let theNodeId = Node.getId(theNode);
     let draftBench: t = {
       patch: Patch.create() |. Patch.assocNode(theNode),
       symbolMap: Map.String.empty |. Map.String.set(theNodeId, "theNode"),
       probes: [],
     };
-    switch (Project.getPatchByPath(project, pptt)) {
-    | None => Error(newError({j|Patch $pptt not found|j}))
-    | Some(patchToTest) =>
-      Ok(
-        Patch.listPins(patchToTest)
-        |. Pin.normalizeLabels
-        /*
-            For each pin of a node under the test, create a new probe node
-            and link its `VAL` to that pin.
-         */
-        |. List.map(Probe.create)
-        |. List.reduce(
-             draftBench,
-             (bench, probe) => {
-               let probeNode = Probe.getNode(probe);
-               let probeId = Node.getId(probeNode);
-               let probePK = Probe.getPinKeyExn(probe, project);
-               let targPin = Probe.getTargetPin(probe);
-               let targPK = Pin.getKey(targPin);
-               let link =
-                 switch (Pin.getDirection(targPin)) {
-                 | Input =>
-                   Link.create(
-                     ~fromPin=probePK,
-                     ~fromNode=probeId,
-                     ~toPin=targPK,
-                     ~toNode=theNodeId,
-                   )
-                 | Output =>
-                   Link.create(
-                     ~fromPin=targPK,
-                     ~fromNode=theNodeId,
-                     ~toPin=probePK,
-                     ~toNode=probeId,
-                   )
-                 };
-               {
-                 patch:
-                   bench.patch
-                   |. Patch.assocNode(probeNode)
-                   |. Patch.assocLinkExn(link),
-                 symbolMap:
-                   bench.symbolMap
-                   |. Map.String.set(
-                        probeId,
-                        "probe_" ++ Pin.getLabel(targPin),
-                      ),
-                 probes: [probe, ...bench.probes],
-               };
-             },
-           ) /* reduce */
-      ) /* OK */
-    };
+    Patch.listPins(patchUnderTest)
+    |. Pin.normalizeLabels
+    /*
+        For each pin of a node under the test, create a new probe node
+        and link its `VAL` to that pin.
+     */
+    |. List.map(Probe.create)
+    |. List.reduce(
+         draftBench,
+         (bench, probe) => {
+           let probeNode = Probe.getNode(probe);
+           let probeId = Node.getId(probeNode);
+           let probePK = Probe.getPinKeyExn(probe, project);
+           let targPin = Probe.getTargetPin(probe);
+           let targPK = Pin.getKey(targPin);
+           let link =
+             switch (Pin.getDirection(targPin)) {
+             | Input =>
+               Link.create(
+                 ~fromPin=probePK,
+                 ~fromNode=probeId,
+                 ~toPin=targPK,
+                 ~toNode=theNodeId,
+               )
+             | Output =>
+               Link.create(
+                 ~fromPin=targPK,
+                 ~fromNode=theNodeId,
+                 ~toPin=probePK,
+                 ~toNode=probeId,
+               )
+             };
+           {
+             patch:
+               bench.patch
+               |. Patch.assocNode(probeNode)
+               |. Patch.assocLinkExn(link),
+             symbolMap:
+               bench.symbolMap
+               |. Map.String.set(probeId, "probe_" ++ Pin.getLabel(targPin)),
+             probes: [probe, ...bench.probes],
+           };
+         },
+       ); /* reduce */
   };
 };
 
@@ -240,37 +230,40 @@ module TestCase = {
   };
 };
 
-let generateSuite = (project, patchPath) : Resulty.t(t, Js.Exn.t) => {
-  let benchPatchPath = "@/tabtest-bench";
-  let benchR = Bench.create(project, patchPath);
-  let probesR = Resulty.map(benchR, bench => bench.probes);
-  let projectWithBenchR =
-    Resulty.flatMap(benchR, bench =>
-      Project.assocPatch(project, benchPatchPath, bench.patch)
-    );
-  let programR =
-    Resulty.flatMap(
-      projectWithBenchR,
-      Transpiler.transpile(_, benchPatchPath),
-    );
-  let tabDataR =
-    Resulty.flatMap(benchR, bench => TabData.forPatch(bench.patch));
-  let idMapR: Resulty.t(Map.String.t(string), Js.Exn.t) =
-    Ok(
-      Map.String.empty
-      |. Map.String.set("probe_COND", "0")
-      |. Map.String.set("probe_T", "1")
-      |. Map.String.set("probe_F", "2")
-      |. Map.String.set("probe_R", "4"),
-    );
-  let testCaseR = Resulty.lift3(TestCase.generate, tabDataR, idMapR, probesR);
-  let sketchFooter = "\n\n#include \"test.inl\"\n";
-  Resulty.lift2(
-    (program: Transpiler.program, testCase) =>
-      Map.String.empty
-      |. Map.String.set("sketch.cpp", program.code ++ sketchFooter)
-      |. Map.String.set("test.inl", testCase),
-    programR,
-    testCaseR,
-  );
+let idMap =
+  Map.String.empty
+  |. Map.String.set("probe_COND", "0")
+  |. Map.String.set("probe_T", "1")
+  |. Map.String.set("probe_F", "2")
+  |. Map.String.set("probe_R", "4");
+
+let generateSuite = (project, patchPathToTest) : Resulty.t(t, Js.Exn.t) => {
+  let patchUnderTestOpt = Project.getPatchByPath(project, patchPathToTest);
+  let tsvOpt = patchUnderTestOpt |. Option.flatMap(Patch.getTabtestContent);
+  switch (patchUnderTestOpt, tsvOpt) {
+  | (None, _) =>
+    Error(
+      newError({j|Patch $patchPathToTest does not exist in the project|j}),
+    )
+  | (_, None) =>
+    Error(
+      newError(
+        {j|Patch $patchPathToTest has no tabular test data attached|j},
+      ),
+    )
+  | (Some(patchUnderTest), Some(tsv)) =>
+    let bench = Bench.create(project, patchUnderTest);
+    let probes = bench.probes;
+    let benchPatchPath = "@/tabtest-bench";
+    let tabData = TabData.parse(tsv);
+    let testCase = TestCase.generate(tabData, idMap, probes);
+    let sketchFooter = "\n\n#include \"test.inl\"\n";
+    Project.assocPatch(project, benchPatchPath, bench.patch)
+    |. Resulty.flatMap(Transpiler.transpile(_, benchPatchPath))
+    |. Resulty.map(program =>
+         Map.String.empty
+         |. Map.String.set("sketch.cpp", program.code ++ sketchFooter)
+         |. Map.String.set("test.inl", testCase)
+       );
+  };
 };

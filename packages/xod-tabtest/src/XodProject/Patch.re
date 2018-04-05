@@ -6,6 +6,8 @@ type path = PatchPath.t;
 
 [@bs.module "xod-project"] external create : unit => t = "createPatch";
 
+[@bs.module "xod-project"] external getPath : t => path = "getPatchPath";
+
 [@bs.module "xod-project"]
 external _assocNode : (Node.t, t) => t = "assocNode";
 
@@ -56,3 +58,14 @@ let findPinByLabel = (patch, label, ~normalize, ~direction) : option(Pin.t) =>
       | _ => None
       }
   );
+
+[@bs.module "xod-project"]
+external _getAttachments : t => array(Attachment.t) = "getPatchAttachments";
+
+let getAttachments = t => _getAttachments(t) |. List.fromArray;
+
+let getTabtestContent = t =>
+  getAttachments(t)
+  |. List.keep(att => Attachment.getFilename(att) == "patch.test.tsv")
+  |. List.head
+  |. Option.map(Attachment.getContent);

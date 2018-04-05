@@ -69,6 +69,3 @@ let parse = (tsvSource: string) : t =>
         |. List.map(lineToRecord);
       }
   );
-
-let forPatch = patch : Resulty.t(t, Js.Exn.t) =>
-  Ok(parse("COND\tT\tF\tR\n" ++ "true\t42\t51\t42\n" ++ "false\t\t\t51\n"));
