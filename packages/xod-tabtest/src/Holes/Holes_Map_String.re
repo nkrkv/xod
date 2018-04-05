@@ -12,5 +12,7 @@ let keepMapWithKey = (xs: t('v), fn: (string, 'v) => option('v2)) : t('v2) =>
   |. Array.keepMap(((k, v)) => fn(k, v) |. Option.map(v2 => (k, v2)))
   |. Map.String.fromArray;
 
+let keepMap = (xs, fn) => keepMapWithKey(xs, (_, v) => fn(v));
+
 let innerJoin = (xs: t(string), ys: t(string)) : t(string) =>
-  keepMapWithKey(xs, (k, v) => ys |. Map.String.get(v));
+  keepMap(xs, v => ys |. Map.String.get(v));

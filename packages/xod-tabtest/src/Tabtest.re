@@ -228,13 +228,6 @@ module TestCase = {
   };
 };
 
-let idMap =
-  Map.String.empty
-  |. Map.String.set("probe_COND", "0")
-  |. Map.String.set("probe_T", "1")
-  |. Map.String.set("probe_F", "2")
-  |. Map.String.set("probe_R", "4");
-
 let generateSuite = (project, patchPathToTest) : Resulty.t(t, Js.Exn.t) => {
   let patchUnderTestOpt = Project.getPatchByPath(project, patchPathToTest);
   let tsvOpt = patchUnderTestOpt |. Option.flatMap(Patch.getTabtestContent);
