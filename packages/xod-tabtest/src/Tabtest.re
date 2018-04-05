@@ -94,12 +94,9 @@ let newError = (message: string) : Js.Exn.t =>
 module Bench = {
   type t = {
     patch: Patch.t,
-    /* Maps node ids to symbolic names.
-          For probes they like "probe_XYZ", where XYZ is the label of
-          corresponding input or output. The central node maps to "theNode".
-       */
-    symbolMap: Map.String.t(string),
     probes: Probes.t,
+    /* Maps pin labels of the node under test to probe node IDs */
+    probeMap: Map.String.t(Node.id),
   };
   /*
    * Creates a new bench for the project provided with the specified
@@ -107,17 +104,18 @@ module Bench = {
    * project automatically.
    */
   let create = (project, patchUnderTest) : t => {
-    let theNode = Node.create(Patch.getPath(patchUnderTest));
-    let theNodeId = Node.getId(theNode);
+    /* nut = node under test */
+    let nut = Node.create(Patch.getPath(patchUnderTest));
+    let nutId = Node.getId(nut);
     let draftBench: t = {
-      patch: Patch.create() |. Patch.assocNode(theNode),
-      symbolMap: Map.String.empty |. Map.String.set(theNodeId, "theNode"),
+      patch: Patch.create() |. Patch.assocNode(nut),
       probes: [],
+      probeMap: Map.String.empty,
     };
     Patch.listPins(patchUnderTest)
     |. Pin.normalizeLabels
     /*
-        For each pin of a node under the test, create a new probe node
+        For each pin of a node under test, create a new probe node
         and link its `VAL` to that pin.
      */
     |. List.map(Probe.create)
@@ -136,12 +134,12 @@ module Bench = {
                  ~fromPin=probePK,
                  ~fromNode=probeId,
                  ~toPin=targPK,
-                 ~toNode=theNodeId,
+                 ~toNode=nutId,
                )
              | Output =>
                Link.create(
                  ~fromPin=targPK,
-                 ~fromNode=theNodeId,
+                 ~fromNode=nutId,
                  ~toPin=probePK,
                  ~toNode=probeId,
                )
@@ -151,10 +149,10 @@ module Bench = {
                bench.patch
                |. Patch.assocNode(probeNode)
                |. Patch.assocLinkExn(link),
-             symbolMap:
-               bench.symbolMap
-               |. Map.String.set(probeId, "probe_" ++ Pin.getLabel(targPin)),
              probes: [probe, ...bench.probes],
+             probeMap:
+               bench.probeMap
+               |. Map.String.set(Pin.getLabel(targPin), probeId),
            };
          },
        ); /* reduce */
@@ -256,14 +254,18 @@ let generateSuite = (project, patchPathToTest) : Resulty.t(t, Js.Exn.t) => {
     let probes = bench.probes;
     let benchPatchPath = "@/tabtest-bench";
     let tabData = TabData.parse(tsv);
-    let testCase = TestCase.generate(tabData, idMap, probes);
     let sketchFooter = "\n\n#include \"test.inl\"\n";
     Project.assocPatch(project, benchPatchPath, bench.patch)
     |. Resulty.flatMap(Transpiler.transpile(_, benchPatchPath))
-    |. Resulty.map(program =>
+    |. Resulty.map(program => {
+         let idMap =
+           bench.probeMap
+           |. Holes.Map.String.mapKeys(k => "probe_" ++ k)
+           |. Holes.Map.String.innerJoin(program.nodeIdMap);
+         let testCase = TestCase.generate(tabData, idMap, probes);
          Map.String.empty
          |. Map.String.set("sketch.cpp", program.code ++ sketchFooter)
-         |. Map.String.set("test.inl", testCase)
-       );
+         |. Map.String.set("test.inl", testCase);
+       });
   };
 };
