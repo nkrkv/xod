@@ -17,19 +17,13 @@ let indent = str => str |> Js.String.replaceByRe([%bs.re "/^/gm"], "    ");
 let enquote = x => {j|"$x"|j};
 
 /* ↓ C++ JSX ↓ */
-let source = (~children, ()) => join(children, "\n");
+let source = children => join(children, "\n");
 
-let blank = (~children, ()) => "";
+let indented = children => children |. joinLines |. indent;
 
-let indented = (~children, ()) => children |. joinLines |. indent;
+let block = children => ["{", indented(children), "}"] |. joinLines;
 
-let block = (~children, ()) =>
-  ["{", indented(~children, ()), "}"] |. joinLines;
+let catch2TestCase = (name, children) =>
+  "TEST_CASE(" ++ enquote(name) ++ ") " ++ block(children);
 
-let funcDef = (~name, ~children, ()) =>
-  "void " ++ name ++ "() " ++ block(~children, ());
-
-let testCase = (~name, ~children, ()) =>
-  "TEST_CASE(" ++ enquote(name) ++ ") " ++ block(~children, ());
-
-let requireEqual = (~actual, ~expect, ~children, ()) => {j|REQUIRE($actual == $expect);|j};
+let requireEqual = (actual, expected) => {j|REQUIRE($actual == $expected);|j};

@@ -162,7 +162,12 @@ module Bench = {
 module TestCase = {
   type t = string;
   let generate =
-      (tabData: TabData.t, idMap: Map.String.t(string), probes: Probes.t)
+      (
+        name: string,
+        tabData: TabData.t,
+        idMap: Map.String.t(string),
+        probes: Probes.t,
+      )
       : t => {
     let nodeAliases =
       idMap
@@ -186,44 +191,33 @@ module TestCase = {
              let name = probe |. Probe.getTargetPin |. Pin.getLabel;
              switch (record |. Map.String.get(name)) {
              | Some(value) =>
-               Cpp.requireEqual(
-                 ~expect=value,
-                 ~actual={j|probe_$name.state.lastValue|j},
-                 ~children=[],
-                 (),
-               )
+               Cpp.requireEqual({j|probe_$name.state.lastValue|j}, value)
              | None => {j|// no expectation for $name|j}
              };
            });
-      Cpp.source(
-        ~children=
-          List.flatten([
-            [""],
-            injectionStatements,
-            ["loop();"],
-            assertionsStatements,
-          ]),
-        (),
+      Cpp.(
+        source([
+          "",
+          source(injectionStatements),
+          "loop();",
+          source(assertionsStatements),
+        ])
       );
     };
     let cases = tabData |. TabData.map(case);
     Cpp.(
-      <source>
-        "#include \"catch.hpp\""
-        <blank />
-        <source> ...nodeAliases </source>
-        <blank />
-        "#define INJECT(probe, value) { \\"
-        "        (probe).output_VAL = (value); \\"
-        "        (probe).isNodeDirty = true; \\"
-        "    }"
-        <blank />
-        <testCase name="xod/core/if-else">
-          "setup();"
-          "loop();"
-          <source> ...cases </source>
-        </testCase>
-      </source>
+      source([
+        "#include \"catch.hpp\"",
+        "",
+        source(nodeAliases),
+        "",
+        "#define INJECT(probe, value) { \\",
+        "        (probe).output_VAL = (value); \\",
+        "        (probe).isNodeDirty = true; \\",
+        "    }",
+        "",
+        catch2TestCase(name, ["setup();", source(cases)]),
+      ])
     );
   };
 };
@@ -255,7 +249,8 @@ let generateSuite = (project, patchPathToTest) : Resulty.t(t, Js.Exn.t) => {
            bench.probeMap
            |. Holes.Map.String.mapKeys(k => "probe_" ++ k)
            |. Holes.Map.String.innerJoin(program.nodeIdMap);
-         let testCase = TestCase.generate(tabData, idMap, probes);
+         let testCase =
+           TestCase.generate(patchPathToTest, tabData, idMap, probes);
          Map.String.empty
          |. Map.String.set("sketch.cpp", program.code ++ sketchFooter)
          |. Map.String.set("test.inl", testCase);
