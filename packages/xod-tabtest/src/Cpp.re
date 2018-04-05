@@ -1,5 +1,7 @@
 open Belt;
 
+type code = string;
+
 let _join = (strings: list(string), delimiter: string) =>
   List.reduce(strings, ("", ""), ((acc, delimiter'), s) =>
     (acc ++ delimiter' ++ s, delimiter)

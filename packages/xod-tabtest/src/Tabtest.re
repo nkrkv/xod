@@ -160,7 +160,37 @@ module Bench = {
 };
 
 module TestCase = {
-  type t = string;
+  let generateSection = (record, probes) : Cpp.code => {
+    let injectionStatements =
+      probes
+      |. Probes.keepInjecting
+      |. Probes.map(probe => {
+           let name = probe |. Probe.getTargetPin |. Pin.getLabel;
+           switch (record |. TabData.Record.get(name)) {
+           | Some(value) => {j|INJECT(probe_$name, $value);|j}
+           | None => {j|// No changes for $name|j}
+           };
+         });
+    let assertionsStatements =
+      probes
+      |. Probes.keepCapturing
+      |. Probes.map(probe => {
+           let name = probe |. Probe.getTargetPin |. Pin.getLabel;
+           switch (record |. Map.String.get(name)) {
+           | Some(value) =>
+             Cpp.requireEqual({j|probe_$name.state.lastValue|j}, value)
+           | None => {j|// no expectation for $name|j}
+           };
+         });
+    Cpp.(
+      source([
+        "",
+        source(injectionStatements),
+        "loop();",
+        source(assertionsStatements),
+      ])
+    );
+  };
   let generate =
       (
         name: string,
@@ -168,43 +198,13 @@ module TestCase = {
         idMap: Map.String.t(string),
         probes: Probes.t,
       )
-      : t => {
+      : Cpp.code => {
     let nodeAliases =
       idMap
       |. Map.String.toList
       |. List.map(((name, id)) => {j|auto& $name = xod::node_$id;|j});
-    let case = record => {
-      let injectionStatements =
-        probes
-        |. Probes.keepInjecting
-        |. Probes.map(probe => {
-             let name = probe |. Probe.getTargetPin |. Pin.getLabel;
-             switch (record |. TabData.Record.get(name)) {
-             | Some(value) => {j|INJECT(probe_$name, $value);|j}
-             | None => {j|// No changes for $name|j}
-             };
-           });
-      let assertionsStatements =
-        probes
-        |. Probes.keepCapturing
-        |. Probes.map(probe => {
-             let name = probe |. Probe.getTargetPin |. Pin.getLabel;
-             switch (record |. Map.String.get(name)) {
-             | Some(value) =>
-               Cpp.requireEqual({j|probe_$name.state.lastValue|j}, value)
-             | None => {j|// no expectation for $name|j}
-             };
-           });
-      Cpp.(
-        source([
-          "",
-          source(injectionStatements),
-          "loop();",
-          source(assertionsStatements),
-        ])
-      );
-    };
-    let cases = tabData |. TabData.map(case);
+    let sections =
+      tabData |. TabData.map(record => generateSection(record, probes));
     Cpp.(
       source([
         "#include \"catch.hpp\"",
@@ -216,7 +216,7 @@ module TestCase = {
         "        (probe).isNodeDirty = true; \\",
         "    }",
         "",
-        catch2TestCase(name, ["setup();", source(cases)]),
+        catch2TestCase(name, ["setup();", source(sections)]),
       ])
     );
   };
