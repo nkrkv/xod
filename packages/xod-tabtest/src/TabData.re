@@ -5,6 +5,7 @@ module Re = Js.Re;
 module Value = {
   type t =
     | Empty
+    | NaN
     | Number(float)
     | Boolean(bool)
     | String(string)
@@ -20,6 +21,7 @@ module Value = {
     | "" => Empty
     | "true" => Boolean(true)
     | "false" => Boolean(false)
+    | "NaN" => NaN
     | numString when Re.test(numString, numberRegex) =>
       Number(Js.Float.fromString(numString))
     | quotedString when Re.test(quotedString, stringRegex) =>

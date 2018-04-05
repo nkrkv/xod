@@ -172,6 +172,14 @@ module Cpp = {
 };
 
 module TestCase = {
+  let valueToLiteral = (value: TabData.Value.t) : string =>
+    switch (value) {
+    | Boolean(true) => "true"
+    | Boolean(false) => "false"
+    | NaN => "NAN"
+    | String(x) => Holes.String.enquote(x)
+    | x => {j|$x|j}
+    };
   let generateSection = (record, probes) : Cpp.code => {
     let injectionStatements =
       probes
@@ -190,7 +198,10 @@ module TestCase = {
            let name = probe |. Probe.getTargetPin |. Pin.getLabel;
            switch (record |. Map.String.get(name)) {
            | Some(value) =>
-             Cpp.requireEqual({j|probe_$name.state.lastValue|j}, value)
+             Cpp.requireEqual(
+               {j|probe_$name.state.lastValue|j},
+               valueToLiteral(value),
+             )
            | None => {j|// no expectation for $name|j}
            };
          });
