@@ -6,6 +6,7 @@
 #include <stdint.h> // for uint32_t, etc
 #include <string.h> // for strlen
 #include <stdlib.h> // for fcvt
+#include <math.h>
 
 void setup();
 void loop();
