@@ -4,22 +4,42 @@ open Jest;
 
 open Expect;
 
+let formatMap = m => {
+  let s = Map.String.toArray(m);
+  {j|$s|j};
+};
+
+let toEqualMap = (ym, expectation) => {
+  let xm =
+    switch (expectation) {
+    | `Just(xm) => xm
+    | _ => Js.Exn.raiseError("toEqualMap supports only plain `expect`ations")
+    };
+  Map.String.eq(xm, ym, (==)) ?
+    pass :
+    fail(
+      "Maps differ\n"
+      ++ "Expected: "
+      ++ formatMap(ym)
+      ++ "\nActual:   "
+      ++ formatMap(xm),
+    );
+};
+
 describe("Key mapping", () =>
   test("changes keys, preserves data", () => {
     let inMap =
       Map.String.empty
-      |. Map.String.set("a", 1)
-      |. Map.String.set("b", 2)
-      |. Map.String.set("c", 3);
+      |. Map.String.set("one", 1)
+      |. Map.String.set("two", 2)
+      |. Map.String.set("three", 3);
     let outMap = inMap |. Holes.Map.String.mapKeys(Js.String.toUpperCase);
     let expectedMap =
       Map.String.empty
-      |. Map.String.set("A", 1)
-      |. Map.String.set("B", 2)
-      |. Map.String.set("C", 3);
-    /* TODO: custom matcher */
-    /* TODO: refmt */
-    expect(Map.String.eq(outMap, expectedMap, (==))) |> toBe(true);
+      |. Map.String.set("ONE", 1)
+      |. Map.String.set("TWO", 2)
+      |. Map.String.set("THREE", 3);
+    expect(outMap) |> toEqualMap(expectedMap);
   })
 );
 
@@ -27,23 +47,20 @@ describe("Inner join", () =>
   test("applies transitive associations", () => {
     let left =
       Map.String.empty
-      |. Map.String.set("a", "hello")
-      |. Map.String.set("b", "thanks")
-      |. Map.String.set("c", "bye");
+      |. Map.String.set("quad", "four")
+      |. Map.String.set("hexa", "six")
+      |. Map.String.set("octo", "eight");
     let right =
       Map.String.empty
-      |. Map.String.set("hello", "e")
-      |. Map.String.set("thanks", "f")
-      |. Map.String.set("bye", "g");
+      |. Map.String.set("four", 4)
+      |. Map.String.set("six", 6)
+      |. Map.String.set("eight", 8);
     let outMap = Holes.Map.String.innerJoin(left, right);
-    /* TODO: better example */
     let expectedMap =
       Map.String.empty
-      |. Map.String.set("a", "e")
-      |. Map.String.set("b", "f")
-      |. Map.String.set("c", "g");
-    /* TODO: refmt */
-    /* TODO: custom matcher */
-    expect(Map.String.eq(outMap, expectedMap, (==))) |> toBe(true);
+      |. Map.String.set("quad", 4)
+      |. Map.String.set("hexa", 6)
+      |. Map.String.set("octo", 8);
+    expect(outMap) |> toEqualMap(expectedMap);
   })
 );
