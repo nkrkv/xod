@@ -26,7 +26,7 @@ let toEqualMap = (ym, expectation) => {
     );
 };
 
-describe("Key mapping", () =>
+describe("Key mapping", () => {
   test("changes keys, preserves data", () => {
     let inMap =
       Map.String.empty
@@ -40,8 +40,20 @@ describe("Key mapping", () =>
       |. Map.String.set("TWO", 2)
       |. Map.String.set("THREE", 3);
     expect(outMap) |> toEqualMap(expectedMap);
-  })
-);
+  });
+  test("supports swaps", () => {
+    let inMap =
+      Map.String.empty
+      |. Map.String.set("foo", "was foo")
+      |. Map.String.set("oof", "was oof");
+    let outMap = inMap |. Holes.Map.String.mapKeys(Holes.String.reverse);
+    let expectedMap =
+      Map.String.empty
+      |. Map.String.set("oof", "was foo")
+      |. Map.String.set("foo", "was oof");
+    expect(outMap) |> toEqualMap(expectedMap);
+  });
+});
 
 describe("Inner join", () =>
   test("applies transitive associations", () => {

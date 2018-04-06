@@ -11,3 +11,6 @@ let joinLines: list(t) => t;
 /** Indents all lines in a multiline string with a specified number of
     spaces. */
 let indent: (t, int) => t;
+
+/** Writes the string backward */
+let reverse: t => t;

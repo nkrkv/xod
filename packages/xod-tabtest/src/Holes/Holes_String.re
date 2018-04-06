@@ -15,3 +15,6 @@ let joinLines = join(_, "\n");
 
 let indent = (str, n) =>
   Js.String.replaceByRe([%bs.re "/^/gm"], Js.String.repeat(n, " "), str);
+
+let reverse = str =>
+  Js.String.split("", str) |. Array.reverse |. List.fromArray |. join("");
