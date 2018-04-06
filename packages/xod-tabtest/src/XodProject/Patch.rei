@@ -8,7 +8,7 @@ let getPath: t => path;
 
 let assocNode: (t, Node.t) => t;
 
-let assocLink: (t, Link.t) => Js.Result.t(t, Js.Exn.t);
+let assocLink: (t, Link.t) => XResult.t(t);
 
 let assocLinkExn: (t, Link.t) => t;
 

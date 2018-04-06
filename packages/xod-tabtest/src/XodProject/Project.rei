@@ -1,6 +1,6 @@
 type t;
 
-let assocPatch: (t, PatchPath.t, Patch.t) => Js.Result.t(t, Js.Exn.t);
+let assocPatch: (t, PatchPath.t, Patch.t) => XResult.t(t);
 
 let getPatchByPath: (t, PatchPath.t) => option(Patch.t);
 

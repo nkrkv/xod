@@ -21,3 +21,12 @@ let lift3:
 let liftM2:
   (('goodA, 'goodB) => t('goodR, 'bad), t('goodA, 'bad), t('goodB, 'bad)) =>
   t('goodR, 'bad);
+
+let liftM3:
+  (
+    ('goodA, 'goodB, 'goodC) => t('goodR, 'bad),
+    t('goodA, 'bad),
+    t('goodB, 'bad),
+    t('goodC, 'bad)
+  ) =>
+  t('goodR, 'bad);

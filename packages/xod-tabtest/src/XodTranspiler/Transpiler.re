@@ -20,10 +20,10 @@ external _transpile : TProject.t => string = "transpile";
 [@bs.module "xod-arduino"]
 external _getNodeIdsMap : TProject.t => Js.Dict.t(string) = "getNodeIdsMap";
 
-let transpile = (project, patchPath) : Js.Result.t(program, Js.Exn.t) =>
+let transpile = (project, patchPath) : XResult.t(program) =>
   _transformProject(project, patchPath)
   |. Either.toResult
-  |. Resulty.map(tProject =>
+  |. Holes.Result.map(tProject =>
        {
          code: _transpile(tProject),
          nodeIdMap:

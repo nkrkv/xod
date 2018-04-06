@@ -245,7 +245,7 @@ module TestCase = {
   };
 };
 
-let generateSuite = (project, patchPathToTest) : Resulty.t(t, Js.Exn.t) => {
+let generateSuite = (project, patchPathToTest) : XResult.t(t) => {
   let patchUnderTestOpt = Project.getPatchByPath(project, patchPathToTest);
   let tsvOpt = patchUnderTestOpt |. Option.flatMap(Patch.getTabtestContent);
   switch (patchUnderTestOpt, tsvOpt) {
@@ -266,8 +266,8 @@ let generateSuite = (project, patchPathToTest) : Resulty.t(t, Js.Exn.t) => {
     let tabData = TabData.parse(tsv);
     let sketchFooter = "\n\n#include \"test.inl\"\n";
     Project.assocPatch(project, benchPatchPath, bench.patch)
-    |. Resulty.flatMap(Transpiler.transpile(_, benchPatchPath))
-    |. Resulty.map(program => {
+    |. Holes.Result.flatMap(Transpiler.transpile(_, benchPatchPath))
+    |. Holes.Result.map(program => {
          let idMap =
            bench.probeMap
            |. Holes.Map.String.mapKeys(k => "probe_" ++ k)
