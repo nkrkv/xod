@@ -3,24 +3,21 @@ open Belt;
 /* Filename -> Content */
 type t = Map.String.t(string);
 
-/*
- * A probe is a node used later to inject values into a node under the test.
- * Kind of terminal, but for tests.
- *
- * A probe stores reference to its target pin and that’s pin label is guaranted
- * to be normalized.
- */
+/* A probe is a node used later to inject values into a node under test.
+   Kind of terminal, but for tests.
+
+   A probe stores reference to its target pin. That pin’s label is guaranted
+   to be normalized. */
 module Probe = {
   type t = {
     node: Node.t,
     targetPin: Pin.t,
   };
+  /* Trivial accessors */
   let getNode = (probe: t) => probe.node;
   let getTargetPin = (probe: t) => probe.targetPin;
-  /*
-   * Returns full patch path for the probe of a given type. The probe patch
-   * nodes are stocked up in the `workspace` inside the package
-   */
+  /* Returns full patch path for the probe of a given type. The probe patch
+     nodes are stocked up in the `workspace` inside the package */
   let patchPath = (tp: Pin.dataType, dir: Pin.direction) : string =>
     "xod/tabtest/"
     ++ (
@@ -37,17 +34,13 @@ module Probe = {
       | String => "string"
       }
     );
-  /*
-   * Creates a new probe node matching the type of pin provided
-   */
+  /* Creates a new probe node matching the type of pin provided */
   let create = pin => {
     node: Node.create(patchPath(Pin.getType(pin), Pin.getDirection(pin))),
     targetPin: pin,
   };
-  /*
-   * Returns a key of the only pin conventionally labeled `VAL` for a
-   * probe node.
-   */
+  /* Returns a key of the only pin (conventionally labeled "VAL") for a
+     probe node. */
   let getPinKeyExn = (probe, project) => {
     let node = getNode(probe);
     let pt = Node.getType(node);
@@ -70,6 +63,7 @@ module Probe = {
   };
 };
 
+/* Utilities to operate over lists of probes */
 module Probes = {
   type t = list(Probe.t);
   let map = List.map;
@@ -87,10 +81,8 @@ let newError = (message: string) : Js.Exn.t =>
   | Js.Exn.Error(e) => e
   };
 
-/*
- * Test bench is a patch containing a central node under the test and
- * a set of probes connected to each of its pins.
- */
+/* Test bench is a patch containing a central node under test and
+   a set of probes connected to each of its pins. */
 module Bench = {
   type t = {
     patch: Patch.t,
@@ -98,11 +90,9 @@ module Bench = {
     /* Maps pin labels of the node under test to probe node IDs */
     probeMap: Map.String.t(Node.id),
   };
-  /*
-   * Creates a new bench for the project provided with the specified
-   * node instance to test. The bench patch is *not* associated to the
-   * project automatically.
-   */
+  /* Creates a new bench for the project provided with the specified
+     node instance to test. The bench patch is *not* associated to the
+     project automatically. */
   let create = (project, patchUnderTest) : t => {
     /* nut = node under test */
     let nut = Node.create(Patch.getPath(patchUnderTest));
@@ -114,10 +104,8 @@ module Bench = {
     };
     Patch.listPins(patchUnderTest)
     |. Pin.normalizeLabels
-    /*
-        For each pin of a node under test, create a new probe node
-        and link its `VAL` to that pin.
-     */
+    /* For each pin of a node under test, create a new probe node
+       and link its `VAL` to that pin. */
     |. List.map(Probe.create)
     |. List.reduce(
          draftBench,
@@ -159,6 +147,8 @@ module Bench = {
   };
 };
 
+/* A pico-framework to generate properly formatted C++ code.
+   Knows nothing about tabular tests, i.e., purpose-neutral. */
 module Cpp = {
   type code = string;
   let source = children => Holes.String.joinLines(children);
@@ -172,7 +162,9 @@ module Cpp = {
   let requireEqual = (actual, expected) => {j|REQUIRE($actual == $expected);|j};
 };
 
+/* A test case corresponds to TEST_CASE in Catch2 and a single TSV tabtest in XOD. */
 module TestCase = {
+  /* Formats a tabular value to a valid C++ literal or expression */
   let valueToLiteral = (value: TabData.Value.t) : string =>
     switch (value) {
     | Boolean(true) => "true"
@@ -181,6 +173,9 @@ module TestCase = {
     | String(x) => Cpp.enquote(x)
     | x => {j|$x|j}
     };
+  /* Generates a block of code corresponding to a single TSV line check.
+     Contains setup, evaluation, and assertion validation. It might
+     be wrapped into Catch2 SECTION, the purpose is the same. */
   let generateSection = (record, probes) : Cpp.code => {
     let injectionStatements =
       probes
@@ -215,6 +210,13 @@ module TestCase = {
       ])
     );
   };
+  /* Generates a complete C++ source file with the test case for given data.
+       @param name     a free-form string to use as Catch2 TEST_CASE name
+       @param tabData  \m/
+       @param idMap    a map from tested pin labels (FOO, IN1, OUT etc) to
+                       IDs of corresponding probes in C++ code (0, 1, 2, etc)
+       @param probes   \m/
+     */
   let generate =
       (
         name: string,
@@ -226,7 +228,7 @@ module TestCase = {
     let nodeAliases =
       idMap
       |. Map.String.toList
-      |. List.map(((name, id)) => {j|auto& $name = xod::node_$id;|j});
+      |. List.map(((name, id)) => {j|auto& probe_$name = xod::node_$id;|j});
     let sections =
       tabData |. TabData.map(record => generateSection(record, probes));
     Cpp.(
@@ -270,9 +272,7 @@ let generateSuite = (project, patchPathToTest) : XResult.t(t) => {
     |. Holes.Result.flatMap(Transpiler.transpile(_, benchPatchPath))
     |. Holes.Result.map(program => {
          let idMap =
-           bench.probeMap
-           |. Holes.Map.String.mapKeys(k => "probe_" ++ k)
-           |. Holes.Map.String.innerJoin(program.nodeIdMap);
+           Holes.Map.String.innerJoin(bench.probeMap, program.nodeIdMap);
          let testCase =
            TestCase.generate(patchPathToTest, tabData, idMap, probes);
          Map.String.empty
