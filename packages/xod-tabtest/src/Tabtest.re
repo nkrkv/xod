@@ -164,10 +164,11 @@ module Cpp = {
   let source = children => Holes.String.joinLines(children);
   let indented = children =>
     children |. Holes.String.joinLines |. Holes.String.indent(4);
+  let enquote = x => {j|"$x"|j};
   let block = children =>
     ["{", indented(children), "}"] |. Holes.String.joinLines;
   let catch2TestCase = (name, children) =>
-    "TEST_CASE(" ++ Holes.String.enquote(name) ++ ") " ++ block(children);
+    "TEST_CASE(" ++ enquote(name) ++ ") " ++ block(children);
   let requireEqual = (actual, expected) => {j|REQUIRE($actual == $expected);|j};
 };
 
@@ -177,7 +178,7 @@ module TestCase = {
     | Boolean(true) => "true"
     | Boolean(false) => "false"
     | NaN => "NAN"
-    | String(x) => Holes.String.enquote(x)
+    | String(x) => Cpp.enquote(x)
     | x => {j|$x|j}
     };
   let generateSection = (record, probes) : Cpp.code => {

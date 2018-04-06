@@ -1,17 +1,17 @@
 open Belt;
 
-let join = (strings, delimiter) => {
-  let reduce = (strings: list(string), delimiter: string) =>
-    List.reduce(strings, ("", ""), ((acc, delimiter'), s) =>
+type t = string;
+
+let join = (xs, delimiter) => {
+  let reduce = (xs, delimiter) =>
+    List.reduce(xs, ("", ""), ((acc, delimiter'), s) =>
       (acc ++ delimiter' ++ s, delimiter)
     );
-  let (str, _) = reduce(strings, delimiter);
+  let (str, _) = reduce(xs, delimiter);
   str;
 };
 
-let joinLines = strings => join(strings, "\n");
+let joinLines = join(_, "\n");
 
 let indent = (str, n) =>
   Js.String.replaceByRe([%bs.re "/^/gm"], Js.String.repeat(n, " "), str);
-
-let enquote = x => {j|"$x"|j};
