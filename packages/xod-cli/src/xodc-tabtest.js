@@ -1,5 +1,6 @@
 // xodc tabtest [--workspace=<dir>] <input> <path>
 import path from 'path';
+import os from 'os';
 import * as R from 'ramda';
 import fs from 'fs-extra';
 import childProcess from 'child_process';
@@ -61,8 +62,7 @@ export default (input, patchPath, program) => {
     bundledWorkspace,
   ];
 
-  /* TODO: OS-neutral tmp dir */
-  const outDir = '/tmp/xod-tabtest';
+  const outDir = path.join(os.tmpdir(), 'xod-tabtest');
   const childProcessOpts = {
     stdio: 'inherit',
     shell: true,
